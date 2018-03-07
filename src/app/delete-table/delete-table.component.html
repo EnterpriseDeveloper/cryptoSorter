@@ -1,0 +1,79 @@
+<div class="spynerBasic" *ngIf="loading">
+    <spinner></spinner>
+</div>
+
+<div [class.display]='!isEmptyValue'>
+        <div *ngIf="!loading" >
+             <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">
+                    <div class="colorText text-center">
+                        Here you'll see coins which you don't care anymore, 
+                        and so removed them from Everything using  
+                        <button class="btn btn-sm btn-outline-danger buttonLike">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>  button. Nothing yet here!</div> 
+                       </div>
+             </div>    
+    </div>
+
+<div [class.display]="!loading">
+        <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="!isEmptyWallet" >
+            <p class="colorText text-center paddingCenter">
+                Please wait while we're brainstorming over a thousand 
+                of cryptocurrencies. Once loaded, navigation will be 
+                lightning fast! Still waiting? Try guessing which coin is moon today!</p>
+        </div>
+</div>
+
+<div [class.display]='loading'>
+<div [class.display]='isEmptyValue'>
+<div [class.emptyPaddingTab]="!isEmptyWallet" [class.fullPaddingTab]="isEmptyWallet">
+<div class="tabStyle tableStyle2 paddingBottom" [class.display]='isEmptyValue'>
+    <table id="delete-table" datatable [dtOptions]="dtOptions" 
+    [dtTrigger]="dtTrigger" class="row-border hover" 
+    cellspacing="0" width="100%">
+    <thead>
+        <tr>
+          <th class="colorText tableSize nameWidth">Name</th>
+          <th class="colorText tableSize text-center">Index</th>
+          <th class="colorText tableSize text-center">Market Cap</th>
+          <th class="colorText tableSize text-center">Volume</th>
+          <th class="colorText tableSize text-center">% 24h</th>
+          <th class="colorText tableSize text-center">Price</th>  
+          <th class="colorText tableSize text-center">Action</th>  
+        </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let dislike of dislikeCurrency; let i = index;">
+              <td class="colorText tableSize "><p class="tableName">
+                  {{dislike.name}}   
+                  (<a target="_blank" href="https://coinmarketcap.com/currencies/{{dislike.id}}/" 
+                  class="linksTable">{{dislike.symbol}}</a>) </p></td>
+              <td class="colorText tableSize text-center">
+                  <p class="center">{{dislike.formulaValue}}</p></td>
+              <td class="colorText tableSize text-center">
+                  <p class="center">{{dislike.market_cap_usd | currency:'USD'}}</p></td>
+              <td class="colorText tableSize text-center">
+                  <p class="center">{{dislike['24h_volume_usd'] | currency:'USD'}}</p></td>
+              <td width="100px" class="colorText tableSize text-center weight">
+                  <p class="center"><span [style.color]="dislike.percent_change_24h < 0 ? '#DC3545' : '#009130'">
+                      {{dislike.percent_change_24h}} %</span></p></td>
+              <td class="colorText tableSize text-center">
+                  <p class="center">{{dislike.price_usd | currency:'USD'}}</p></td>
+              <td class="text-center">
+                    <p class="center"><button class="btn btn-sm btn-outline-secondary delete remove" 
+                        (click)='deleteDislike(dislike, i)' rel="tooltip" title="To Everything" data-placement="left">
+                      <i class="fa fa-undo" aria-hidden="true"></i>
+                  </button></p>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+</div>
+</div>
+</div>
+
+<div class="push"></div>
+
+
+

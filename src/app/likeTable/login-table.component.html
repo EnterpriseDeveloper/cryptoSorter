@@ -1,0 +1,88 @@
+<div class="spynerBasic" *ngIf="loading">
+    <spinner></spinner>
+</div>
+
+<div [class.display]='!likeEmpty'>
+<div *ngIf="!loading">
+    <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet"> 
+       <div class="colorText text-center">
+           Here you'll track most beloved coins. To add a coin, use 
+           <button class="btn btn-sm btn-outline-success buttonLike">
+        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+    </button> button in Everything. Nothing yet here!</div>
+    </div>
+</div>
+</div>
+
+
+<div [class.display]="!loading">
+        <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">
+                <p class="colorText text-center paddingCenter">
+                    Please wait while we're brainstorming over a thousand
+                     of cryptocurrencies. Once loaded, navigation will be 
+                     lightning fast! Still waiting? Try guessing which coin is moon today!</p>
+            </div>
+</div>
+
+<div [class.display]='loading'>
+<div [class.display]='likeEmpty'>
+  <div [class.emptyPaddingTab]="!isEmptyWallet" [class.fullPaddingTab]="isEmptyWallet">
+    <div class="tabStyle tableStyle2" [class.display]='likeEmpty'>
+        <table id="like-table" datatable [dtOptions]="dtOptions"
+         [dtTrigger]="dtTrigger" class="row-border hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th class="colorText tableSize nameWidth">Name</th>
+                        <th class="colorText tableSize text-center">Index</th>
+                        <th class="colorText tableSize text-center">Market Cap</th>
+                        <th class="colorText tableSize text-center">Volume</th>
+                        <th class="colorText tableSize text-center">% 24h</th>
+                        <th class="colorText tableSize text-center">Price</th>  
+                        <th class="colorText tableSize text-center">Action</th>  
+                      </tr>
+                </thead> 
+                <tbody>
+                    <tr *ngFor="let like of likeCurrency ; let i = index;">
+                        <td class="colorText tableSize"><p class="tableName">
+                            {{like.name}}   
+                            (<a target="_blank" href="https://coinmarketcap.com/currencies/{{like.id}}/" 
+                            class="linksTable">{{like.symbol}}</a>) </p></td>
+                        <td class="colorText tableSize text-center">
+                            <p class="center">{{like.formulaValue}}</p></td>
+                        <td class="colorText tableSize text-center">
+                            <p class="center">{{like.market_cap_usd | currency:'USD'}}</p></td>
+                        <td class="colorText tableSize text-center">
+                            <p class="center">{{like['24h_volume_usd'] | currency:'USD'}}</p></td>
+                        <td width="100px" class="colorText tableSize text-center weight">
+                            <p class="center"><span 
+                            [style.color]="like.percent_change_24h < 0 ? '#DC3545' : '#009130'">
+                            {{like.percent_change_24h}} %</span></p></td>
+                        <td class="colorText tableSize text-center weight2"><p class="center">
+                            {{like.price_usd | currency:'USD'}}</p></td>
+                        <td class="text-center">
+                                <p class="center"><button (click)='deleteLikes(like, i)' class="btn btn-sm btn-outline-secondary delete remove"
+                                      rel="tooltip" title="Remove" data-placement="left">
+                                <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                            </button></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>  
+     </div> 
+    </div>      
+
+    <div class="push"></div>
+
+    
+
+
+   
+
+
+    
+
+
+
+

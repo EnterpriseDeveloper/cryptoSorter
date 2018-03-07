@@ -1,0 +1,42 @@
+<div class="modal-content">
+    <div class="modal-body loginStyle">
+        <div>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      
+                    <notification-message></notification-message>
+                    <user-form></user-form>
+                <div class="omb_login">
+                    <div class="row omb_row-sm-offset-3 omb_socialButtons">
+                        <div class="col-xs-5 col-sm-5 facebook">
+                            <a (click)=" signInWithFacebook()" class="btn btn-lg btn-block omb_btn-facebook">
+                                Facebook
+                                <span class="hidden-xs"></span>
+                            </a>
+                        </div>
+                        <div class="col-xs-5 col-sm-5">
+                            <a (click)="signInWithGoogle()" class="btn btn-lg btn-block omb_btn-google">
+                                Google+
+                                <span class="hidden-xs"></span>
+                            </a>
+                        </div>	
+                    </div>   
+                </div>
+    
+        </div>
+    </div> 
+
+</div>
+
+
+
+
+           
+
+
+
+
+
+
+

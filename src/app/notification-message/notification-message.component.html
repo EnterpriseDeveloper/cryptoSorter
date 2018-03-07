@@ -1,0 +1,9 @@
+<div *ngIf="notify.msg | async as msg" class="alert"
+  [ngClass]="{ 
+    'alert-danger': msg.style == 'error',
+    'alert-success': msg.style == 'success',
+    'alert-info': msg.style == 'info'
+  }">
+  <button class="delete close" data-dismiss="alert" aria-label="close" (click)="notify.clear()">&times;</button>
+  {{ msg.content }}
+</div>

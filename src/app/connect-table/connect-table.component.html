@@ -1,0 +1,82 @@
+<div class="colorConnect">
+    <div class="tableStyle DesCurName">
+        <div class="paddingCurrency">
+        
+        <div *ngIf="authService.user | async; then authenticated else guest">
+          
+        </div>
+        
+      </div> 
+      
+      </div>
+</div>
+
+
+<ng-template #authenticated>
+  <ngb-tabset type="pills">
+    <ngb-tab title="Wallet" id="toWallet" >
+      <ng-template ngbTabContent  >
+        <wallet></wallet>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Everything" id="everything">
+      <ng-template ngbTabContent >
+        <currency></currency>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Favorite" id="toFavorite">
+      <ng-template ngbTabContent  >
+        <login-table></login-table>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Disliked" id="toDeleted">
+      <ng-template ngbTabContent  >
+        <deleteTable></deleteTable>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</ng-template>
+
+<ng-template #guest>
+  <ngb-tabset type="pills">
+    <ngb-tab title="Everything" id="everything">
+      <ng-template ngbTabContent >
+        <currency></currency>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Favorite" id="toFavorite">
+      <ng-template ngbTabContent  >
+        <div class="paddingTabs textRegist">
+          <a class="colorTextLink textDecor emptyPaddingTab" routerLink="/" (click)="openRegistModal()"
+          >Register now</a><span class="colorText"> to track your favorite or disliked coins.
+             Add currency coins to your portfolio. It's free! </span>  
+             <div class="push"></div>                
+        </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Disliked" id="toDeleted">
+  <ng-template ngbTabContent  >
+    <div class="paddingTabs textRegist emptyPaddingTab">
+      <a class="colorTextLink textDecor" routerLink="/" (click)="openRegistModal()">
+        Register now</a><span class="colorText"> to track your favorite or disliked coins.
+           Add currency coins to your portfolio. It's free! </span> 
+           <div class="push"></div> 
+    </div>
+  </ng-template>
+</ngb-tab>
+<ngb-tab title="Wallet" id="toWallet">
+  <ng-template ngbTabContent  >
+    <div class="paddingTabs textRegist emptyPaddingTab">
+      <a class="colorTextLink textDecor" routerLink="/" (click)="openRegistModal()"
+      >Register now</a><span class="colorText"> to track your favorite or disliked coins. 
+        Add currency coins to your portfolio. It's free! </span>    
+        <div class="push"></div>                        
+    </div>                              
+  </ng-template>
+</ngb-tab>
+</ngb-tabset>
+</ng-template>
+ 
+                        
+                        
+                        

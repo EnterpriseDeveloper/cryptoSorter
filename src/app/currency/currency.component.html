@@ -1,0 +1,153 @@
+<div class="spynerBasic" *ngIf="loading">
+    <spinner></spinner>
+</div>
+
+<div [class.display]='!loadingTable'>
+        <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">
+                <p class="colorText text-center paddingCenter">
+                        Please wait while we're brainstorming over a thousand 
+                        of cryptocurrencies. Once loaded, navigation will be 
+                        lightning fast! Still waiting? Try guessing which coin is moon today!
+                </p>
+       </div>
+</div>
+
+
+<div [class.display]='loadingTable'>
+    <div class="tabStyle tableStyle2">
+        <table id="currency-table" datatable [dtOptions]="dtOptions" 
+        [dtTrigger]="dtTrigger" class="row-border hover" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th class="colorText tableSize text-center">Actions</th> 
+                <th class="colorText tableSize nameWidth">Name</th>
+                <th class="colorText tableSize text-center">Index</th>
+                <th class="colorText tableSize text-center">Market Cap</th>
+                <th class="colorText tableSize text-center">Volume</th>
+                <th class="colorText tableSize text-center">% 24h</th>
+                <th class="colorText tableSize text-center">Price</th>   
+            </tr>
+        </thead>
+        
+        <tbody>
+            <tr *ngFor="let row of data; let i = index;">
+                    <td width="120px">
+                            <p class="center2"> 
+                                <button class="btn btn-sm wallet"
+                                [class.btn-outline-info]="!walletColor(row)"
+                                [disabled]="walletColor(row)"
+                                [class.added]="walletColor(row)"
+                                (click)='getValueWallet(row, tabWallet)'
+                                title="Add to Wallet">
+                                <i class="fa"
+                                [class.fa-plus-circle]="!walletColor(row)"
+                                [class.fa-check-circle]="walletColor(row)"
+                                aria-hidden="true"></i>
+                            </button> 
+                            <button
+                            class="btn btn-sm like"
+                            [class.btn-outline-success]="!likesColor(row)"
+                            [class.chekt]="likesColor(row)"
+                            [disabled]="likesColor(row)"
+                            rel="tooltip" title="To Favorite" 
+                            data-placement="left" (click)="getValueLike(row)">
+                            <i class="fa"
+                            [class.fa-thumbs-up]="!likesColor(row)"
+                            [class.fa-check]="likesColor(row)"
+                            aria-hidden="true"></i>
+                        </button>
+                        <button id='delete' [class.display]="likesColor(row)" 
+                        class="btn btn-sm btn-outline-danger delete remove" 
+                        rel="tooltip" title="To Deleted"
+                        data-placement="left" (click)="getValueDislike(row, i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button></p>
+                </td> 
+                <td class="colorText tableSize"><p class="tableName">{{row.name}}   
+                    (<a target="_blank" href="https://coinmarketcap.com/currencies/{{row.id}}/" 
+                    class="linksTable">{{row.symbol}}</a>) </p></td>
+                <td class="colorText tableSize text-center">
+                    <p class="center">{{row.formulaValue | number :'1.2-2'}}</p></td>
+                <td class="colorText tableSize text-center"><p class="center">
+                    {{row.market_cap_usd | currency:'USD'}}</p></td>
+                <td class="colorText tableSize text-center">
+                    <p class="center">{{row['24h_volume_usd'] | currency:'USD'}}</p></td>
+                <td width="100px" class="colorText tableSize text-center weight">
+                    <p class="center"><span [style.color]="row.percent_change_24h < 0 ? '#DC3545' : '#009130'">
+                        {{row.percent_change_24h}} %</span></p></td>
+                    <td width="120px" class="colorText tableSize text-center">
+                        <p class="center">$ {{row.price_usd | number :'1.2-2'}}</p></td> 
+    </tr>
+</tbody>
+<!--<tfoot>
+    <tr>
+      <th class="colorText tableSize text-center">Actions</th>
+      <th class="nameWidth"><input class="select-filter" type="text" placeholder="Search name" name="search-name"/></th>
+      <th><input id="column3_search" type="number" placeholder="Search index" name="search-index"/></th>
+      <th><input class="select-filter" type="number" placeholder="Search market cap" name="search-market-cap"/></th>
+      <th><input class="select-filter" type="number" placeholder="Search volume" name="search-volune"/></th>
+      <th><input class="select-filter" size="5" type="number" placeholder="Search % 24" name="search-percent"/></th>
+      <th><input class="select-filter" size="5" type="number" placeholder="Search price" name="search-price"/></th>
+    </tr>
+  </tfoot> -->
+</table>
+</div>
+</div>
+
+<ng-template #tabWallet let-c="close" let-d="dismiss"> 
+    <div class="modal-body">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button> 
+        <h4 class="modal-title colorText text-center">Add coin to portfolio</h4> 
+        
+        <table class="cursorNone">
+            <tr >
+                <td class="tabWalletStyle colorText padWalletTable">Coin name:</td>
+                <td colspan="2" class="tabWalletStyle2 colorText walletTable padWalletTable">
+                    {{ currensy.name}}</td>
+            </tr>
+            <tr>
+                <td class="tabWalletStyle colorText padWalletTable">Coin price: </td>
+                <td colspan="2" class="tabWalletStyle2 colorText  walletTable colorPrice padWalletTable">
+                   $ {{ currensy.price_usd | number :'1.2-2'}}</td>
+            </tr>
+            <tr>
+                <td class="tabWalletStyle colorText padWalletTable">Total sum:</td>
+                <td colspan="2" class="tabWalletStyle2 colorTotal walletTable padWalletTable">
+                     {{ currensy.price_usd*coins | currency:'USD'}} </td>
+            </tr>
+            <tr>
+                <td class="tabWalletStyle colorText padWalletTable">Amount:</td>  
+                <td class="walletInputCoin padWalletTable">         
+                    <form [formGroup]="numberForm" class="form-inline" >
+                        <input (input)="coins = $event.target.value" value={{coins}}
+                        class="form-control" type="number" id="example-search-input" 
+                        formControlName="number" required> 
+                    </form>   
+                </td>  
+                <td>
+                    <button type="submit" [class.wallet]="numberForm.valid"
+                     class="btn btn-info paddingTabBut" 
+                    [disabled]="!numberForm.valid" (click)="createWallet(coins)">Add</button>
+                </td>
+                
+            </tr>
+            <tr>
+                <td colspan="3" *ngIf="formErrors.number" class="alert alert-danger padWalletTable">
+                    {{ formErrors.number }}
+                </td>
+            </tr>
+            
+        </table>
+        
+        <button type="button" class="btn btn-outline-secondary buttonTabs wallet" (click)="c('Close click')">Cancel</button>
+        
+        
+    </div>
+</ng-template>
+
+<div class="push"></div>
+
+
+

@@ -1,0 +1,70 @@
+<form [formGroup]="userForm"  *ngIf="newUser"  (ngSubmit)="signup()">
+
+  <h3 class="colorText text-center">New to here?</h3>
+  <div class="colorText text-center">Registered users enjoy all features for free and portfolio.<p class="button is-small colorText2 text-center" (click)="toggleForm()">Already Registered?</p></div>
+
+
+  <div >
+    <div class="container">	
+     <label class="colorText "for="email">Email</label>
+     <input type="email" id="email" class="form-control"
+         formControlName="email" required >
+
+     <div *ngIf="formErrors.email" class="alert alert-danger">
+      {{ formErrors.email }}
+     </div>
+
+     <label class="colorText paddingTop" for="password">Password</label>
+     <input type="password" id="password" class="form-control"
+            formControlName="password" required >
+   
+     <div *ngIf="formErrors.password" class="alert alert-danger">
+       {{ formErrors.password }}
+     </div>
+   
+     <div *ngIf="userForm.valid" class="alert alert-success">Form is valid</div>
+     <button type="submit" class="btn btn-lg btn-primary btn-block btn-pos paddingInput2"
+      [class.wallet]="userForm.valid" [disabled]="!userForm.valid">Submit</button>
+
+    </div>
+  </div>  
+
+
+</form>
+
+
+<form [formGroup]="userForm"  *ngIf="!newUser"  (ngSubmit)="login()">
+
+  <h3 class="colorText text-center">Existing user login</h3>
+  <div class="colorText text-center">Registered users enjoy all features for free and portfolio.<p class="button is-small colorText2 text-center" (click)="toggleForm()">New User ?</p></div>
+
+  <div>
+    <div class="container">	
+     <label class="colorText" for="email">Email</label>
+     <input type="email" id="email" class="form-control"
+         formControlName="email" required >
+
+     <div *ngIf="formErrors.email" class="alert alert-danger">
+      {{ formErrors.email }}
+     </div>
+
+     <label class="colorText paddingTop" for="password">Password</label>
+     <input type="password" id="password" class="form-control"
+         formControlName="password" required >
+
+     <div *ngIf="formErrors.password" class="alert alert-danger">
+    {{ formErrors.password }}
+     </div>
+     
+     <div *ngIf="userForm.valid" class="alert alert-success ">Form Looks Valid</div>
+     <button type="submit" class="btn btn-lg btn-primary btn-block btn-pos paddingInput2" 
+      [class.wallet]="userForm.valid" [disabled]="!userForm.valid">Submit</button>
+
+  
+
+  <a *ngIf="!passReset && userForm.controls.email.valid" (click)="resetPassword()"><p class="text-center colorText3">Reset password for {{userForm.value.email}}?</p></a>
+  <p *ngIf="passReset" class="colorText">Reset requested. Check your email instructions.</p>
+    </div>
+  </div>
+
+</form>
