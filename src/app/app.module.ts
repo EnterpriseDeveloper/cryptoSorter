@@ -40,6 +40,9 @@ import { WalletComponent } from './wallet/wallet.component';
 import { WalletService } from './aservices/wallet.service';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { Ng2OrderModule } from 'ng2-order-pipe';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 
@@ -64,8 +67,11 @@ import { SpinnerComponent } from './spinner/spinner.component';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    NgxSelectModule,    
+    NgxSelectModule,
+    Ng2OrderModule,
     MatTabsModule,
+    NgxPaginationModule,
+    Ng2SearchPipeModule,
     ReactiveFormsModule, 
     DataTablesModule,
     AngularFireModule.initializeApp(environment.firebase),

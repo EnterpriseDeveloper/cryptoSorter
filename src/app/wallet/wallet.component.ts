@@ -3,7 +3,6 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators,} from '@angular/forms';
 import { Subject } from 'rxjs/Subject'
-import { DataTableDirective } from 'angular-datatables';
 
 import { ApiService} from '../aservices/api-service.service';
 import { AuthService } from '../aservices/auth.service';
@@ -15,8 +14,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
 import { Coins } from './coins';
 import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 import { HeaderComponent} from '../header/header.component';
-declare var jquery:any;
-declare var $ :any;
 
 type UserFields = 'coinValue'| 'addValueCoin';
 
@@ -31,14 +28,6 @@ type FormErrors = { [u in UserFields]: string };
 
 })
 export class WalletComponent implements OnInit, OnDestroy {
-  @ViewChild(DataTableDirective)
-  dtElement: DataTableDirective;
-
-  dtOptions: DataTables.Settings = {};
-  walletsCoin: Coins[] = [];
-  // We use this trigger because fetching the list of persons can be quite long,
-  // thus we ensure the data is fetched before rendering
-  dtTrigger: Subject<any> = new Subject();
 
   public isLoggedIn:boolean;
   public isEmptyValue: boolean = false;
@@ -57,7 +46,6 @@ export class WalletComponent implements OnInit, OnDestroy {
   public index: any;
   public summ: any =[];
   public totalSum: any;
-  public walletFinish: any;
   public deleteTab: any;
   public deleteCurrency: any;
   private items:Array<any> = [];
@@ -78,6 +66,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   private coinAmount;
   private addCoinModule:any;
   public isEmptyWallet: any;
+  public walletsCoin: any =[];
 
  coinForm: FormGroup ;
  addForm: FormGroup
@@ -139,16 +128,6 @@ export class WalletComponent implements OnInit, OnDestroy {
 
 
    getWalletList(){ 
-    this.dtOptions = {
-      paging: false,
-      "order": [[ 3, "desc" ]],
-      dom: '<"top"f>rt<"clear">',
-      scrollX: true,
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Search records",
-      }
-    };
  this.walletSub = this.wallets.subscribe((walletData)=>{
       this.walletData = walletData;
       this.walletValue = [];
@@ -170,7 +149,6 @@ export class WalletComponent implements OnInit, OnDestroy {
 
     this.isEmptyFind();
 
-      this.dtTrigger.next();
      let filterCur = this.dataTables.filter((i) => {
       return this.walletValue.indexOf(i.id) === -1;
    }); 
@@ -211,10 +189,6 @@ formula(){
       })
      
   });
- this.walletFinish = this.newArray;
-
-  this.loading = false;  
-  this.walletsCoin = this.walletFinish;
 
  this.getSumma()
 };
@@ -230,7 +204,41 @@ getSumma(){
 let total = _.sum(this.summ);
 
    this.totalSum = total.toFixed(2);
+   this.allocation();
 }
+
+allocation(){
+  var that = this
+  this.newArray.forEach(allocation=>{
+    function getAllocationValue(allocation){
+
+    allocation.percent_change_24h = Number.parseInt(allocation.percent_change_24h);
+
+    allocation.coins = Number.parseInt(allocation.coins);
+
+    allocation.price_usd = Number.parseInt(allocation.price_usd);
+
+     let allocations = (allocation.total*100)/that.totalSum
+
+     return allocations;
+    };
+
+    var tableBodyHtml = this.newArray.map(function(allocation) {
+     return Object.assign(allocation, {allocation: getAllocationValue(allocation)});
+     })
+ });
+
+ this.loading = false;  
+ this.walletsCoin = this.newArray;
+}
+
+  //sorting
+  key: string = 'price_usd'; //set default
+  reverse: boolean = true;
+  sort(key){
+    this.key = key;
+    this.reverse = !this.reverse;
+  }
 
 openModuleAdd(addCoin){
   this.chosenCur = false;
@@ -255,11 +263,6 @@ createWallet(addCoins){
   this.wallet.coins = addCoins;
   this.walletService.createWallet(this.wallet);
   this.addModal.close();
-  this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-    // Destroy the table first
-    dtInstance.destroy();
-
-  });
 }
 
 getValueCoin(wallet, tabCoin){
@@ -278,10 +281,6 @@ getValueCoin(wallet, tabCoin){
     });
     this.walletService.updateCoin(findCoin.$key,{coins: coinAmount} );
     this.modalCoin.close()
-      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        // Destroy the table first
-        dtInstance.destroy();
-      });
     }
 
 
@@ -302,13 +301,6 @@ getValueCoin(wallet, tabCoin){
     this.walletService.deleteCoin(findCoin.$key);
     this.walletsCoin.splice(this.index, 1);
     this.deleteTab.close();
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      this.walletSub.unsubscribe();
-      this.apiSub.unsubscribe();
-      this.getWalletList();
-    });
   };
 
   buildForm(){

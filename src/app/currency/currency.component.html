@@ -14,23 +14,39 @@
 
 
 <div [class.display]='loadingTable'>
+        <div class="buttonsTabs2 lenght">Showing {{perPage}} of {{dataLenght}} items.</div>
+
+        <div class="buttonTabs">
+                <input class="form-control form-control-sm search2" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="filter">      
+            </div>
     <div class="tabStyle tableStyle2">
-        <table id="currency-table" datatable [dtOptions]="dtOptions" 
-        [dtTrigger]="dtTrigger" class="row-border hover" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th class="colorText tableSize text-center">Actions</th> 
-                <th class="colorText tableSize nameWidth">Name</th>
-                <th class="colorText tableSize text-center">Index</th>
-                <th class="colorText tableSize text-center">Market Cap</th>
-                <th class="colorText tableSize text-center">Volume</th>
-                <th class="colorText tableSize text-center">% 24h</th>
-                <th class="colorText tableSize text-center">Price</th>   
-            </tr>
-        </thead>
+        <table id="currency-table" class="row-border hover table-striped" cellspacing="0" width="100%">
+                <thead>
+                        <tr>
+                            <th class="colorText tableSize text-center paddingHeader">Actions</th> 
+                            <th class="colorText tableSize nameWidth wallet paddingHeader" (click)="sort('name')">Name
+                                <span class="fa" *ngIf="key =='name'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span></th>
+                            <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('formulaValue')">Index
+                                <span class="fa" *ngIf="key =='formulaValue'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            </th>
+                            <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('market_cap_usd')">Market Cap
+                                <span class="fa" *ngIf="key =='market_cap_usd'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            </th>
+                            <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('24h_volume_usd')">Volume
+                                <span class="fa" *ngIf="key =='24h_volume_usd'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            </th>
+                            <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('percent_change_24h')">% 24h
+                                <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            </th>
+                            <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('price_usd')">Price
+                                <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            </th>   
+                        </tr>
+                    </thead>
         
         <tbody>
-            <tr *ngFor="let row of data; let i = index;">
+            <tr *ngFor="let row of data | orderBy: key : reverse 
+            | filter:filter | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index;">
                     <td width="120px">
                             <p class="center2"> 
                                 <button class="btn btn-sm wallet"
@@ -67,30 +83,56 @@
                     (<a target="_blank" href="https://coinmarketcap.com/currencies/{{row.id}}/" 
                     class="linksTable">{{row.symbol}}</a>) </p></td>
                 <td class="colorText tableSize text-center">
-                    <p class="center">{{row.formulaValue | number :'1.2-2'}}</p></td>
-                <td class="colorText tableSize text-center"><p class="center">
+                    <p class="centerWal">{{row.formulaValue | number :'1.2-2'}}</p></td>
+                <td class="colorText tableSize text-center"><p class="centerWal">
                     {{row.market_cap_usd | currency:'USD'}}</p></td>
                 <td class="colorText tableSize text-center">
-                    <p class="center">{{row['24h_volume_usd'] | currency:'USD'}}</p></td>
+                    <p class="centerWal">{{row['24h_volume_usd'] | currency:'USD'}}</p></td>
                 <td width="100px" class="colorText tableSize text-center weight">
-                    <p class="center"><span [style.color]="row.percent_change_24h < 0 ? '#DC3545' : '#009130'">
+                    <p class="centerWal"><span [style.color]="row.percent_change_24h < 0 ? '#DC3545' : '#009130'">
                         {{row.percent_change_24h}} %</span></p></td>
                     <td width="120px" class="colorText tableSize text-center">
-                        <p class="center">$ {{row.price_usd | number :'1.2-2'}}</p></td> 
+                        <p class="centerWal">$ {{row.price_usd | number :'1.2-2'}}</p></td> 
     </tr>
+    <tr *ngIf="(data | filter: filter).length === 0">
+            <td colspan="7" class="colorText text-center">No matching records found</td>
+       </tr>
 </tbody>
-<!--<tfoot>
-    <tr>
-      <th class="colorText tableSize text-center">Actions</th>
-      <th class="nameWidth"><input class="select-filter" type="text" placeholder="Search name" name="search-name"/></th>
-      <th><input id="column3_search" type="number" placeholder="Search index" name="search-index"/></th>
-      <th><input class="select-filter" type="number" placeholder="Search market cap" name="search-market-cap"/></th>
-      <th><input class="select-filter" type="number" placeholder="Search volume" name="search-volune"/></th>
-      <th><input class="select-filter" size="5" type="number" placeholder="Search % 24" name="search-percent"/></th>
-      <th><input class="select-filter" size="5" type="number" placeholder="Search price" name="search-price"/></th>
-    </tr>
-  </tfoot> -->
 </table>
+<div class="row paddingTableWallet">
+        <div class="col">
+          <div ngbDropdown class="d-inline-block colorPaging"> Show
+            <button class="btn btn-light btn-sm wallet" id="dropdownBasic1" ngbDropdownToggle>{{perPage}}</button>
+            <div class="dropdownMenu" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button class="dropdown-item wallet" (click)="switchCase('25')">25</button>
+              <button class="dropdown-item wallet" (click)="switchCase('50')">50</button>
+              <button class="dropdown-item wallet" (click)="switchCase('all')">All</button>
+            </div> items.
+          </div>
+        </div>
+
+<pagination-template class="buttonTabs padding-right" #p="paginationApi" (pageChange)="onPageChange($event)">
+
+<ul class="pagination">
+   <li class="page-item" [class.disabled]="p.isFirstPage()">
+        <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(1)">First</a>
+    </li>
+    <li class="page-item" [class.disabled]="p.isFirstPage()">
+        <a class="page-link" href='#' (click)="link()" (click)="p.previous()">Previous</a>
+     </li>
+
+
+     <li class="page-item" *ngFor="let page of p.pages" [class.active]="p.getCurrent() === page.value">
+         <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(page.value)">{{page.value}}</a>
+      </li>
+      <li class="page-item" [class.disabled]="p.isLastPage()">
+          <a class="page-link" href='#' (click)="link()" (click)="p.next()">Next</a>
+      </li>
+      <li class="page-item" [class.disabled]="p.isLastPage()">
+           <a class="page-link" href='#' (click)="link()" (click)="p.getLastPage()">Last</a>
+       </li>
+  </ul>
+</pagination-template>  
 </div>
 </div>
 
@@ -146,6 +188,7 @@
         
     </div>
 </ng-template>
+</div>
 
 <div class="push"></div>
 

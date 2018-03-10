@@ -98,6 +98,7 @@ ul.hr li {
     font-size: 70px;
 }
 
+
 .textHeader {
     font-size: 20px;
     font-weight: 100px;
@@ -354,6 +355,7 @@ html, body {
 }
 
 
+
 .paddingTop {
     padding-top: 20px;
 }
@@ -368,6 +370,11 @@ html, body {
 
 .padding-right {
     padding-right: 10px;
+}
+
+.buttonAdd{
+    margin-top: 15px;
+    margin-left: 15px;
 }
 
 .tableStyle {
@@ -392,7 +399,7 @@ html, body {
 }
 
 .tabWalletStyle{
-    padding-left: 30px
+    padding-left: 90px
 }
 
 .tabWalletStyle2{
@@ -444,6 +451,21 @@ html, body {
 
   .tabStyle{
       padding-top: 10px;
+  }
+
+  .lenght{
+      color: #868E96;
+      font-size: 14px;
+      padding-left: 20px;
+      margin-top: 10px;
+  }
+
+  .colorPaging{
+    color: #868E96;
+  }
+
+  .dropdownMenu{
+      box-sizing: 50px;
   }
   
 
@@ -708,7 +730,7 @@ float: right;
 }
 
 .form-control {
-    cursor: pointer;
+    cursor: text;
 }
 
 
@@ -762,6 +784,10 @@ float: right;
     outline: none;
 }
 
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #301b00;
+ }
+
 .dataTables_empty{
     color: white;
 }
@@ -779,6 +805,7 @@ float: right;
     margin-top: 6px;
     margin-bottom: 6px;
 }
+
 .center {
     margin-top: 6px;
     margin-bottom: 6px;
@@ -791,8 +818,21 @@ float: right;
     margin-right: 20px;
 }
 
+.centerWal {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
 .inputStyle{
     width: 100px;
+}
+
+.search{
+    margin-top: 15px;
+}
+
+.search2{
+    margin-bottom: 15px;
 }
 
 #example-search-input{
@@ -874,7 +914,11 @@ float: right;
 .addCoinBut{
     margin-left: 15px;
     margin-top: 15px;
-    margin-bottom: none;
+    margin-bottom: 15px;
+}
+
+.paddingHeader{
+    padding-bottom: 10px;
 }
 
 .paddingCenter{

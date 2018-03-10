@@ -6,7 +6,6 @@ import { Subject } from 'rxjs/Subject'
 import { IPosts } from "../aservices/IPosts";
 import { ItemService } from '../aservices/item.service';
 import { Likes } from '../aservices/Likes';
-import { DataTableDirective } from 'angular-datatables';
 import { HeaderComponent } from '../header/header.component';
 
 import { ApiService } from '../aservices/api-service.service';
@@ -43,8 +42,6 @@ class Currencies {
   providers: [ApiService, WalletService, HeaderComponent]
 })
 export class CurrencyComponent implements OnDestroy{
-  @ViewChild(DataTableDirective)
-  dtElement: DataTableDirective;
 
   numberForm: FormGroup ;
   formErrors: FormErrors = {
@@ -59,11 +56,6 @@ export class CurrencyComponent implements OnDestroy{
     }
   };
 
-  dtOptions: DataTables.Settings = {};
-  data: Currencies[] = [];
-  // We use this trigger because fetching the list of persons can be quite long,
-  // thus we ensure the data is fetched before rendering
-  dtTrigger: Subject<any> = new Subject();
 
   private dislikes: Observable<Dislikes[]>;
   private likes: Observable<Likes[]>;
@@ -94,6 +86,10 @@ export class CurrencyComponent implements OnDestroy{
   public formSub: any;
   public isEmptyWallet: any;
   windowClass?: string="walletModal";
+  public data: any = [];
+  public dataLenght:any;
+  public perPage = 25;
+  public page: number;
  
 
   constructor(
@@ -115,13 +111,12 @@ export class CurrencyComponent implements OnDestroy{
           this.dislikeValue = [];
           this.likeValue = [];
           this.walletValue = [];
-          this.tableOption();
           this.buildForm();
           this.getData();
+          this.page = 1;
 
         } else {
           this.isLoggedIn = true;
-          this.tableOption();
           this.likes = this.likeService.getListLike();
           this.wallets = this.walletService.getListWallet();
           this.dislikes = this.dislikeService.getListDislike();
@@ -129,46 +124,10 @@ export class CurrencyComponent implements OnDestroy{
           this.getWalletList();
           this.getDislikeList();
           this.buildForm();
+          this.page = 1;
         }
       });
   }
-
-  tableOption(){
-    let oldStart = 0;
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      lengthMenu: [[25, 50, -1], [25, 50, "All"]],   
-      "order": [[ 3, "desc" ]],
-      dom: '<"top"if>rt<"bottom"lp><"clear">',
-      scrollX: true,
-      retrieve: true,
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Search records",
-        },
-      drawCallback: function (o) {
-        var newStart = this.api().page.info().start;
-  
-        if ( newStart != oldStart ) {
-            var targetOffset = $('#currency-table').offset().top;
-            $('html,body').animate({scrollTop: targetOffset}, 500);
-            oldStart = newStart;
-        }
-      }, 
-    };
-  }
-
-//  ngAfterViewInit(): void {
-//    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-//      $('#column3_search').on( 'keyup', function () {
-//        dtInstance
-//            .columns( 3 )
-//            .search( this.value )
-//            .draw();
-//    } );
-//    });
-//  }
-
 
   // get likes from ItemService 
   getLikeList(){
@@ -229,6 +188,14 @@ export class CurrencyComponent implements OnDestroy{
    this.newArray.forEach(dataItem => {
   
      function getFormulaValue(dataItem) {
+
+      dataItem['24h_volume_usd'] = Number.parseInt(dataItem['24h_volume_usd']);
+
+      dataItem.percent_change_24h = Number.parseInt(dataItem.percent_change_24h);
+
+      dataItem.price_usd = Number.parseInt(dataItem.price_usd);
+
+      dataItem.market_cap_usd = Number.parseInt(dataItem.market_cap_usd);
   
         let modul = Math.abs(dataItem.percent_change_24h);
         let formula = ((dataItem['24h_volume_usd']/ ((modul / 100 ) + 1 ) / parseInt(dataItem.market_cap_usd)) * 100);
@@ -237,7 +204,7 @@ export class CurrencyComponent implements OnDestroy{
         let formNonNaN = (isNaN(formulaInfin) == true) ? 0 : formulaInfin;
         let formulaItem = formNonNaN.toFixed(2);
   
-        return formulaItem;
+        return Number(formulaItem);
   
       };
   
@@ -247,15 +214,46 @@ export class CurrencyComponent implements OnDestroy{
     });
 
     this.data = this.newArray;
-    this.dtTrigger.next(); 
-
+    this.dataLenght = this.newArray.length;
     this.loadingTable = false;
 
-    setTimeout(()=>{
       this.loading = false; 
-    },1000);
 
   };
+
+        //sorting
+        key: string = 'market_cap_usd'; //set default
+        reverse: boolean = true;
+        sort(key){
+          this.key = key;
+          this.reverse = !this.reverse;
+        }
+      
+        onPageChange(e)
+        {
+          if (e)
+            this.page = e;
+        }
+      
+        link(){
+          return false;
+        }
+      
+        switchCase(value){
+          switch (value) {
+            case '25':
+                this.perPage = 25;
+                break; 
+            case '50':
+                this.perPage = 50;
+                break; 
+           case 'all':
+                this.perPage = this.dataLenght;
+                break;    
+            default: 
+                this.perPage = 25;
+           }
+        }
 
 
 likesColor(row){
@@ -280,7 +278,8 @@ getValueDislike(row, i){
     $('.modal-backdrop').animate({ opacity: 0.9 });
   }else{
     this.dislikeService.createDislike(row.id);
-    this.data.splice(i,1)
+    let index = (this.page - 1) * this.perPage + i;
+    this.data.splice(index, 1)
   }
 };
 

@@ -1,9 +1,8 @@
-import { Component, ViewChild, OnDestroy} from '@angular/core';
+import { Component, OnDestroy,  Input, Output, EventEmitter} from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject'
 import {Likes} from '../aservices/Likes'
-import { DataTableDirective } from 'angular-datatables';
 import { HeaderComponent } from '../header/header.component';
 
 import { ItemService } from '../aservices/item.service';
@@ -15,15 +14,6 @@ declare var jquery:any;
 declare var $ :any;
 
 
-class Like {
-  id: string;
-  name: string;
-  formulaValue: number;
-  market_cap_usd: number;
-  '24h_volume_usd': number;
-  percent_change_24h: number;
-  price_usd: number;
-};
 
 @Component({
   selector: 'login-table',
@@ -32,14 +22,12 @@ class Like {
   providers: [ApiService, HeaderComponent]
 })
 export class LoginTableComponent implements OnDestroy{
-  @ViewChild(DataTableDirective)
-  dtElement: DataTableDirective;
 
-  dtOptions: DataTables.Settings = {};
-  likeCurrency: Like[] = [];
-  // We use this trigger because fetching the list of persons can be quite long,
-  // thus we ensure the data is fetched before rendering
-  dtTrigger: Subject<any> = new Subject();
+@Input() id: string;
+@Input() page;
+@Input() maxSize: number;
+
+@Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
   private likes: Observable<Likes[]>;
   public isLoggedIn: boolean;
@@ -56,6 +44,9 @@ export class LoginTableComponent implements OnDestroy{
   public promise:any;
   public isEmptyWallet: boolean = true;
   public table:any;
+  public likeCurrency:any = [];
+  public likeLenght:any;
+  public perPage = 25;
 
   constructor(
     private likeService: ItemService,
@@ -72,7 +63,7 @@ export class LoginTableComponent implements OnDestroy{
           this.isLoggedIn = true;
           this.likes = this.likeService.getListLike();
           this.getLikesData();
-          this.option();
+          this.page = 1;
         }
       });
   }
@@ -96,41 +87,6 @@ export class LoginTableComponent implements OnDestroy{
            });
       }
 
-      option(){
-        let oldStart = 0;
-        this.dtOptions = {
-          pagingType: 'full_numbers',
-          lengthMenu: [[25, 50, -1], [25, 50, "All"]],
-          "order": [[ 2, "desc" ]],
-          dom: '<"top"if>rt<"bottom"lp><"clear">',
-          scrollX: true,
-          retrieve: true,
-          language: {
-            search: "_INPUT_",
-            searchPlaceholder: "Search records",
-            },
-            drawCallback: function (o) {
-              var newStart = this.api().page.info().start;
-        
-              if ( newStart != oldStart ) {
-                  var targetOffset = $('#like-table').offset().top;
-                  $('html,body').animate({scrollTop: targetOffset}, 500);
-                  oldStart = newStart;
-              }
-          },  
-        };
-
-  //      var table = $( '#like-table' ).DataTable().api();
-
-        // Delete a record
- //       table.on( 'click', '.remove', function (e) {
- //         var $tr = $(this).closest('tr');
- //         table.row($tr).remove().draw();
- //         e.preventDefault();
- //     } );
-      }
-
-
   isEmpty(){
     this.isEmptyWallet = this.headerComponent.isEmpty();
     if(this.likeValue.length > 0){
@@ -150,6 +106,14 @@ export class LoginTableComponent implements OnDestroy{
     this.newArray.forEach(dataItem => {
    
        function getFormulaValue(dataItem) {
+
+        dataItem['24h_volume_usd'] = Number.parseInt(dataItem['24h_volume_usd']);
+
+        dataItem.percent_change_24h = Number.parseInt(dataItem.percent_change_24h);
+  
+        dataItem.price_usd = Number.parseInt(dataItem.price_usd);
+  
+        dataItem.market_cap_usd = Number.parseInt(dataItem.market_cap_usd);
    
         let modul = Math.abs(dataItem.percent_change_24h);
         let formula = ((dataItem['24h_volume_usd']/ ((modul / 100 ) + 1 ) / parseInt(dataItem.market_cap_usd)) * 100);
@@ -158,7 +122,7 @@ export class LoginTableComponent implements OnDestroy{
          let formNonNaN = (isNaN(formulaInfin) == true) ? 0 : formulaInfin;
          let formulaItem = formNonNaN.toFixed(2);
    
-         return formulaItem;
+         return Number(formulaItem);
    
        };
 
@@ -167,13 +131,45 @@ export class LoginTableComponent implements OnDestroy{
         })
       });
 
-      this.likeCurrency = this.newArray; 
-      this.dtTrigger.next();  
+      this.likeCurrency = this.newArray;
+      this.likeLenght = this.likeCurrency.length;
       this.loading = false; 
 
     };
 
+      //sorting
+  key: string = 'market_cap_usd'; //set default
+  reverse: boolean = true;
+  sort(key){
+    this.key = key;
+    this.reverse = !this.reverse;
+  }
 
+  onPageChange(e)
+  {
+    if (e)
+      this.page = e;
+  }
+
+  link(){
+    return false;
+  }
+
+  switchCase(value){
+    switch (value) {
+      case '25':
+          this.perPage = 25;
+          break; 
+      case '50':
+          this.perPage = 50;
+          break; 
+     case 'all':
+          this.perPage = this.likeLenght;
+          break;    
+      default: 
+          this.perPage = 25;
+     }
+  }
 
 
   //button delete likes from table
@@ -184,13 +180,8 @@ export class LoginTableComponent implements OnDestroy{
         return likes.indexOf(i.$value) != -1;
      });
       this.likeService.deleteLikes(findLike.$key);
-      this.newArray.splice(i, 1);
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.destroy();
-            this.likesSub.unsubscribe();
-           this.apiSub.unsubscribe();
-            this.getLikesData();
-       });  
+      let index = (this.page - 1) * this.perPage + i;
+      this.newArray.splice(i, 1); 
   }
 
   ngOnDestroy(){
