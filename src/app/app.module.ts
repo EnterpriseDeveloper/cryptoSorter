@@ -43,6 +43,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { CurrencyFilterPipe } from './shared/filter.pipe';
 
 
 
@@ -61,6 +62,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
     DeleteTableComponent,
     WalletComponent,
     SpinnerComponent,
+    CurrencyFilterPipe,
   ],
   imports: [
     NgbModule.forRoot(),

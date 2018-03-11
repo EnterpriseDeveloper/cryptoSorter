@@ -63,6 +63,8 @@
           <tr *ngFor="let dislike of dislikeCurrency | orderBy: key : reverse 
           | filter:filter | paginate: { itemsPerPage: perPage, currentPage: page }; let i = index;">
               <td class="colorText tableSize "><p class="tableName">
+                    <img class="sizeImg"
+                    src="https://chasing-coins.com/api/v1/std/logo/{{dislike.symbol}}">
                   {{dislike.name}}   
                   (<a target="_blank" href="https://coinmarketcap.com/currencies/{{dislike.id}}/" 
                   class="linksTable">{{dislike.symbol}}</a>) </p></td>

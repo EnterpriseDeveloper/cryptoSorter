@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, OnInit, OnDestroy, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators,} from '@angular/forms';
 import { Http, Response } from '@angular/http';
@@ -7,6 +7,7 @@ import { IPosts } from "../aservices/IPosts";
 import { ItemService } from '../aservices/item.service';
 import { Likes } from '../aservices/Likes';
 import { HeaderComponent } from '../header/header.component';
+import { Currency } from '../shared/currency';
 
 import { ApiService } from '../aservices/api-service.service';
 import { AuthService } from '../aservices/auth.service';
@@ -42,6 +43,10 @@ class Currencies {
   providers: [ApiService, WalletService, HeaderComponent]
 })
 export class CurrencyComponent implements OnDestroy{
+
+  name = 'Angular v4 - Applying filters to *ngFor using pipes';
+
+  filter: Currency = new Currency();
 
   numberForm: FormGroup ;
   formErrors: FormErrors = {
@@ -85,8 +90,7 @@ export class CurrencyComponent implements OnDestroy{
   public userSub: any;
   public formSub: any;
   public isEmptyWallet: any;
-  windowClass?: string="walletModal";
-  public data: any = [];
+  public data: Currency[] = [];
   public dataLenght:any;
   public perPage = 25;
   public page: number;

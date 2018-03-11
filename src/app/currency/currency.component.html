@@ -16,9 +16,6 @@
 <div [class.display]='loadingTable'>
         <div class="buttonsTabs2 lenght">Showing {{perPage}} of {{dataLenght}} items.</div>
 
-        <div class="buttonTabs">
-                <input class="form-control form-control-sm search2" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="filter">      
-            </div>
     <div class="tabStyle tableStyle2">
         <table id="currency-table" class="row-border hover table-striped" cellspacing="0" width="100%">
                 <thead>
@@ -43,10 +40,26 @@
                             </th>   
                         </tr>
                     </thead>
+                    <thead>
+                        <tr>
+                            <th ></th> 
+                            <th ><div ><input class="form-control form-control-sm" type="text" 
+                                name="name" [(ngModel)]="filter.name" placeholder="Search name"></div></th>
+                            <th ><div ><input class="form-control form-control-sm" type="number"
+                                name="formulaValue" [(ngModel)]="filter.formulaValue" min="1" step="1" placeholder="Search index"></div></th>
+                            <th ><div ><input class="form-control form-control-sm" type="number" 
+                                name="market_cap_usd" [(ngModel)]="filter.market_cap_usd" min="1" step="1" placeholder="Search market cap"></div></th>
+                            <th ><div ><input class="form-control form-control-sm" type="number" 
+                                name="24h_volume_usd" [(ngModel)]="filter['24h_volume_usd']" min="1" step="1" placeholder="Search volume"></div></th>
+                            <th ><div ><input class="form-control form-control-sm" type="number" 
+                                name="percent_change_24h" [(ngModel)]="filter.percent_change_24h" min="1" step="1" placeholder="Search %"></div></th>
+                            <th ><div ><input class="form-control form-control-sm" type="number" 
+                                name="price_usd" [(ngModel)]="filter.price_usd" min="1" step="1" placeholder="Search price"></div></th>   
+                        </tr>
+                    </thead>
         
         <tbody>
-            <tr *ngFor="let row of data | orderBy: key : reverse 
-            | filter:filter | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index;">
+            <tr *ngFor="let row of data | orderBy: key : reverse | currencyfilter: filter | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index;">
                     <td width="120px">
                             <p class="center2"> 
                                 <button class="btn btn-sm wallet"
@@ -79,9 +92,15 @@
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </button></p>
                 </td> 
-                <td class="colorText tableSize"><p class="tableName">{{row.name}}   
-                    (<a target="_blank" href="https://coinmarketcap.com/currencies/{{row.id}}/" 
-                    class="linksTable">{{row.symbol}}</a>) </p></td>
+                <td class="colorText tableSize">
+                    <p class="tableName">
+                        <img class="sizeImg"
+                        src="https://chasing-coins.com/api/v1/std/logo/{{row.symbol}}">
+                        {{row.name}}   
+                        (<a target="_blank" href="https://coinmarketcap.com/currencies/{{row.id}}/" 
+                    class="linksTable">{{row.symbol}}</a>)
+                    </p>
+                </td>
                 <td class="colorText tableSize text-center">
                     <p class="centerWal">{{row.formulaValue | number :'1.2-2'}}</p></td>
                 <td class="colorText tableSize text-center"><p class="centerWal">
@@ -94,9 +113,9 @@
                     <td width="120px" class="colorText tableSize text-center">
                         <p class="centerWal">$ {{row.price_usd | number :'1.2-2'}}</p></td> 
     </tr>
-    <tr *ngIf="(data | filter: filter).length === 0">
+    <tr *ngIf="(data | currencyfilter: filter).length === 0">
             <td colspan="7" class="colorText text-center">No matching records found</td>
-       </tr>
+       </tr> 
 </tbody>
 </table>
 <div class="row paddingTableWallet">

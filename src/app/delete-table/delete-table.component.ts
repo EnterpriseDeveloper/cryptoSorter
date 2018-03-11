@@ -41,6 +41,7 @@ export class DeleteTableComponent implements OnInit, OnDestroy {
   public dislikeCurrency: any = [];
   public dislikeLenght:any;
   public perPage = 25;
+  public filter:any;
 
   constructor(
     private dislikeService: DislikeService, 

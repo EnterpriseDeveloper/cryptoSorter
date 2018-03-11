@@ -65,6 +65,8 @@
                     <tr *ngFor="let like of likeCurrency | orderBy: key : reverse 
                     | filter:filter | paginate: { itemsPerPage: perPage, currentPage: page }; let i = index;">
                         <td class="colorText tableSize"><p class="tableName">
+                                <img class="sizeImg"
+                                src="https://chasing-coins.com/api/v1/std/logo/{{like.symbol}}">
                             {{like.name}}   
                             (<a target="_blank" href="https://coinmarketcap.com/currencies/{{like.id}}/" 
                             class="linksTable">{{like.symbol}}</a>) </p></td>

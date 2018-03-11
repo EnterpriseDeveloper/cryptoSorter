@@ -47,6 +47,7 @@ export class LoginTableComponent implements OnDestroy{
   public likeCurrency:any = [];
   public likeLenght:any;
   public perPage = 25;
+  public filter:any;
 
   constructor(
     private likeService: ItemService,

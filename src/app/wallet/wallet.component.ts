@@ -67,6 +67,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   private addCoinModule:any;
   public isEmptyWallet: any;
   public walletsCoin: any =[];
+  public filter:any;
 
  coinForm: FormGroup ;
  addForm: FormGroup
