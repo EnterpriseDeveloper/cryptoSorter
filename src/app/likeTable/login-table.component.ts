@@ -1,4 +1,4 @@
-import { Component, OnDestroy,  Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnDestroy,  Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject'
@@ -28,10 +28,10 @@ export class LoginTableComponent implements OnDestroy{
 @Input() maxSize: number;
 
 @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
+@ViewChild('autofocus') autofocus;
 
   private likes: Observable<Likes[]>;
   public isLoggedIn: boolean;
-  public likeEmpty: boolean = false;
   public loading: boolean = false;
   private dataTables;
   private likesData;
@@ -48,6 +48,7 @@ export class LoginTableComponent implements OnDestroy{
   public likeLenght:any;
   public perPage = 25;
   public filter:any;
+  public selectedRow: number;
 
   constructor(
     private likeService: ItemService,
@@ -71,33 +72,33 @@ export class LoginTableComponent implements OnDestroy{
 
     // get likes from ItemService 
     getLikesData(){
+      let promise = new Promise((resolve, reject) =>{
         this.likesSub = this.likes.subscribe((likeData) =>{
           this.likesData = likeData;
           this.likeValue = [];
              let result =  this.likesData.forEach(likeData =>{
                return this.likeValue.push(likeData.$value);
-               });
-                 this.apiSub = this.apiService.get()  
-                  .subscribe((dataItem) => {
-                     this.dataTables = dataItem;
-                     this.filterLikes = this.dataTables.filter((i) => {
-                  return this.likeValue.indexOf(i.id) != -1;
-                });
-                  this.isEmpty();   
-              });
+               })
+            resolve(this.likeValue);
            });
-      }
-
-  isEmpty(){
-    this.isEmptyWallet = this.headerComponent.isEmpty();
-    if(this.likeValue.length > 0){
-      this.createTable();
-     return this.likeEmpty = false;
-    }else{
-      this.loading = false;
-    return this.likeEmpty = true;
+         })
+         promise.then(()=>{
+         this.getData();
+         })     
     };
-  }
+
+    getData(){
+      this.apiSub = this.apiService.get()  
+      .subscribe((dataItem) => {
+         this.dataTables = dataItem;
+         this.filterLikes = this.dataTables.filter((i) => {
+      return this.likeValue.indexOf(i.id) != -1;
+    });
+      this.isEmptyWallet = this.headerComponent.isEmpty();
+      this.createTable();   
+     });
+    }
+
 
   // Create index value
   createTable(){
@@ -110,9 +111,9 @@ export class LoginTableComponent implements OnDestroy{
 
         dataItem['24h_volume_usd'] = Number.parseInt(dataItem['24h_volume_usd']);
 
-        dataItem.percent_change_24h = Number.parseInt(dataItem.percent_change_24h);
+        dataItem.percent_change_24h = Number(dataItem.percent_change_24h);
   
-        dataItem.price_usd = Number.parseInt(dataItem.price_usd);
+        dataItem.price_usd = Number(dataItem.price_usd);
   
         dataItem.market_cap_usd = Number.parseInt(dataItem.market_cap_usd);
    
@@ -135,8 +136,12 @@ export class LoginTableComponent implements OnDestroy{
       this.likeCurrency = this.newArray;
       this.likeLenght = this.likeCurrency.length;
       this.loading = false; 
-
+      
+      setTimeout(()=>{
+        this.autofocus.nativeElement.focus()
+      },500)
     };
+
 
       //sorting
   key: string = 'market_cap_usd'; //set default
@@ -146,8 +151,14 @@ export class LoginTableComponent implements OnDestroy{
     this.reverse = !this.reverse;
   }
 
-  onPageChange(e)
-  {
+  onPageChange(e, scrollDuration){
+    var scrollStep = -window.scrollY / (scrollDuration / 15),
+    scrollInterval = setInterval(function(){
+    if ( window.scrollY != 0 ) {
+        window.scrollBy( 0, scrollStep );
+    }
+    else clearInterval(scrollInterval); 
+},15);
     if (e)
       this.page = e;
   }
@@ -175,14 +186,18 @@ export class LoginTableComponent implements OnDestroy{
 
   //button delete likes from table
   deleteLikes(like, i){
-
      let likes = like.id;
       let findLike = this.likesData.find((i)=> {
         return likes.indexOf(i.$value) != -1;
      });
       this.likeService.deleteLikes(findLike.$key);
-      let index = (this.page - 1) * this.perPage + i;
-      this.newArray.splice(i, 1); 
+      let index = this.newArray.indexOf(like);
+      this.selectedRow = i;
+      this.likeLenght = this.likeLenght - 1;
+      setTimeout(()=>{
+        this.likeCurrency.splice(index, 1); 
+        this.selectedRow = NaN;
+      },750);
   }
 
   ngOnDestroy(){

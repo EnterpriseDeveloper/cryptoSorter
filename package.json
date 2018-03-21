@@ -28,7 +28,9 @@
     "angular-animate": "^1.6.9",
     "angular-datatables": "^5.0.0",
     "angular-font-awesome": "^3.1.2",
+    "angular-particle": "^1.0.4",
     "angularfire2": "^5.0.0-rc.4",
+    "animate.css": "^3.6.1",
     "bootstrap": "^4.0.0-beta.2",
     "core-js": "^2.4.1",
     "datatables.net": "^1.10.16",
@@ -46,6 +48,7 @@
     "ng2-search-filter": "^0.4.7",
     "ngx-pagination": "^3.1.0",
     "ngx-select-ex": "^3.1.4-ng4",
+    "particles.js": "^2.0.0",
     "popper.js": "^1.12.9",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"

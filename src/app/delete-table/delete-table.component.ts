@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Subject } from 'rxjs/Subject'
 
@@ -16,18 +16,18 @@ import { HeaderComponent } from '../header/header.component';
   styleUrls: ['./delete-table.component.css'],
   providers: [ApiService, HeaderComponent]
 })
-export class DeleteTableComponent implements OnInit, OnDestroy {
+export class DeleteTableComponent implements OnDestroy {
 
  @Input() id: string;
 @Input() page;
 @Input() maxSize: number;
 
 @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
+@ViewChild('autofocus') autofocus;
 
   private dislikes: any;
   public isLoggedIn: boolean;
   public loading: boolean = false;
-  public isEmptyValue: boolean = false;
   private dataTables;
   private dislikesData;
   private dislikeValue = [];
@@ -42,12 +42,14 @@ export class DeleteTableComponent implements OnInit, OnDestroy {
   public dislikeLenght:any;
   public perPage = 25;
   public filter:any;
+  public selectedRow: number;
+
 
   constructor(
     private dislikeService: DislikeService, 
     private apiService: ApiService,
     private authService: AuthService,
-    private headerComponent: HeaderComponent
+    private headerComponent: HeaderComponent,
   )  {
     this.loading = true;
    this.userSub = this.authService.user.subscribe(
@@ -58,47 +60,41 @@ export class DeleteTableComponent implements OnInit, OnDestroy {
           this.isLoggedIn = true;
           this.dislikes = this.dislikeService.getListDislike();
           this.getDislikeList();
-          this.page = 1;
+          this.page = 1;      
         }
       }
     );
   }
 
-  ngOnInit(){
-
-  }
-
     // get dislike from DislikeService
     getDislikeList(){
-      this.dislikeSub = this.dislikes.subscribe((dislikeData)=>{
-         this.dislikesData = dislikeData;
-         this.dislikeValue = [];
-         this.dislikesData.forEach(dislikeData =>{
+      let promise = new Promise((resolve, reject) =>{
+        this.dislikeSub = this.dislikes.subscribe((dislikeData)=>{
+          this.dislikesData = dislikeData
+          this.dislikesData.forEach(dislikeData =>{
           return this.dislikeValue.push(dislikeData.$value);
-         })
-         this.apiSub = this.apiService.get()  
-         .subscribe((dataItem) => {
-           this.dataTables = dataItem;
-           this.filterDislike = this.dataTables.filter((i) => {
-             return this.dislikeValue.indexOf(i.id) != -1;
-           });
-             this.isEmpty(); 
-         });
+           })
+          resolve(this.dislikeValue);
+        })
       });
+
+   promise.then(()=>{
+     this.getData();
+   }
+  )     
+    };
+
+    getData(){
+      this.apiSub = this.apiService.get()  
+      .subscribe((dataItem) => {
+        this.dataTables = dataItem;  
+        this.filterDislike = this.dataTables.filter((i) => {
+          return this.dislikeValue.indexOf(i.id) != -1;
+       });  
+       this.isEmptyWallet = this.headerComponent.isEmpty();
+       this.createTable(); 
+    });
     }
-
-
-    isEmpty(){
-      this.isEmptyWallet = this.headerComponent.isEmpty();
-      if(this.dislikeValue.length > 0){
-        this.createTable();
-      return this.isEmptyValue = false;
-      }else{
-       this.loading = false;
-       return this.isEmptyValue = true;
-      };
-    }
-
 
 
   // Create index value
@@ -113,9 +109,9 @@ export class DeleteTableComponent implements OnInit, OnDestroy {
 
         dataItem['24h_volume_usd'] = Number.parseInt(dataItem['24h_volume_usd']);
 
-        dataItem.percent_change_24h = Number.parseInt(dataItem.percent_change_24h);
+        dataItem.percent_change_24h = Number(dataItem.percent_change_24h);
   
-        dataItem.price_usd = Number.parseInt(dataItem.price_usd);
+        dataItem.price_usd = Number(dataItem.price_usd);
   
         dataItem.market_cap_usd = Number.parseInt(dataItem.market_cap_usd);
       
@@ -139,7 +135,12 @@ export class DeleteTableComponent implements OnInit, OnDestroy {
       this.dislikeLenght = this.dislikeCurrency.length;
       this.loading = false; 
 
+      setTimeout(()=>{
+        this.autofocus.nativeElement.focus()
+      },500)
+
     };
+
 
           //sorting
   key: string = 'market_cap_usd'; //set default
@@ -149,8 +150,14 @@ export class DeleteTableComponent implements OnInit, OnDestroy {
     this.reverse = !this.reverse;
   }
 
-  onPageChange(e)
-  {
+  onPageChange(e, scrollDuration){
+    var scrollStep = -window.scrollY / (scrollDuration / 15),
+    scrollInterval = setInterval(function(){
+    if ( window.scrollY != 0 ) {
+        window.scrollBy( 0, scrollStep );
+    }
+    else clearInterval(scrollInterval); 
+     },15);
     if (e)
       this.page = e;
   }
@@ -183,10 +190,16 @@ export class DeleteTableComponent implements OnInit, OnDestroy {
     let findDislike = this.dislikesData.find((i) => {
       return dislikes.indexOf(i.$value) != -1;
     });
+    let index = this.newArray.indexOf(dislike);
+    this.selectedRow = i;
     this.dislikeService.deleteDislike(findDislike.$key);
-    let index = (this.page - 1) * this.perPage + i;
-    this.newArray.splice(i, 1);
+    this.dislikeLenght = this.dislikeLenght - 1;
+     setTimeout(()=>{
+       this.dislikeCurrency.splice(index, 1);
+       this.selectedRow = NaN;
+     },750)
   } 
+
 
   ngOnDestroy(){
     this.userSub.unsubscribe();

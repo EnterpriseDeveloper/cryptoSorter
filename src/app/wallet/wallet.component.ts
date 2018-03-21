@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnDestroy, OnInit, ViewChild, } from '@angular/core';
+import { Component, ViewEncapsulation, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators,} from '@angular/forms';
@@ -24,10 +24,12 @@ type FormErrors = { [u in UserFields]: string };
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.css'],
   providers: [ApiService, HeaderComponent],
-  encapsulation: ViewEncapsulation.None 
-
+  encapsulation: ViewEncapsulation.None
 })
 export class WalletComponent implements OnInit, OnDestroy {
+
+  @ViewChild('autofocus') autofocus;
+  @ViewChild('chooseCoin') chooseCoin;
 
   public isLoggedIn:boolean;
   public isEmptyValue: boolean = false;
@@ -68,6 +70,8 @@ export class WalletComponent implements OnInit, OnDestroy {
   public isEmptyWallet: any;
   public walletsCoin: any =[];
   public filter:any;
+  public selectedRow:number;
+  public deleteIndex: any;
 
  coinForm: FormGroup ;
  addForm: FormGroup
@@ -213,11 +217,11 @@ allocation(){
   this.newArray.forEach(allocation=>{
     function getAllocationValue(allocation){
 
-    allocation.percent_change_24h = Number.parseInt(allocation.percent_change_24h);
+    allocation.percent_change_24h = Number(allocation.percent_change_24h);
 
-    allocation.coins = Number.parseInt(allocation.coins);
+    allocation.coins = Number(allocation.coins);
 
-    allocation.price_usd = Number.parseInt(allocation.price_usd);
+    allocation.price_usd = Number(allocation.price_usd);
 
      let allocations = (allocation.total*100)/that.totalSum
 
@@ -229,8 +233,13 @@ allocation(){
      })
  });
 
- this.loading = false;  
  this.walletsCoin = this.newArray;
+ this.loading = false; 
+
+ setTimeout(()=>{
+  this.autofocus.nativeElement.focus()
+ },500)
+
 }
 
   //sorting
@@ -248,6 +257,9 @@ openModuleAdd(addCoin){
   this.addModal = this.modalService.open(addCoin, { windowClass: 'dark-modal' });
   $('.modal-content').animate({ opacity: 1 });
   $('.modal-backdrop').animate({ opacity: 0.9 });
+  setTimeout(()=>{
+    this.chooseCoin.nativeElement.focus();
+  },3000)
 }
 
 public doSelect(value: any) { 
@@ -292,6 +304,7 @@ getValueCoin(wallet, tabCoin){
     $('.modal-backdrop').animate({ opacity: 0.9 });
     this.deleteCurrency = this.walletsCoin.find(myObj => myObj.id === wallet.id);
     this.index = i;
+    this.deleteIndex = wallet;
   }
 
   deleteCoins(deleteCurrency){
@@ -299,9 +312,14 @@ getValueCoin(wallet, tabCoin){
     let findCoin = this.walletData.find((i)=> {
       return coins.indexOf(i.id) != -1;
     });
-    this.walletService.deleteCoin(findCoin.$key);
-    this.walletsCoin.splice(this.index, 1);
+    this.selectedRow = this.index;
+    let index = this.newArray.indexOf(this.deleteIndex);
     this.deleteTab.close();
+    setTimeout(()=>{
+      this.walletService.deleteCoin(findCoin.$key);
+      this.walletsCoin.splice(index, 1);
+      this.selectedRow = NaN;
+    },750)
   };
 
   buildForm(){
@@ -381,3 +399,5 @@ this.buildSub.unsubscribe();
   
 
 }
+
+

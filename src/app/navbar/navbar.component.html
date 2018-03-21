@@ -1,7 +1,12 @@
 <div class="navbarStyle">
     <ul class="navbarTextStyle navbarTextPos float-left hr">
-        <li class="links colorText" routerLink="/">CryptoSorter</li>
-      <!--  <button class="btn btn-sm btn-outline-light text-dark"><i  class="fa far-sun" aria-hidden="true"></i></button> -->
+        <li class="links colorText particle" routerLink="/">CryptoSorter</li>
+        <li class="particle">
+                        <label class="switch">
+                                        <input type="checkbox" (click)="changeStyle()">
+                                        <span class="slider round"></span>
+                                      </label>
+        </li>
     </ul>
     
     
@@ -14,14 +19,18 @@
     
       <ng-template #guest>
           <ul class="navbarTextPos2 hr">
-                <li><button class="btn btn-primary float-right navbarBut" (click)="openRegistModal()">Login / Sign Up</button></li>
+                <li><button class="btn btn-primary float-right navbarBut particle" (click)="openRegistModal()">Login / Sign Up</button></li>
           </ul>
       </ng-template>
     
       <ng-template #authenticated>
-        <ul class="navbarTextPos2 hr" *ngIf="auth.user | async as user">
+        <ul class="navbarTextPos2 hr mobileDisplay" *ngIf="auth.user | async as user">
                 <li><button class="btn btn-primary float-right navbarBut" (click)="logout()">Sign Out </button></li>
                 <li class="colorText float-right navbarBut2">Hello,&ensp;{{ user.email }}.</li>
+        </ul>
+
+        <ul class="navbarTextPos2 hr screenDisplay" *ngIf="auth.user | async as user">
+                <li><button class="btn btn-primary float-right navbarBut" (click)="logout()">Sign Out </button></li>
         </ul>
       </ng-template>
 

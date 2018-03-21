@@ -2,7 +2,7 @@ import { Component, AfterViewInit, ViewChild, OnInit, OnDestroy, Input, Output }
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators,} from '@angular/forms';
 import { Http, Response } from '@angular/http';
-import { Subject } from 'rxjs/Subject'
+import { Subject } from 'rxjs/Subject';
 import { IPosts } from "../aservices/IPosts";
 import { ItemService } from '../aservices/item.service';
 import { Likes } from '../aservices/Likes';
@@ -26,16 +26,6 @@ declare var $ :any;
 type UserFields = 'number';
 type FormErrors = { [u in UserFields]: string };
 
-class Currencies {
-  id: string;
-  name: string;
-  formulaValue: number;
-  market_cap_usd: number;
-  '24h_volume_usd': number;
-  percent_change_24h: number;
-  price_usd: number;
-};
-
 @Component({
   selector: 'currency',
   templateUrl: './currency.component.html',
@@ -44,9 +34,12 @@ class Currencies {
 })
 export class CurrencyComponent implements OnDestroy{
 
+  @ViewChild('autofocus') autofocus;
+
   name = 'Angular v4 - Applying filters to *ngFor using pipes';
 
   filter: Currency = new Currency();
+  minfilter: Currency = new Currency();
 
   numberForm: FormGroup ;
   formErrors: FormErrors = {
@@ -94,6 +87,9 @@ export class CurrencyComponent implements OnDestroy{
   public dataLenght:any;
   public perPage = 25;
   public page: number;
+  public likedRow: any = NaN;
+  public addedCoin: any = NaN;
+  public indexWallet: number;
  
 
   constructor(
@@ -195,9 +191,9 @@ export class CurrencyComponent implements OnDestroy{
 
       dataItem['24h_volume_usd'] = Number.parseInt(dataItem['24h_volume_usd']);
 
-      dataItem.percent_change_24h = Number.parseInt(dataItem.percent_change_24h);
+      dataItem.percent_change_24h = Number(dataItem.percent_change_24h);
 
-      dataItem.price_usd = Number.parseInt(dataItem.price_usd);
+      dataItem.price_usd = Number(dataItem.price_usd);
 
       dataItem.market_cap_usd = Number.parseInt(dataItem.market_cap_usd);
   
@@ -223,6 +219,10 @@ export class CurrencyComponent implements OnDestroy{
 
       this.loading = false; 
 
+      setTimeout(()=>{
+        this.autofocus.nativeElement.focus()
+       },500)
+
   };
 
         //sorting
@@ -233,8 +233,14 @@ export class CurrencyComponent implements OnDestroy{
           this.reverse = !this.reverse;
         }
       
-        onPageChange(e)
-        {
+        onPageChange(e, scrollDuration){
+          var scrollStep = -window.scrollY / (scrollDuration / 15),
+          scrollInterval = setInterval(function(){
+          if ( window.scrollY != 0 ) {
+              window.scrollBy( 0, scrollStep );
+          }
+          else clearInterval(scrollInterval); 
+      },15);
           if (e)
             this.page = e;
         }
@@ -264,13 +270,21 @@ likesColor(row){
   return this.likeValue.indexOf(row.id) != -1;
 }
 
-getValueLike(row){
+deleteAnimation(row){
+  return this.dislikeValue.indexOf(row.id) != -1;
+}
+
+getValueLike(row, i){
   if(this.isLoggedIn === false){
     this.modalService.open(LoginUserComponent);
     $('.modal-content').animate({ opacity: 1 });
     $('.modal-backdrop').animate({ opacity: 0.9 });
   }else{
     this.likeService.create(row.id);
+    this.likedRow = i;
+    setTimeout(()=>{
+      this.likedRow = NaN;
+    },500);
   }
 
 };
@@ -282,23 +296,28 @@ getValueDislike(row, i){
     $('.modal-backdrop').animate({ opacity: 0.9 });
   }else{
     this.dislikeService.createDislike(row.id);
-    let index = (this.page - 1) * this.perPage + i;
-    this.data.splice(index, 1)
+   this.dataLenght = this.dataLenght - 1;
+   let index = this.newArray.indexOf(row);
+   setTimeout(()=>{
+    this.data.splice(index, 1);
+   },750)
   }
 };
 
-getValueWallet(row, tabWallet){
+
+getValueWallet(row, tabWallet, i){
   if(this.isLoggedIn === false){
     this.modalService.open(LoginUserComponent);
     $('.modal-content').animate({ opacity: 1 });
     $('.modal-backdrop').animate({ opacity: 0.9 });
   }else{
     this.coins = '';
-   this.currensy = this.filterDislike.find(myObj => myObj.id === row.id);
+   this.currensy = this.newArray.find(myObj => myObj.id === row.id);
    this.coinsName = row.id
    this.modalWallet = this.modalService.open(tabWallet, { windowClass: 'dark-modal' })
    $('.modal-content').animate({ opacity: 1 });
    $('.modal-backdrop').animate({ opacity: 0.9 });
+   this.indexWallet = i;
   }
 } 
 
@@ -306,6 +325,10 @@ createWallet(coins){
   this.wallet.id = this.coinsName;
   this.wallet.coins = coins;
 this.walletService.createWallet(this.wallet);
+this.addedCoin = this.indexWallet;
+    setTimeout(()=>{
+      this.addedCoin = NaN;
+    },500);
 this.modalWallet.close();
 }
 
@@ -350,6 +373,7 @@ buildForm(){
 walletColor(row){
   return this.walletValue.indexOf(row.id) != -1;
 }
+
 
 
 ngOnDestroy(){

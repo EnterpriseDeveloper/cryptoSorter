@@ -44,6 +44,8 @@ import { Ng2OrderModule } from 'ng2-order-pipe';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { CurrencyFilterPipe } from './shared/filter.pipe';
+import { MinFilterPipe } from './shared/minFilter.pipe'; 
+import { ParticlesModule } from 'angular-particle';
 
 
 
@@ -63,6 +65,7 @@ import { CurrencyFilterPipe } from './shared/filter.pipe';
     WalletComponent,
     SpinnerComponent,
     CurrencyFilterPipe,
+    MinFilterPipe,
   ],
   imports: [
     NgbModule.forRoot(),
@@ -72,6 +75,7 @@ import { CurrencyFilterPipe } from './shared/filter.pipe';
     NgxSelectModule,
     Ng2OrderModule,
     MatTabsModule,
+    ParticlesModule,
     NgxPaginationModule,
     Ng2SearchPipeModule,
     ReactiveFormsModule, 
@@ -96,7 +100,6 @@ import { CurrencyFilterPipe } from './shared/filter.pipe';
     WalletService,
     LoginUserComponent,
     CurrencyComponent,
-    ConnectTableComponent,
     NavbarComponent,
     AngularFireDatabase
   ],

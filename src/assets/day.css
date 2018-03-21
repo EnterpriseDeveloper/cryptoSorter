@@ -1,0 +1,182 @@
+header{
+    background: linear-gradient(#002D3B, rgb(191, 228, 240));
+}
+
+.navbarStyle{
+    background-color: #002D3B;
+    height: 80px;
+}
+
+.navbarTextStyle{
+    font-size: 18px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.colorText {
+    color: #000000;
+}
+
+.colorText:hover {
+    color: #000000;
+}
+
+.paddingCurrency{
+    background-color: rgb(191, 228, 240);
+}
+
+.site-footer{
+    height: 150px;
+    background-color: #002D3B;
+    padding-bottom: 50px;
+    width: 100%;
+}
+
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #06556d;
+ }
+
+ .colorConnect{
+    background-color: rgb(191, 228, 240);
+}
+
+.modalStyle{
+    background-color: #0d91b9;
+    border-color: #0d91b9;
+  }
+
+  .loginStyle {
+    background-color: #06556d;
+    border-color: #06556d;
+}
+
+login{
+    background-color: #06556d;
+}
+
+#everything {
+    color:#868E96;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+  }
+
+  #everything:visited {
+    background-color: #FFC107;
+    margin-right: 1px;
+    color: black;
+    position: relative;
+    z-index: 100;
+  }
+
+  #everything:active {
+    margin-right: 1px;
+    color: black;
+    position: relative;
+    z-index: 100;
+  }
+
+  #everything:hover {
+    margin-right: 1px;
+    color: black;
+    background-color: #FFC107;
+    position: relative;
+    z-index: 100;
+  }
+
+
+
+  #toFavorite {
+        color:#868E96;
+        margin-right: 1px;
+        position: relative;
+        z-index: 100;
+  }
+
+  #toFavorite:visited {
+    background-color: #009130;
+    margin-right: 1px;
+    color: black;
+    position: relative;
+    z-index: 100;
+  }
+
+  #toFavorite:active {
+    margin-right: 1px;
+    color: black;
+    position: relative;
+    z-index: 100;
+  }
+
+  #toFavorite:hover {
+    margin-right: 1px;
+    color: black;
+    background-color: #009130;
+    position: relative;
+    z-index: 100;
+  }
+
+
+
+   #toDeleted{
+    color:#868E96;
+    margin-right: 1px;
+    position: relative;
+    z-index: 100;
+   }
+
+   #toDeleted:visited {
+    background-color: #aa0818;
+    margin-right: 1px;
+    color: black;
+    position: relative;
+    z-index: 100;
+  }
+
+  #toDeleted:active {
+    margin-right: 1px;
+    color: black;
+    position: relative;
+    z-index: 100;
+  }
+
+   #toDeleted:hover {
+    margin-right: 1px;
+    color: black;
+    background-color: #aa0818;
+    position: relative;
+    z-index: 100;
+  }
+
+
+#toWallet{
+    color:#868E96;
+    margin-right: 1px;
+    position: relative;
+    z-index: 100;
+    }
+
+
+#toWallet:visited {
+background-color: #17A2B8;
+margin-right: 1px;
+color: black;
+position: relative;
+z-index: 100;
+}
+
+#toWallet:active {
+margin-right: 1px;
+color: black;
+position: relative;
+z-index: 100;
+}
+
+#toWallet:hover {
+margin-right: 1px;
+color: black;
+background-color: #17A2B8;
+position: relative;
+z-index: 100;
+}

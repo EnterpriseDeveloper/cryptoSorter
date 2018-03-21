@@ -2,84 +2,89 @@
     <spinner></spinner>
 </div>
 
-<div [class.display]='!isEmptyValue'>
+<div *ngIf="dislikeCurrency.length === 0">
         <div *ngIf="!loading" >
              <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">
-                    <div class="colorText text-center">
+                    <div class="colorText text-center mobileDisplay">
                         Here you'll see coins which you don't care anymore, 
                         and so removed them from Everything using  
                         <button class="btn btn-sm btn-outline-danger buttonLike">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>  button. Nothing yet here!</div> 
-                       </div>
+
+                        <div class="colorText text-center screenDisplay">
+                        Full site features you can only use in the full version of the website on the PC
+                        </div>
+                    </div>
              </div>    
     </div>
+
+
 
 <div [class.display]="!loading">
         <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet" >
             <p class="colorText text-center paddingCenter">
                 Please wait while we're brainstorming over a thousand 
                 of cryptocurrencies. Once loaded, navigation will be 
-                lightning fast! Still waiting? Try guessing which coin is moon today!</p>
+                lightning fast! Still waiting? Try guessing which coin is moon today!
+            </p>
         </div>
 </div>
 
 <div [class.display]='loading'>
-<div [class.display]='isEmptyValue'>
-<div [class.emptyPaddingTab]="!isEmptyWallet" [class.fullPaddingTab]="isEmptyWallet">
+    <div *ngIf="dislikeCurrency.length > 0">
+        <div [class.emptyPaddingTab]="!isEmptyWallet" [class.fullPaddingTab]="isEmptyWallet">
 
-        <div class="buttonsTabs2 lenght">Showing {{perPage}} of {{dislikeLenght}} dislikes.</div>
-
-
-        <div class="buttonTabs">
-                <input class="form-control form-control-sm search2" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="filter">      
-            </div>
+         <input #autofocus style="width:15%; float:left; margin-right:10px; margin-bottom:10px;" class="form-control search" placeholder="Search" [(ngModel)]="filter">  
+         <div class="lenght1">Showing {{perPage*page - perPage }}-{{perPage*page}} of {{(dislikeCurrency | filter: filter).length}} dislikes.</div>    
    
     <div class="tabStyle tableStyle2 paddingBottom">
-    <table class="row-border hover table-striped" cellspacing="0" width="100%">
+    <table class="row-border hover table-striped modileTable" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                <th class="colorText tableSize nameWidth wallet paddingHeader" (click)="sort('name')">Name
-                    <span class="fa" *ngIf="key =='name'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span></th>
-                <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('formulaValue')">Index
-                    <span class="fa" *ngIf="key =='formulaValue'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            <th class="colorText tableSize nameWidth wallet paddingHeader tableMobileSpeaceName" (click)="sort('name')">Name
+                                    <span class="fa" *ngIf="key =='name'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span></th>  
+                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('formulaValue')">Index
+                    <span class="fa" *ngIf="key =='formulaValue'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>
-                <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('market_cap_usd')">Market Cap
-                    <span class="fa" *ngIf="key =='market_cap_usd'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('market_cap_usd')">Market Cap $
+                    <span class="fa" *ngIf="key =='market_cap_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>
-                <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('24h_volume_usd')">Volume
-                    <span class="fa" *ngIf="key =='24h_volume_usd'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('24h_volume_usd')">Volume $
+                    <span class="fa" *ngIf="key =='24h_volume_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>
-                <th class="colorText tableSize text-center wallet paddingHeaderr" (click)="sort('percent_change_24h')">% 24h
-                    <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                <th class="colorText tableSize text-center wallet paddingHeaderr tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h
+                    <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>
-                <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('price_usd')">Price
-                    <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('price_usd')">Price $
+                    <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>  
                         <th class="colorText tableSize text-center paddingHeader">Action</th>  
                       </tr>
                 </thead> 
       <tbody>
           <tr *ngFor="let dislike of dislikeCurrency | orderBy: key : reverse 
-          | filter:filter | paginate: { itemsPerPage: perPage, currentPage: page }; let i = index;">
-              <td class="colorText tableSize "><p class="tableName">
-                    <img class="sizeImg"
+          | filter:filter | paginate: { itemsPerPage: perPage, currentPage: page }; let i = index;"
+          class="animated" [class.bounceOut]="i == selectedRow">
+              <td class="colorText tableSize tableMobileSpeaceName">
+                    <img class="sizeImg centerImage"
                     src="https://chasing-coins.com/api/v1/std/logo/{{dislike.symbol}}">
+                    <p class="tableName centerWalName">
                   {{dislike.name}}   
-                  (<a target="_blank" href="https://coinmarketcap.com/currencies/{{dislike.id}}/" 
-                  class="linksTable">{{dislike.symbol}}</a>) </p></td>
-              <td class="colorText tableSize text-center">
+                  <a target="_blank" href="https://coinmarketcap.com/currencies/{{dislike.id}}/" 
+                  class="linksTable mobileDisplay">({{dislike.symbol}})</a> </p></td>
+              <td class="colorText tableSize text-center tableMobileSpeace">
                   <p class="centerWal">{{dislike.formulaValue}}</p></td>
-              <td class="colorText tableSize text-center">
-                  <p class="centerWal">{{dislike.market_cap_usd | currency:'USD'}}</p></td>
-              <td class="colorText tableSize text-center">
-                  <p class="centerWal">{{dislike['24h_volume_usd'] | currency:'USD'}}</p></td>
-              <td width="100px" class="colorText tableSize text-center weight">
+              <td class="colorText tableSize text-center tableMobileSpeace">
+                  <p class="centerWal">{{dislike.market_cap_usd | number :'1.0'}} $</p></td>
+              <td class="colorText tableSize text-center tableMobileSpeace">
+                  <p class="centerWal">{{dislike['24h_volume_usd'] | number :'1.0'}} $</p></td>
+              <td width="100px" class="colorText tableSize text-center weight tableMobileSpeace">
                   <p class="centerWal"><span [style.color]="dislike.percent_change_24h < 0 ? '#DC3545' : '#009130'">
-                      {{dislike.percent_change_24h}} %</span></p></td>
-              <td class="colorText tableSize text-center">
-                  <p class="centerWal">{{dislike.price_usd | currency:'USD'}}</p></td>
-              <td class="text-center">
+                      {{dislike.percent_change_24h | number:'1.2-2'}} %</span></p></td>
+              <td class="colorText tableSize text-center tableMobileSpeace">
+                  <p class="centerWal">{{dislike.price_usd | number:'1.0-5'}} $</p></td>
+              <td class="text-center tableMobileSpeace">
                     <p class="centerWal"><button class="btn btn-sm btn-outline-secondary delete remove" 
                         (click)='deleteDislike(dislike, i)' rel="tooltip" title="To Everything" data-placement="left">
                       <i class="fa fa-undo" aria-hidden="true"></i>
@@ -92,40 +97,54 @@
       </tbody>
   </table>
 
-  <div class="row paddingTableWallet">
-        <div class="col">
-          <div ngbDropdown class="d-inline-block colorPaging"> Show
-            <button class="btn btn-light btn-sm wallet" id="dropdownBasic1" ngbDropdownToggle>{{perPage}}</button>
-            <div class="dropdownMenu" ngbDropdownMenu aria-labelledby="dropdownBasic1">
-              <button class="dropdown-item wallet" (click)="switchCase('25')">25</button>
-              <button class="dropdown-item wallet" (click)="switchCase('50')">50</button>
-              <button class="dropdown-item wallet" (click)="switchCase('all')">All</button>
-            </div> items.
-          </div>
-        </div>
 
-<pagination-template class="buttonTabs padding-right" #p="paginationApi" (pageChange)="onPageChange($event)">
+
+<pagination-template class="buttonTabs padding-right" #p="paginationApi" (pageChange)="onPageChange($event, 150)">
 
 <ul class="pagination">
-   <li class="page-item" [class.disabled]="p.isFirstPage()">
-        <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(1)">First</a>
-    </li>
-    <li class="page-item" [class.disabled]="p.isFirstPage()">
-        <a class="page-link" href='#' (click)="link()" (click)="p.previous()">Previous</a>
-     </li>
+        <li class="page-item" [class.disabled]="p.isFirstPage()">
+                <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(1)">
+                        <span class="screenDisplay">&#171;</span>
+                        <span class="mobileDisplay">First</span>
+                </a>
+            </li>
+            <li class="page-item" [class.disabled]="p.isFirstPage()">
+                <a class="page-link" href='#' (click)="link()" (click)="p.previous()">
+                        <span class="screenDisplay">&#8249;</span>
+                        <span class="mobileDisplay">Previous</span>
+                </a>
+             </li>
 
 
      <li class="page-item" *ngFor="let page of p.pages" [class.active]="p.getCurrent() === page.value">
          <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(page.value)">{{page.value}}</a>
       </li>
       <li class="page-item" [class.disabled]="p.isLastPage()">
-          <a class="page-link" href='#' (click)="link()" (click)="p.next()">Next</a>
-      </li>
-      <li class="page-item" [class.disabled]="p.isLastPage()">
-           <a class="page-link" href='#' (click)="link()" (click)="p.getLastPage()">Last</a>
-       </li>
+            <a class="page-link" href='#' (click)="link()" (click)="p.next()">
+                  <span class="screenDisplay">&#8250;</span>
+                  <span class="mobileDisplay">Next</span>
+              </a>
+        </li>
+        <li class="page-item" [class.disabled]="p.isLastPage()">
+             <a class="page-link" href='#' (click)="link()" (click)="p.getLastPage()">
+                  <span class="screenDisplay">&#187;</span>
+                  <span class="mobileDisplay">Last</span>
+              </a>
+         </li>
   </ul>
 </pagination-template>  
+
+<div class="row paddingTableWallet paddingmobile">
+    <div class="col">
+      <div ngbDropdown class="d-inline-block colorPaging"> Show
+        <button class="btn btn-light btn-sm wallet" id="dropdownBasic1" ngbDropdownToggle>{{perPage}}</button>
+        <div class="dropdownMenu" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button class="dropdown-item wallet" (click)="switchCase('25')">25</button>
+          <button class="dropdown-item wallet" (click)="switchCase('50')">50</button>
+          <button class="dropdown-item wallet" (click)="switchCase('all')">All</button>
+        </div> items.
+      </div>
+    </div>
 
 </div>
 </div>

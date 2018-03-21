@@ -13,32 +13,57 @@
 
 
 <ng-template #authenticated>
-  <ngb-tabset type="pills">
-    <ngb-tab title="Portfolio" id="toWallet" >
-      <ng-template ngbTabContent  >
-        <wallet></wallet>
-      </ng-template>
-    </ngb-tab>
-    <ngb-tab title="Everything" id="everything">
-      <ng-template ngbTabContent >
-        <currency></currency>
-      </ng-template>
-    </ngb-tab>
-    <ngb-tab title="Favorite" id="toFavorite">
-      <ng-template ngbTabContent  >
-        <login-table></login-table>
-      </ng-template>
-    </ngb-tab>
-    <ngb-tab title="Disliked" id="toDeleted">
-      <ng-template ngbTabContent  >
-        <deleteTable></deleteTable>
-      </ng-template>
-    </ngb-tab>
-  </ngb-tabset>
+      <ngb-tabset type="pills" [justify]="currentJustify"
+       [orientation]="currentOrientation" *ngIf="walletValue.length != 0">
+          <ngb-tab title="Portfolio" id="toWallet" >
+            <ng-template ngbTabContent  >
+              <wallet></wallet>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Everything" id="everything">
+            <ng-template ngbTabContent >
+              <currency></currency>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Favorite" id="toFavorite">
+            <ng-template ngbTabContent  >
+              <login-table></login-table>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Disliked" id="toDeleted">
+            <ng-template ngbTabContent  >
+              <deleteTable></deleteTable>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+
+      <ngb-tabset type="pills" [justify]="currentJustify"
+       [orientation]="currentOrientation" *ngIf="walletValue.length === 0">
+          <ngb-tab title="Everything" id="everything">
+              <ng-template ngbTabContent >
+                <currency></currency>
+              </ng-template>
+            </ngb-tab>
+          <ngb-tab title="Favorite" id="toFavorite">
+            <ng-template ngbTabContent  >
+              <login-table></login-table>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Disliked" id="toDeleted">
+            <ng-template ngbTabContent  >
+              <deleteTable></deleteTable>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Portfolio" id="toWallet" >
+              <ng-template ngbTabContent  >
+                <wallet></wallet>
+              </ng-template>
+            </ngb-tab>
+        </ngb-tabset> 
 </ng-template>
 
 <ng-template #guest>
-  <ngb-tabset type="pills">
+  <ngb-tabset type="pills" [justify]="currentJustify" [orientation]="currentOrientation">
     <ngb-tab title="Everything" id="everything">
       <ng-template ngbTabContent >
         <currency></currency>
@@ -46,7 +71,7 @@
     </ngb-tab>
     <ngb-tab title="Favorite" id="toFavorite">
       <ng-template ngbTabContent  >
-        <div class="paddingTabs textRegist emptyPaddingTab">
+        <div class="paddingTabs textRegist emptyPadding particle text-center">
           <a class="colorTextLink textDecor" routerLink="/" (click)="openRegistModal()"
           >Register now</a><span class="colorText"> to track your favorite or disliked coins.
              Add currency coins to your portfolio. It's free! </span>  
@@ -56,7 +81,7 @@
     </ngb-tab>
     <ngb-tab title="Disliked" id="toDeleted">
   <ng-template ngbTabContent  >
-    <div class="paddingTabs textRegist emptyPaddingTab">
+    <div class="paddingTabs textRegist emptyPadding particle text-center">
       <a class="colorTextLink textDecor" routerLink="/" (click)="openRegistModal()">
         Register now</a><span class="colorText"> to track your favorite or disliked coins.
            Add currency coins to your portfolio. It's free! </span> 
@@ -66,7 +91,7 @@
 </ngb-tab>
 <ngb-tab title="Portfolio" id="toWallet">
   <ng-template ngbTabContent  >
-    <div class="paddingTabs textRegist emptyPaddingTab">
+    <div class="paddingTabs textRegist emptyPadding particle text-center">
       <a class="colorTextLink textDecor" routerLink="/" (click)="openRegistModal()"
       >Register now</a><span class="colorText"> to track your favorite or disliked coins. 
         Add currency coins to your portfolio. It's free! </span>    

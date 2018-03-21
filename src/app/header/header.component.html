@@ -5,31 +5,34 @@
 </div> 
 
 <ng-template #guest>
+  
+    <particles [params]="myParams" [style]="myStyle" [width]="width" [height]="height"></particles>
 
-          <p class="text-center colorText textLogo">CryptoSorter</p>
+        <p class="text-center colorText textLogo cursorNone">CryptoSorter</p>
 
-          <p class="text-center colorText textHeader fedorStyle paddingHeader">
-            Recognizing a cryptocurrency's investment potential is a challenge. 
-            With over a thousand of coins out there, a quick analysis is not feasible.
-          </p>
-          <p class="text-center colorText textHeader fedorStyle paddingHeader">
-            We engineered Crypto Value Index (CVI) that shows a higher short term 
-            potential for coins with higher CVI values.
-          </p>
-          <p class="text-center colorText textHeader fedorStyle posTextLog">
-            For long term holders and portfolio managers, we made handy crypto 
-            portfolio tracker - your private spacecraft to the moon O)*
-          </p> 
+        <p class="text-center colorText textHeader fedorStyle paddingHeader cursorNone">
+          Recognizing a cryptocurrency's investment potential is a challenge. 
+          With over a thousand of coins out there, a quick analysis is not feasible.
+          We engineered Crypto Value Index (CVI) that shows a higher short term 
+          potential for coins with higher CVI values.
+        </p>
+
+        <p class="text-center colorText textHeader fedorStyle posTextLog cursorNone">
+          For long term holders and portfolio managers, we made handy crypto 
+          portfolio tracker - your private spacecraft to the moon O)*
+        </p> 
+
 
 </ng-template>
 
 <ng-template #authenticated>
 
-  <div [class.display]='isEmptyValue'>
+
      <div [class.display]="!loading"> 
       <p class="totalSize2 colorText textLogo text-center alert">loading...</p>
-  </div>
+     </div>
 
+  <div [class.display]='isEmptyValue'>
    <div *ngIf="!loading"> 
       <p class="totalSize colorText textLogo text-center alert" >
         {{totalSum | number:'1.0'}} $

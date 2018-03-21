@@ -14,111 +14,167 @@
 
 
 <div [class.display]='loadingTable'>
-        <div class="buttonsTabs2 lenght">Showing {{perPage}} of {{dataLenght}} items.</div>
-
-    <div class="tabStyle tableStyle2">
-        <table id="currency-table" class="row-border hover table-striped" cellspacing="0" width="100%">
+    <div class="tabStyle tableStyle2 particle">
+        <table id="currency-table" class="row-border hover table-striped modileTable" cellspacing="0" width="100%">
                 <thead>
                         <tr>
-                            <th class="colorText tableSize text-center paddingHeader">Actions</th> 
-                            <th class="colorText tableSize nameWidth wallet paddingHeader" (click)="sort('name')">Name
-                                <span class="fa" *ngIf="key =='name'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span></th>
-                            <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('formulaValue')">Index
-                                <span class="fa" *ngIf="key =='formulaValue'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            <th colspan="2" class=""><div class="lenght">Showing {{perPage*page - perPage }}-{{perPage*page}} of {{(data | currencyfilter: filter | minfilter: minfilter).length}} items.</div></th> 
+                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('formulaValue')">Index
+                                <span class="fa" *ngIf="key =='formulaValue'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                             </th>
-                            <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('market_cap_usd')">Market Cap
-                                <span class="fa" *ngIf="key =='market_cap_usd'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('market_cap_usd')">Market Cap $
+                                <span class="fa" *ngIf="key =='market_cap_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                             </th>
-                            <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('24h_volume_usd')">Volume
-                                <span class="fa" *ngIf="key =='24h_volume_usd'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('24h_volume_usd')">Volume $
+                                <span class="fa" *ngIf="key =='24h_volume_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                             </th>
-                            <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('percent_change_24h')">% 24h
-                                <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h
+                                <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                             </th>
-                            <th class="colorText tableSize text-center wallet paddingHeader" (click)="sort('price_usd')">Price
-                                <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':reverse,'fa-chevron-down':!reverse}"></span>
+                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('price_usd')">Price $
+                                <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                             </th>   
                         </tr>
                     </thead>
-                    <thead>
+                    <thead class="mobileDisplay">
                         <tr>
-                            <th ></th> 
-                            <th ><div ><input class="form-control form-control-sm" type="text" 
-                                name="name" [(ngModel)]="filter.name" placeholder="Search name"></div></th>
-                            <th ><div ><input class="form-control form-control-sm" type="number"
-                                name="formulaValue" [(ngModel)]="filter.formulaValue" min="1" step="1" placeholder="Search index"></div></th>
-                            <th ><div ><input class="form-control form-control-sm" type="number" 
-                                name="market_cap_usd" [(ngModel)]="filter.market_cap_usd" min="1" step="1" placeholder="Search market cap"></div></th>
-                            <th ><div ><input class="form-control form-control-sm" type="number" 
-                                name="24h_volume_usd" [(ngModel)]="filter['24h_volume_usd']" min="1" step="1" placeholder="Search volume"></div></th>
-                            <th ><div ><input class="form-control form-control-sm" type="number" 
-                                name="percent_change_24h" [(ngModel)]="filter.percent_change_24h" min="1" step="1" placeholder="Search %"></div></th>
-                            <th ><div ><input class="form-control form-control-sm" type="number" 
-                                name="price_usd" [(ngModel)]="filter.price_usd" min="1" step="1" placeholder="Search price"></div></th>   
+                            <th colspan="2" ><div><input #autofocus class="form-control form-control-sm" type="text"  style="width:97%"
+                                name="name" [(ngModel)]="filter.name" [(ngModel)]="minfilter.name" placeholder="Search Coin"></div></th>
+                            <th style="width:18%">
+                                    <div class="centerInput">
+                                    <input class="form-control form-control-sm paddingInput" type="number" style="width:46%; float:left"
+                                        name="formulaValue" [(ngModel)]="filter.formulaValue" min='0' placeholder="Max" oninput="validity.valid||(value='');">
+                                   <input class="form-control form-control-sm" type="number" style="width:46%"
+                                        name="formulaValue" [(ngModel)]="minfilter.formulaValue" min='0' placeholder="Min" oninput="validity.valid||(value='');"> 
+                                    </div>
+                                </th>
+                            <th style="width:18%">
+                                <div class="centerInput">
+                                <input class="form-control form-control-sm paddingInput" type="number" min='0' style="width:46%; float:left"
+                                    name="market_cap_usd" [(ngModel)]="filter.market_cap_usd"  placeholder="Max" oninput="validity.valid||(value='');">
+                                <input class="form-control form-control-sm" type="number" style="width:46%" min='0'
+                                name="market_cap_usd" [(ngModel)]="minfilter.market_cap_usd"  placeholder="Min" oninput="validity.valid||(value='');">
+                                </div>
+                            </th>
+                            <th style="width:18%">
+                                <div class="centerInput">
+                                    <input class="form-control form-control-sm paddingInput" type="number" min='0' style="width:46%; float:left"
+                                name="24h_volume_usd" [(ngModel)]="filter['24h_volume_usd']" placeholder="Max" oninput="validity.valid||(value='');">
+                                <input class="form-control form-control-sm" type="number" style="width:46%" min='0'
+                                name="24h_volume_usd" [(ngModel)]="minfilter['24h_volume_usd']" placeholder="Min" oninput="validity.valid||(value='');">
+                            </div>
+                            </th>
+                            <th ></th>
+                            <th ></th>   
                         </tr>
                     </thead>
+                     
         
         <tbody>
-            <tr *ngFor="let row of data | orderBy: key : reverse | currencyfilter: filter | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index;">
-                    <td width="120px">
+            <tr *ngFor="let row of data | currencyfilter: filter | minfilter: minfilter | orderBy: key : reverse | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index ;"
+            class="animated" 
+            [class.bounceOut]="deleteAnimation(row)" 
+            [class.fadeOutRightBig]="i == likedRow"  
+            [class.fadeOutLeftBig]="i == addedCoin" >
+                    <td style="width:10%" class="mobileDisplay">
                             <p class="center2"> 
-                                <button class="btn btn-sm wallet"
-                                [class.btn-outline-info]="!walletColor(row)"
+                                <button class="btn btn-sm"
+                                [class.btn-info]="!walletColor(row)"
+                                [class.wallet]="!walletColor(row)"
                                 [disabled]="walletColor(row)"
-                                [class.added]="walletColor(row)"
-                                (click)='getValueWallet(row, tabWallet)'
+                                [class.chekt]="walletColor(row)"
+                                (click)='getValueWallet(row, tabWallet, i)'
                                 title="Add to Wallet">
                                 <i class="fa"
                                 [class.fa-plus-circle]="!walletColor(row)"
-                                [class.fa-check-circle]="walletColor(row)"
+                                [class.fa-check]="walletColor(row)"
+                                [class.facheckW]="walletColor(row)" 
                                 aria-hidden="true"></i>
                             </button> 
                             <button
                             class="btn btn-sm like"
-                            [class.btn-outline-success]="!likesColor(row)"
+                            [class.btn-success]="!likesColor(row)"
                             [class.chekt]="likesColor(row)"
                             [disabled]="likesColor(row)"
                             rel="tooltip" title="To Favorite" 
-                            data-placement="left" (click)="getValueLike(row)">
-                            <i class="fa"
+                            data-placement="left" (click)="getValueLike(row, i)">
+                            <i class="facheck fa"
                             [class.fa-thumbs-up]="!likesColor(row)"
                             [class.fa-check]="likesColor(row)"
+                            [class.facheck]="likesColor(row)"
                             aria-hidden="true"></i>
                         </button>
                         <button id='delete' [class.display]="likesColor(row)" 
-                        class="btn btn-sm btn-outline-danger delete remove" 
+                        class="btn btn-sm btn-danger delete remove" 
                         rel="tooltip" title="To Deleted"
                         data-placement="left" (click)="getValueDislike(row, i)">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </button></p>
                 </td> 
-                <td class="colorText tableSize">
-                    <p class="tableName">
-                        <img class="sizeImg"
+                <td class="colorText tableSize tableMobileSpeaceName" style="width:18%">
+                        <img class="sizeImg centerImage"
                         src="https://chasing-coins.com/api/v1/std/logo/{{row.symbol}}">
+                        <p class="tableName centerWalName">
                         {{row.name}}   
-                        (<a target="_blank" href="https://coinmarketcap.com/currencies/{{row.id}}/" 
-                    class="linksTable">{{row.symbol}}</a>)
+                        <a target="_blank" href="https://coinmarketcap.com/currencies/{{row.id}}/" 
+                    class="linksTable mobileDisplay">({{row.symbol}})</a>
                     </p>
                 </td>
-                <td class="colorText tableSize text-center">
+                <td class="colorText tableSize text-center tableMobileSpeace">
                     <p class="centerWal">{{row.formulaValue | number :'1.2-2'}}</p></td>
-                <td class="colorText tableSize text-center"><p class="centerWal">
-                    {{row.market_cap_usd | currency:'USD'}}</p></td>
-                <td class="colorText tableSize text-center">
-                    <p class="centerWal">{{row['24h_volume_usd'] | currency:'USD'}}</p></td>
-                <td width="100px" class="colorText tableSize text-center weight">
+                <td class="colorText tableSize text-center tableMobileSpeace"><p class="centerWal">
+                    {{row.market_cap_usd | number :'1.0'}} $</p></td>
+                <td class="colorText tableSize text-center tableMobileSpeace">
+                    <p class="centerWal">{{row['24h_volume_usd'] | number :'1.0'}} $</p></td>
+                <td style="width:8%" class="colorText tableSize text-center weight tableMobileSpeace">
                     <p class="centerWal"><span [style.color]="row.percent_change_24h < 0 ? '#DC3545' : '#009130'">
-                        {{row.percent_change_24h}} %</span></p></td>
-                    <td width="120px" class="colorText tableSize text-center">
-                        <p class="centerWal">$ {{row.price_usd | number :'1.2-2'}}</p></td> 
+                        {{row.percent_change_24h | number :'1.2'}} %</span></p></td>
+                    <td style="width:8%" class="colorText tableSize text-center tableMobileSpeace">
+                        <p class="centerWal">{{row.price_usd | number:'1.0-5'}} $</p></td> 
     </tr>
-    <tr *ngIf="(data | currencyfilter: filter).length === 0">
+    <tr *ngIf="(data | currencyfilter: filter | minfilter: minfilter).length === 0">
             <td colspan="7" class="colorText text-center">No matching records found</td>
        </tr> 
+
 </tbody>
 </table>
-<div class="row paddingTableWallet">
+
+<pagination-template class="buttonTabs padding-right" #p="paginationApi" (pageChange)="onPageChange($event, 150)">
+
+    <ul class="pagination">
+       <li class="page-item" [class.disabled]="p.isFirstPage()">
+            <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(1)">
+                    <span class="screenDisplay">&#171;</span>
+                    <span class="mobileDisplay">First</span>
+            </a>
+        </li>
+        <li class="page-item" [class.disabled]="p.isFirstPage()">
+            <a class="page-link" href='#' (click)="link()" (click)="p.previous()">
+                    <span class="screenDisplay">&#8249;</span>
+                    <span class="mobileDisplay">Previous</span>
+            </a>
+         </li>
+    
+    
+         <li class="page-item" *ngFor="let page of p.pages" [class.active]="p.getCurrent() === page.value">
+             <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(page.value)">{{page.value}}</a>
+          </li>
+          <li class="page-item" [class.disabled]="p.isLastPage()">
+              <a class="page-link" href='#' (click)="link()" (click)="p.next()">
+                    <span class="screenDisplay">&#8250;</span>
+                    <span class="mobileDisplay">Next</span>
+                </a>
+          </li>
+          <li class="page-item" [class.disabled]="p.isLastPage()">
+               <a class="page-link" href='#' (click)="link()" (click)="p.getLastPage()">
+                    <span class="screenDisplay">&#187;</span>
+                    <span class="mobileDisplay">Last</span>
+                </a>
+           </li>
+      </ul>
+    </pagination-template> 
+
+<div class="row paddingTableWallet paddingmobile">
         <div class="col">
           <div ngbDropdown class="d-inline-block colorPaging"> Show
             <button class="btn btn-light btn-sm wallet" id="dropdownBasic1" ngbDropdownToggle>{{perPage}}</button>
@@ -130,33 +186,12 @@
           </div>
         </div>
 
-<pagination-template class="buttonTabs padding-right" #p="paginationApi" (pageChange)="onPageChange($event)">
-
-<ul class="pagination">
-   <li class="page-item" [class.disabled]="p.isFirstPage()">
-        <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(1)">First</a>
-    </li>
-    <li class="page-item" [class.disabled]="p.isFirstPage()">
-        <a class="page-link" href='#' (click)="link()" (click)="p.previous()">Previous</a>
-     </li>
-
-
-     <li class="page-item" *ngFor="let page of p.pages" [class.active]="p.getCurrent() === page.value">
-         <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(page.value)">{{page.value}}</a>
-      </li>
-      <li class="page-item" [class.disabled]="p.isLastPage()">
-          <a class="page-link" href='#' (click)="link()" (click)="p.next()">Next</a>
-      </li>
-      <li class="page-item" [class.disabled]="p.isLastPage()">
-           <a class="page-link" href='#' (click)="link()" (click)="p.getLastPage()">Last</a>
-       </li>
-  </ul>
-</pagination-template>  
+ 
 </div>
 </div>
 
 <ng-template #tabWallet let-c="close" let-d="dismiss"> 
-    <div class="modal-body">
+    <div class="modal-body modalStyle">
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button> 
@@ -171,12 +206,12 @@
             <tr>
                 <td class="tabWalletStyle colorText padWalletTable">Coin price: </td>
                 <td colspan="2" class="tabWalletStyle2 colorText  walletTable colorPrice padWalletTable">
-                   $ {{ currensy.price_usd | number :'1.2-2'}}</td>
+                    {{ currensy.price_usd | number :'1.0-5'}} $</td>
             </tr>
             <tr>
                 <td class="tabWalletStyle colorText padWalletTable">Total sum:</td>
                 <td colspan="2" class="tabWalletStyle2 colorTotal walletTable padWalletTable">
-                     {{ currensy.price_usd*coins | currency:'USD'}} </td>
+                     {{ currensy.price_usd*coins | number :'1.2-2'}} $</td>
             </tr>
             <tr>
                 <td class="tabWalletStyle colorText padWalletTable">Amount:</td>  

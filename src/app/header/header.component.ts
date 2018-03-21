@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../aservices/auth.service';
 import { WalletService } from '../aservices/wallet.service';
@@ -13,7 +13,7 @@ import { Wallet } from '../aservices/Wallet';
   styleUrls: ['./header.component.css'],
 
 })
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy{
  
   public walletValue: any = [];
    public walletSub: any;
@@ -48,6 +48,136 @@ export class HeaderComponent implements OnDestroy {
       }
     );
   } 
+  
+  myStyle: object = {};
+	myParams: object = {};
+	width: number = 100;
+	height: number = 100;
+  
+  ngOnInit() {
+    this.myStyle = {
+            'position': 'absolute',
+            'width': '100%',
+            'z-index': 'auto',
+            'height': '75%',
+            'top': 0,
+            'left': 0,
+            'right': 0,
+            'bottom': 0,
+          };
+          
+          this.myParams = {
+            particles: {
+            number: {
+              value: 150,
+              density: {
+                enable: true,
+                value_area: 1000
+              }
+            },
+            color: {
+      value: "#ffffff"
+    },
+    shape: {
+      type: "edge",
+      stroke: {
+        width: 0,
+        color: "#000000"
+      },
+      polygon: {
+        nb_sides: 7
+      },
+      image: {
+        src: "img/github.svg",
+        width: 100,
+        height: 100
+      }
+    },
+    opacity: {
+      value: 0.09,
+      random: true,
+      anim: {
+    enable: false,
+    speed: 1,
+    opacity_min: 0.1,
+    sync: false
+  }
+},
+size: {
+  value: 40,
+  random: true,
+    anim: {
+      enable: false,
+      speed: 21.57842157842158,
+      size_min: 0.1,
+      sync: false
+    }
+  },
+    line_linked: {
+      enable: true,
+      distance: 25,
+      color: "#000bc8",
+      opacity: 1,
+      width: 2
+    },
+    move: {
+      enable: true,
+      speed: 4,
+      direction: "none",
+      random: false,
+      straight: false,
+    out_mode: "bounce",
+    bounce: false,
+    attract: {
+      enable: true,
+      rotateX: 200,
+      rotateY: 200
+    }
+  }
+},
+    interactivity: {
+      detect_on: "canvas",
+      events: {
+        onhover: {
+    enable: true,
+    mode: "repulse"
+    },
+    onclick: {
+    enable: false,
+    mode: "bubble"
+    },
+    resize: true
+    },
+    modes: {
+    grab: {
+    distance: 300,
+    line_linked: {
+    opacity: 0.4
+    }
+    },
+    bubble: {
+    distance: 400,
+    size: 40,
+    duration: 2,
+    opacity: 8,
+    speed: 3
+    },
+    repulse: {
+    distance: 150,
+    duration: 0.4
+    },
+    push: {
+    particles_nb: 4
+    },
+    remove: {
+    particles_nb: 2
+    }
+    }
+    },
+    retina_detect: true
+    }
+  }
+
 
   getWalletList(){
   this.walletSub = this.wallets.subscribe((walletData)=>{

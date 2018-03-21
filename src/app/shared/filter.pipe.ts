@@ -30,7 +30,7 @@ export class CurrencyFilterPipe implements PipeTransform {
             return false;
           }
         } else if (typeof filter[field] === 'number') {
-          if (currency[field] > filter[field]) {
+          if (currency[field] >= filter[field]) {
             return false;
           }
         }
