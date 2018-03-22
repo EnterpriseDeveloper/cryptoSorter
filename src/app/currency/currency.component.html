@@ -43,25 +43,31 @@
                             <th style="width:18%">
                                     <div class="centerInput">
                                     <input class="form-control form-control-sm paddingInput" type="number" style="width:46%; float:left"
-                                        name="formulaValue" [(ngModel)]="filter.formulaValue" min='0' placeholder="Max" oninput="validity.valid||(value='');">
+                                        name="formulaValue" [(ngModel)]="minfilter.formulaValue" min='0' placeholder="Min" oninput="validity.valid||(value='');"
+                                        (ngModelChange)="minIndexChange($event)">
                                    <input class="form-control form-control-sm" type="number" style="width:46%"
-                                        name="formulaValue" [(ngModel)]="minfilter.formulaValue" min='0' placeholder="Min" oninput="validity.valid||(value='');"> 
+                                        name="formulaValue" [(ngModel)]="filter.formulaValue" min='0' placeholder="Max" oninput="validity.valid||(value='');"
+                                        (ngModelChange)="maxIndexChange($event)"> 
                                     </div>
                                 </th>
                             <th style="width:18%">
                                 <div class="centerInput">
                                 <input class="form-control form-control-sm paddingInput" type="number" min='0' style="width:46%; float:left"
-                                    name="market_cap_usd" [(ngModel)]="filter.market_cap_usd"  placeholder="Max" oninput="validity.valid||(value='');">
+                                    name="market_cap_usd" [(ngModel)]="minfilter.market_cap_usd"  placeholder="Min" oninput="validity.valid||(value='');"
+                                    (ngModelChange)="minMarketChange($event)">
                                 <input class="form-control form-control-sm" type="number" style="width:46%" min='0'
-                                name="market_cap_usd" [(ngModel)]="minfilter.market_cap_usd"  placeholder="Min" oninput="validity.valid||(value='');">
+                                name="market_cap_usd" [(ngModel)]="filter.market_cap_usd"  placeholder="Max" oninput="validity.valid||(value='');"
+                                (ngModelChange)="maxMarketChange($event)">
                                 </div>
                             </th>
                             <th style="width:18%">
                                 <div class="centerInput">
                                     <input class="form-control form-control-sm paddingInput" type="number" min='0' style="width:46%; float:left"
-                                name="24h_volume_usd" [(ngModel)]="filter['24h_volume_usd']" placeholder="Max" oninput="validity.valid||(value='');">
+                                name="24h_volume_usd" [(ngModel)]="minfilter['24h_volume_usd']" placeholder="Min" oninput="validity.valid||(value='');"
+                                (ngModelChange)="minVolumeChange($event)">
                                 <input class="form-control form-control-sm" type="number" style="width:46%" min='0'
-                                name="24h_volume_usd" [(ngModel)]="minfilter['24h_volume_usd']" placeholder="Min" oninput="validity.valid||(value='');">
+                                name="24h_volume_usd" [(ngModel)]="filter['24h_volume_usd']" placeholder="Max" oninput="validity.valid||(value='');"
+                                (ngModelChange)="maxVolumeChange($event)">
                             </div>
                             </th>
                             <th ></th>

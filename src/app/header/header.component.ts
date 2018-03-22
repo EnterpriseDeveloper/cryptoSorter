@@ -59,7 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
             'position': 'absolute',
             'width': '100%',
             'z-index': 'auto',
-            'height': '75%',
+            'height': '540px',
             'top': 0,
             'left': 0,
             'right': 0,

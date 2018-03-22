@@ -19,6 +19,7 @@ type UserFields = 'coinValue'| 'addValueCoin';
 
 type FormErrors = { [u in UserFields]: string };
 
+
 @Component({
   selector: 'wallet',
   templateUrl: './wallet.component.html',
@@ -29,7 +30,6 @@ type FormErrors = { [u in UserFields]: string };
 export class WalletComponent implements OnInit, OnDestroy {
 
   @ViewChild('autofocus') autofocus;
-  @ViewChild('chooseCoin') chooseCoin;
 
   public isLoggedIn:boolean;
   public isEmptyValue: boolean = false;
@@ -51,7 +51,6 @@ export class WalletComponent implements OnInit, OnDestroy {
   public deleteTab: any;
   public deleteCurrency: any;
   private items:Array<any> = [];
-  public ngxValue: any = [];
   public ngxDisabled = false;
   public addModal:any;
   public currencyAdd: any = [{name:'name', price_usd:'price'}];
@@ -72,6 +71,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   public filter:any;
   public selectedRow:number;
   public deleteIndex: any;
+  public inputFocused = false;
 
  coinForm: FormGroup ;
  addForm: FormGroup
@@ -123,8 +123,7 @@ export class WalletComponent implements OnInit, OnDestroy {
           this.wallets = this.walletService.getListWallet();
           this.getWalletList();
         }
-      }
-    );
+      });
    }
 
    ngOnInit(){
@@ -257,9 +256,6 @@ openModuleAdd(addCoin){
   this.addModal = this.modalService.open(addCoin, { windowClass: 'dark-modal' });
   $('.modal-content').animate({ opacity: 1 });
   $('.modal-backdrop').animate({ opacity: 0.9 });
-  setTimeout(()=>{
-    this.chooseCoin.nativeElement.focus();
-  },3000)
 }
 
 public doSelect(value: any) { 

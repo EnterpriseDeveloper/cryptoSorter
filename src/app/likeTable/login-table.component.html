@@ -41,51 +41,51 @@
         <table class="row-border hover table-striped modileTable" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                <th class="colorText tableSize nameWidth wallet paddingHeader tableMobileSpeaceName" (click)="sort('name')">Name
+                <th style="width:20%;" class="colorText tableSize nameWidth wallet paddingHeader tableMobileSpeaceName" (click)="sort('name')">Name
                     <span class="fa" *ngIf="key =='name'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span></th> 
-                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('formulaValue')">Index
+                <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('formulaValue')">Index
                     <span class="fa" *ngIf="key =='formulaValue'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>
-                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('market_cap_usd')">Market Cap $
+                <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('market_cap_usd')">Market Cap $
                     <span class="fa" *ngIf="key =='market_cap_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>
-                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('24h_volume_usd')">Volume $
+                <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('24h_volume_usd')">Volume $
                     <span class="fa" *ngIf="key =='24h_volume_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>
-                <th class="colorText tableSize text-center wallet paddingHeaderr tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h 
+                <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeaderr tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h 
                     <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>
-                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('price_usd')">Price $
+                <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('price_usd')">Price $
                     <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>  
-                        <th class="colorText tableSize text-center paddingHeader tableMobileSpeace">Action</th>  
+                        <th style="width:10%;" class="colorText tableSize text-center paddingHeader tableMobileSpeace">Action</th>  
                       </tr>
                 </thead> 
                 <tbody>
                     <tr *ngFor="let like of likeCurrency | orderBy: key : reverse 
                     | filter:filter | paginate: { itemsPerPage: perPage, currentPage: page }; let i = index;"
                     class="animated" [class.bounceOut]="i == selectedRow">
-                        <td class="colorText tableSize tableMobileSpeaceName">
+                        <td style="width:20%;" class="colorText tableSize tableMobileSpeaceName">
                                 <img class="sizeImg centerImage"
                                 src="https://chasing-coins.com/api/v1/std/logo/{{like.symbol}}">
                                 <p class="tableName centerWalName">
                             {{like.name}}   
                             <a target="_blank" href="https://coinmarketcap.com/currencies/{{like.id}}/" 
                             class="linksTable mobileDisplay">({{like.symbol}})</a> </p></td>
-                        <td class="colorText tableSize text-center tableMobileSpeace">
+                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
                             <p class="centerWal">{{like.formulaValue}}</p></td>
-                        <td class="colorText tableSize text-center tableMobileSpeace">
+                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
                             <p class="centerWal">{{like.market_cap_usd | number :'1.0'}} $</p></td>
-                        <td class="colorText tableSize text-center tableMobileSpeace">
+                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
                             <p class="centerWal">{{like['24h_volume_usd'] | number :'1.0'}} $</p></td>
-                        <td width="100px" class="colorText tableSize text-center weight tableMobileSpeace">
+                        <td style="width:14%;" class="colorText tableSize text-center weight tableMobileSpeace">
                             <p class="centerWal"><span 
                             [style.color]="like.percent_change_24h < 0 ? '#DC3545' : '#009130'">
                             {{like.percent_change_24h | number: '1.2-2'}} %</span></p></td>
-                        <td class="colorText tableSize text-center weight2 tableMobileSpeace"><p class="centerWal">
+                        <td style="width:14%;"  class="colorText tableSize text-center weight2 tableMobileSpeace"><p class="centerWal">
                             {{like.price_usd | number :'1.0-5'}} $</p></td>
-                        <td class="text-center tableMobileSpeace">
-                                <p class="centerWal"><button (click)='deleteLikes(like, i)' class="btn btn-sm btn-outline-secondary delete remove"
+                        <td style="width:10%;" class="text-center tableMobileSpeace">
+                                <p class="centerWal"><button (click)='deleteLikes(like, i)' class="btn btn-sm btn-secondary delete remove"
                                       rel="tooltip" title="Remove" data-placement="left">
                                 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                             </button></p>

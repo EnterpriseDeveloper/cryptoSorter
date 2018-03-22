@@ -11,9 +11,9 @@ export class Currency {
     formulaValue: Number;
   
     /**
-     * @type {string} 
+     * @type {nunber} 
      */
-    market_cap_usd: String;
+    market_cap_usd: Number;
   
     /**
      * @type {number} 
@@ -26,7 +26,7 @@ export class Currency {
     percent_change_24h: Number;
 
     /**
-     * @type {string} 
+     * @type {number} 
      */
-    price_usd: String;
+    price_usd: Number;
   }

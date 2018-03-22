@@ -13,7 +13,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import {AngularFireDatabase } from "angularfire2/database";
 
-import {NgbModal, ModalDismissReasons, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons, NgbActiveModal, NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatTabsModule} from '@angular/material/tabs';
 

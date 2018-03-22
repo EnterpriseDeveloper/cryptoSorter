@@ -90,6 +90,7 @@ export class CurrencyComponent implements OnDestroy{
   public likedRow: any = NaN;
   public addedCoin: any = NaN;
   public indexWallet: number;
+  public minIndex: any;
  
 
   constructor(
@@ -127,6 +128,36 @@ export class CurrencyComponent implements OnDestroy{
           this.page = 1;
         }
       });
+      this.minfilter.formulaValue = Number(localStorage.getItem("minIndex"));
+      this.filter.formulaValue = Number(localStorage.getItem("maxIndex"));
+      this.minfilter.market_cap_usd = Number(localStorage.getItem("minMarket"));
+      this.filter.market_cap_usd = Number(localStorage.getItem("maxMarket"));
+      this.minfilter['24h_volume_usd'] = Number(localStorage.getItem("minVolume"));
+      this.filter['24h_volume_usd'] = Number(localStorage.getItem("maxVolume"));
+  }
+
+  minIndexChange(value){
+    localStorage.setItem("minIndex", value);
+  }
+
+  maxIndexChange(value){
+    localStorage.setItem("maxIndex", value);
+  }
+
+  minMarketChange(value){
+    localStorage.setItem("minMarket", value);
+  }
+
+  maxMarketChange(value){
+    localStorage.setItem("maxMarket", value);
+  }
+
+  minVolumeChange(value){
+    localStorage.setItem("minVolume", value);
+  }
+
+  maxVolumeChange(value){
+    localStorage.setItem("maxVolume", value);
   }
 
   // get likes from ItemService 
@@ -226,7 +257,7 @@ export class CurrencyComponent implements OnDestroy{
   };
 
         //sorting
-        key: string = 'market_cap_usd'; //set default
+        key: any = 'market_cap_usd'; //set default
         reverse: boolean = true;
         sort(key){
           this.key = key;
