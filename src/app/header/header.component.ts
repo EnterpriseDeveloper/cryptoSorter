@@ -59,7 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
             'position': 'absolute',
             'width': '100%',
             'z-index': 'auto',
-            'height': '540px',
+            'height': '520px',
             'top': 0,
             'left': 0,
             'right': 0,
@@ -163,7 +163,7 @@ size: {
     speed: 3
     },
     repulse: {
-    distance: 150,
+    distance: 100,
     duration: 0.4
     },
     push: {

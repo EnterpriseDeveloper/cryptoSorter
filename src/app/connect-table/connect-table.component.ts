@@ -1,12 +1,9 @@
 import { Component, OnDestroy} from '@angular/core';
 import { AuthService } from '../aservices/auth.service';
-import {MatTabsModule} from '@angular/material/tabs';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {LoginUserComponent} from '../login-user/login-user.component';
 import {Observable} from 'rxjs/Observable';
 import {Wallet} from '../aservices/Wallet';
 import {WalletService} from '../aservices/wallet.service';
-
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'connectTable',
@@ -23,13 +20,12 @@ export class ConnectTableComponent implements OnDestroy {
   private walletData: any = [];
   private walletValue: any = [];
   public walletEmpty: boolean = true;
-  public currentJustify = 'center';
+  public showMenu: boolean = false;
 
   constructor(
     public authService: AuthService,
-    private modalService: NgbModal,
-    public loginUser: LoginUserComponent,
     private walletService: WalletService,
+    public route: Router,
   )  {
     this.authService.user.subscribe(
       (auth) => {
@@ -46,6 +42,7 @@ export class ConnectTableComponent implements OnDestroy {
       }
   }
 
+
   getWalletList(){
    this.walletSub = this.wallets.subscribe((walletData)=>{
         this.walletData = walletData;
@@ -54,20 +51,17 @@ export class ConnectTableComponent implements OnDestroy {
           return this.walletValue.push(walletData.id);
         });
         if(this.walletData.length > 0 ){
+          this.route.navigate(['/portfolio']);
           return this.walletEmpty = false;
         }else{
+          this.route.navigate(['']);
           return this.walletEmpty = true;
         }
    });
   }
 
+  toggle() { this.showMenu = !this.showMenu; }
 
-
-  openRegistModal(){
-    const modalRef = this.modalService.open(LoginUserComponent);
-    $('.modal-content').animate({ opacity: 1 });
-    $('.modal-backdrop').animate({ opacity: 0.9 });
-  }
 
   ngOnDestroy(){
     this.walletSub.unsubscribe();

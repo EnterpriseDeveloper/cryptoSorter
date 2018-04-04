@@ -1,17 +1,34 @@
-<div class="spynerBasic" *ngIf="loading">
-    <spinner></spinner>
-</div>
+<div class="colorConnect">
+        <div class="spynerBasic" *ngIf="loading">
+            <spinner></spinner>
+        </div>
+
+        <div class="spynerBasic" *ngIf="loadingCoin">
+                <spinner></spinner>
+            </div>
+        
+        
+        <div class="tableStyle">
+                <div class="paddingCurrency">
+
+            <div *ngIf='!isLoggedIn' class="paddingTabs textRegist emptyPadding particle text-center">
+                <a class="colorTextLink textDecor" href='#' (click)="link()" (click)="openRegistModal()"
+                >Register now</a><span class="colorText"> to track your favorite or disliked coins.
+                   Add currency coins to your portfolio. It's free! </span>              
+              </div>
+
+<div *ngIf='isLoggedIn'>
 
 <div *ngIf="walletsCoin.length === 0">
     <div *ngIf="!loading">
-        <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">
+        <div [class.emptyPadding]="!isEmptyValue" [class.fullPadding]="isEmptyValue">
             <div class="text-center mobileDisplay">
                 <p class="colorText paddingTextWallet">
                     This is your portfolio.
                     <button class="btn btn-info buttonLike wallet" (click)="openModuleAdd(addCoin)">
                         Add Coin</button>
                     now or use
-                    <button class="btn btn-sm btn-outline-info buttonLike">
+                    <button [routerLink]="['/']" class="btn btn-sm btn-outline-info buttonLike">
                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     </button> in Everything.</p>
             </div>
@@ -23,7 +40,7 @@
 </div>
 
 <div [class.display]="!loading">
-    <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">
+    <div class="fullPadding">
         <p class="colorText text-center paddingCenter">
             Please wait while we're brainstorming over a thousand of cryptocurrencies. Once loaded, navigation will be lightning fast!
             Still waiting? Try guessing which coin is moon today!</p>
@@ -33,11 +50,11 @@
 <div [class.display]='loading'>
     <div *ngIf="walletsCoin.length > 0">
         <div>
-            <input #autofocus style="width:15%; float:left" class="form-control search" type="text" placeholder="Search"
+            <input #autofocus style="width:200px; float:left" class="form-control search" type="text" placeholder="Search"
                 [(ngModel)]="filter">
-            <button class="btn btn-info addCoinBut wallet buttonsTabs2 mobileDisplay" (click)="openModuleAdd(addCoin)">Add Coin</button>
+            <button class="btn btn-infoWallet addCoinBut wallet buttonsTabs2 mobileDisplay" (click)="openModuleAdd(addCoin)">Add Coin</button>
         </div>
-        <div class="tabStyle tableStyle2 emptyPaddingTab">
+        <div class="tabStyle tableStyle2 fullPaddingTab">
 
             <table class="row-border hover table-striped modileTable" cellspacing="0" width="100%">
                 <thead>
@@ -54,10 +71,10 @@
                         <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('total')">Total $
                             <span class="fa" *ngIf="key =='total'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                         </th>
-                        <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h
+                        <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h 
                             <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                         </th>
-                        <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('allocation')">Allocation
+                        <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('allocation')">Allocation %
                             <span class="fa" *ngIf="key =='allocation'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                         </th>
                         <th style="width:10%;" class="colorText tableSize text-center paddingHeader mobileDisplay tableMobileSpeace">Actions</th>
@@ -66,29 +83,32 @@
                 <tbody>
                     <tr *ngFor="let wallet of walletsCoin | orderBy: key : reverse | filter:filter; let i = index;" class="animated" [class.bounceOut]="i == selectedRow">
                         <td style="width:20%;" class="colorText tableSize tableMobileSpeaceName">
-                            <img class="sizeImg centerImage" src="https://chasing-coins.com/api/v1/std/logo/{{wallet.symbol}}">
+                                <img [class.titleIndex]="!symbolNoFit(wallet.symbol)"
+                                [class.cursor]="symbolNoFit(wallet.symbol)"
+                                [src]="getCoinImage(wallet.symbol)" (click)="getWebPage(wallet.symbol)"
+                                 type="image" class='sizeImg2' title="{{wallet.id}} Website" />
                             <p class="tableName centerWalName">
                                 {{ wallet.name }}
                                 <a target="_blank" href="https://coinmarketcap.com/currencies/{{wallet.id}}/" class="linksTable mobileDisplay tableMobileSpeace">({{wallet.symbol}})</a>
                             </p>
                         </td>
-                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                            <p class="centerWal">{{ wallet.coins | number }}</p>
+                        <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                            <p class="centerWal textCenterCoinsWal">{{ wallet.coins | number }}</p>
                         </td>
-                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                            <p class="centerWal">{{ wallet.price_usd | number: '1.0-5'}} $</p>
+                        <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                            <p class="centerWal textCenterPriceWal">{{ wallet.price_usd | currencyValueChange}}</p>
                         </td>
-                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                            <p class="centerWal">{{ wallet.total | number: '1.2-2'}} $</p>
+                        <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                            <p class="centerWal textCenterTotalWal">{{ wallet.total | currencyValueChange}}</p>
                         </td>
-                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                            <p class="centerWal">
-                                <span [style.color]="wallet.percent_change_24h < 0 ? '#DC3545' : '#009130'">
-                                    {{ wallet.percent_change_24h}} %</span>
+                        <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                            <p class="centerWal textCenterPercentWal">
+                                <span [style.color]="wallet.percent_change_24h < 0 ? '#ff5e5e' : '#6ac13e'">
+                                    {{ wallet.percent_change_24h}}</span>
                             </p>
                         </td>
-                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                            <p class="centerWal">{{ wallet.allocation | number:'1.2-2' }} %</p>
+                        <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                            <p class="centerWal textCenterAllocationWal">{{ wallet.allocation | number:'1.2-2' }}</p>
                         </td>
                         <td style="width:10%;" class="text-center mobileDisplay">
                             <p class="centerWal">
@@ -111,6 +131,7 @@
 </div>
 
 
+
 <ng-template #tabCoin let-c="close" let-d="dismiss">
     <div class="modal-body modalStyle">
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -126,15 +147,15 @@
             </tr>
 
             <tr>
-                <td class="tabWalletStyle colorText padWalletTable">Coin price:</td>
+                <td class="tabWalletStyle colorText padWalletTable">Coin price $:</td>
                 <td colspan="2" class="tabWalletStyle2 colorText colorPrice walletTable padWalletTable">
-                    {{ coin.price_usd | number :'1.0-5'}} $</td>
+                    {{ coin.price_usd | number :'1.0-6'}}</td>
             </tr>
 
             <tr>
-                <td class="tabWalletStyle colorText padWalletTable">Total sum:</td>
+                <td class="tabWalletStyle colorText padWalletTable">Total sum $:</td>
                 <td colspan="2" class="tabWalletStyle2 colorText walletTable colorTotal padWalletTable">
-                    {{ coin.price_usd*coinAmount | number :'1.2-2'}} $</td>
+                    {{ coin.price_usd*coinAmount | number :'1.2-2'}}</td>
             </tr>
 
             <tr>
@@ -192,8 +213,10 @@
 
         <div class="example-block">
             <div class="example-block__item">
-                <ngx-select id='selected' [allowClear]="true" 
-                        [items]="items" optionValueField="id" optionTextField="name"
+                <ngx-select id='select'
+                        [items]="items"
+                         optionValueField="id" 
+                         optionTextField="name"
                         [(ngModel)]="ngxValue"
                         placeholder="No currency selected"
                         (select)="doSelect($event)"
@@ -222,25 +245,25 @@
                                 {{ currencyAdd.name}}</td>
                         </tr>
                         <tr>
-                            <td class="tabWalletStyle colorText padWalletTable">Coin price: </td>
+                            <td class="tabWalletStyle colorText padWalletTable">Coin price $: </td>
                             <td colspan="2" class="tabWalletStyle2 colorText walletTable colorPrice padWalletTable">
-                                {{ currencyAdd.price_usd | number :'1.0-5'}} $</td>
+                                {{ currencyAdd.price_usd | number :'1.0-6'}}</td>
                         </tr>
                         <tr>
-                            <td class="tabWalletStyle colorText padWalletTable">Total sum:</td>
+                            <td class="tabWalletStyle colorText padWalletTable">Total sum $:</td>
                             <td colspan="2" class="tabWalletStyle2 colorTotal walletTable padWalletTable">
-                                {{ currencyAdd.price_usd*addCoins | number :'1.2-2'}} $ </td>
+                                {{ currencyAdd.price_usd*addCoins | number :'1.2-2'}}</td>
                         </tr>
                         <tr>
                             <td class="tabWalletStyle colorText padWalletTable">Amount:</td>
                             <td class="walletInputCoin padWalletTable">
                                 <form *ngIf="chosenCur" [formGroup]="addForm" class="form-inline">
-                                    <input (input)="addCoins = $event.target.value" value='{{addCoins}}' class="form-control" type="number" id="example-search-input"
+                                    <input (input)="addCoins = $event.target.value"  value='{{addCoins}}' class="form-control" type="number" id="example-search-input"
                                         formControlName="addValueCoin" required>
                                 </form>
                             </td>
                             <td>
-                                <button type="submit" class="btn btn-info paddingTabBut" [disabled]="!addForm.valid" [class.wallet]='addForm.valid' (click)="createWallet(addCoins)">Add</button>
+                                <button class="btn btn-info paddingTabBut" [disabled]="!addForm.valid" [class.wallet]='addForm.valid' (click)="createWallet(addCoins)">Add</button>
                             </td>
 
                         </tr>
@@ -262,5 +285,9 @@
 
     </div>
 </ng-template>
+</div>
+</div>
+</div>
+
 
 <div class="push"></div>

@@ -1,0 +1,10 @@
+.hide {
+    display: none;
+}
+
+.styleMenu{
+    padding-left: 10px;
+    padding-bottom: 0px !important;
+    margin-bottom: 0px !important;
+    font-size: 20px;
+}

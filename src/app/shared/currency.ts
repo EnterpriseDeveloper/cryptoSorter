@@ -4,6 +4,11 @@ export class Currency {
      * @type {string} 
      */
     name: String;
+
+        /**
+     * @type {string} 
+     */
+    symbol: String;
     
     /**
      * @type {number} 

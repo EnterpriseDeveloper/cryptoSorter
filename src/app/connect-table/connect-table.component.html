@@ -12,94 +12,68 @@
 </div>
 
 
-<ng-template #authenticated>
-      <ngb-tabset type="pills" [justify]="currentJustify"
-       [orientation]="currentOrientation" *ngIf="walletValue.length != 0">
-          <ngb-tab title="Portfolio" id="toWallet" >
-            <ng-template ngbTabContent  >
-              <wallet></wallet>
-            </ng-template>
-          </ngb-tab>
-          <ngb-tab title="Everything" id="everything">
-            <ng-template ngbTabContent >
-              <currency></currency>
-            </ng-template>
-          </ngb-tab>
-          <ngb-tab title="Favorite" id="toFavorite">
-            <ng-template ngbTabContent  >
-              <login-table></login-table>
-            </ng-template>
-          </ngb-tab>
-          <ngb-tab title="Disliked" id="toDeleted">
-            <ng-template ngbTabContent  >
-              <deleteTable></deleteTable>
-            </ng-template>
-          </ngb-tab>
-        </ngb-tabset>
+<ng-template #authenticated> 
 
-      <ngb-tabset type="pills" [justify]="currentJustify"
-       [orientation]="currentOrientation" *ngIf="walletValue.length === 0">
-          <ngb-tab title="Everything" id="everything">
-              <ng-template ngbTabContent >
-                <currency></currency>
-              </ng-template>
-            </ngb-tab>
-          <ngb-tab title="Favorite" id="toFavorite">
-            <ng-template ngbTabContent  >
-              <login-table></login-table>
-            </ng-template>
-          </ngb-tab>
-          <ngb-tab title="Disliked" id="toDeleted">
-            <ng-template ngbTabContent  >
-              <deleteTable></deleteTable>
-            </ng-template>
-          </ngb-tab>
-          <ngb-tab title="Portfolio" id="toWallet" >
-              <ng-template ngbTabContent  >
-                <wallet></wallet>
-              </ng-template>
-            </ngb-tab>
-        </ngb-tabset> 
+  <ul class="hr text-center paddingNone mobileDisplay">
+    <li *ngIf='!walletEmpty' id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolio</li>
+    <li id="everything" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="everything" >Everything</li>
+    <li id="toFavorite" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorite</li>
+    <li id="toDeleted" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
+    <li *ngIf='walletEmpty' id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolio</li>
+    <li>
+        <div ngbDropdown class="d-inline-block">
+            <button routerLinkActive="toIco" class="icoActive" id="dropdownBasic1" ngbDropdownToggle><span class="colorText">ICO</span></button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button class="dropdown-item dropdown-ico"  [routerLink]="['/ico/active']">Active</button>
+              <button class="dropdown-item dropdown-ico"  [routerLink]="['/ico/upcoming']">Upcoming</button>
+            </div>
+         </div>  
+          
+    </li>
+  </ul>
+
+<p class='screenDisplay colorText styleMenu' (click)="toggle()" >Menu <i style="float: right; padding-right: 20px;" class="fa fa-bars fa-2x" aria-hidden="true"></i></p>
+
+<ul *ngIf='showMenu' class="textDecorationUl text-center paddingNone screenDisplay">
+  <li *ngIf='!walletEmpty' (click)="showMenu = false" id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolio</li>
+  <li id="everything" (click)="showMenu = false" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="everything" >Everything</li>
+  <li id="toFavorite" (click)="showMenu = false" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorite</li>
+  <li id="toDeleted" (click)="showMenu = false" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
+  <li *ngIf='walletEmpty' (click)="showMenu = false" id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolio</li>
+  <li id="icoUpComing" (click)="showMenu = false" [routerLink]="['/ico/active']" routerLinkActive="toIco">ICO Active</li>
+  <li id='icoUpComing' (click)="showMenu = false" [routerLink]="['/ico/upcoming']" routerLinkActive="toIco">ICO Upcoming</li> 
+</ul>
 </ng-template>
 
 <ng-template #guest>
-  <ngb-tabset type="pills" [justify]="currentJustify" [orientation]="currentOrientation">
-    <ngb-tab title="Everything" id="everything">
-      <ng-template ngbTabContent >
-        <currency></currency>
-      </ng-template>
-    </ngb-tab>
-    <ngb-tab title="Favorite" id="toFavorite">
-      <ng-template ngbTabContent  >
-        <div class="paddingTabs textRegist emptyPadding particle text-center">
-          <a class="colorTextLink textDecor" routerLink="/" (click)="openRegistModal()"
-          >Register now</a><span class="colorText"> to track your favorite or disliked coins.
-             Add currency coins to your portfolio. It's free! </span>  
-             <div class="push"></div>                
-        </div>
-      </ng-template>
-    </ngb-tab>
-    <ngb-tab title="Disliked" id="toDeleted">
-  <ng-template ngbTabContent  >
-    <div class="paddingTabs textRegist emptyPadding particle text-center">
-      <a class="colorTextLink textDecor" routerLink="/" (click)="openRegistModal()">
-        Register now</a><span class="colorText"> to track your favorite or disliked coins.
-           Add currency coins to your portfolio. It's free! </span> 
-           <div class="push"></div> 
-    </div>
-  </ng-template>
-</ngb-tab>
-<ngb-tab title="Portfolio" id="toWallet">
-  <ng-template ngbTabContent  >
-    <div class="paddingTabs textRegist emptyPadding particle text-center">
-      <a class="colorTextLink textDecor" routerLink="/" (click)="openRegistModal()"
-      >Register now</a><span class="colorText"> to track your favorite or disliked coins. 
-        Add currency coins to your portfolio. It's free! </span>    
-        <div class="push"></div>                        
-    </div>                              
-  </ng-template>
-</ngb-tab>
-</ngb-tabset>
+    <ul class="hr text-center paddingNone mobileDisplay">
+        <li id="everything" [routerLink]="['/']" routerLinkActive="everything" [routerLinkActiveOptions]="{ exact: true }">Everything</li>
+        <li id="toFavorite" [routerLink]="['/favorite']" routerLinkActive="toFavorite" >Favorite</li>
+        <li id="toDeleted" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
+        <li id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet">Portfolio</li>
+        <li>
+            <div ngbDropdown class="d-inline-block">
+                <button routerLinkActive="toIco" class="icoActive" id="dropdownBasic1" ngbDropdownToggle><span class="colorText">ICO</span></button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button class="dropdown-item" [routerLink]="['/ico/active']">Active</button>
+                  <button class="dropdown-item" [routerLink]="['/ico/upcoming']">Upcoming</button>
+                </div>
+             </div>  
+              
+        </li>
+      </ul>
+
+<p class='screenDisplay colorText styleMenu' (click)="toggle()" >Menu <i style="float: right; padding-right: 20px;" class="fa fa-bars fa-2x" aria-hidden="true"></i></p>
+
+<ul *ngIf='showMenu' class="textDecorationUl text-center paddingNone screenDisplay">
+  <li id="everything" (click)="showMenu = false" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="everything" >Everything</li>
+  <li id="toFavorite" (click)="showMenu = false" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorite</li>
+  <li id="toDeleted" (click)="showMenu = false" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
+  <li id="toWallet" (click)="showMenu = false"  [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolio</li>
+  <li id="icoUpComing" (click)="showMenu = false" [routerLink]="['/ico/active']" routerLinkActive="toIco">ICO Active</li>
+  <li id='icoUpComing' (click)="showMenu = false" [routerLink]="['/ico/upcoming']" routerLinkActive="toIco">ICO Upcoming</li> 
+</ul>
+
 </ng-template>
  
                         

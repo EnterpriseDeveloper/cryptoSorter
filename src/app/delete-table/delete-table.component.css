@@ -1,0 +1,26 @@
+.cursor{
+    cursor: pointer;
+  }
+  
+  .titleIndex{
+    pointer-events: none;
+  }
+
+  .textCenterMarketDel{
+    padding-left:25%;
+ }
+ 
+ .textCenterIndexDel{
+     padding-left:37%;
+ }
+ 
+ .textCenterVolumeDel{
+     padding-left:32%;
+  }
+  
+  .textCenterPriceDel{
+      padding-left:30%;
+  }
+  .textCenterPercentDel{
+     padding-left:35%;
+  }

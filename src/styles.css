@@ -116,7 +116,7 @@ input:checked + .slider:before {
 }
  
 .colorText2:hover {
-    color: rgb(5, 101, 202);
+    color: #007BFF;
 
 }
 
@@ -183,7 +183,7 @@ input:checked + .slider:before {
 .linksTable:active{
     text-decoration: none;
     cursor: pointer;
-    color: #009130;
+    color: #FFC107;
 }
 
 .linksTable:visited{
@@ -195,8 +195,14 @@ input:checked + .slider:before {
 .linksTable:hover{
     text-decoration: none;
     cursor: pointer;
-    color: #009130;
+    color: #FFC107;
 }
+
+.fa-edit {
+    color: white;
+}
+
+
 
 
 
@@ -226,12 +232,9 @@ html, body {
     height: 150px;
 }
 
-.emptyPadding{
-    margin: 4.7% auto; 
-}
 
 .fullPadding{
-    margin: 12% auto;
+    padding: 12%;
 }
 
 
@@ -247,7 +250,6 @@ html, body {
 
 .DesCurName {
     padding-top: 20px;
-    padding-bottom: 25px;
 }
 
 .DesCurText {
@@ -265,6 +267,128 @@ html, body {
 .tableSize {
     font-size: 16px;
 }
+
+.tableSizeNumber {
+    font-size: 18px;
+    font-weight: 100;
+
+}
+
+.textCenterMarket{
+   padding-left:35%;
+}
+
+.textCenterIndex{
+    padding-left:40%;
+}
+
+.textCenterVolume{
+    padding-left:38%;
+ }
+ 
+ .textCenterPrice{
+     padding-left:18%;
+ }
+ .textCenterPercent{
+    padding-left:22%;
+ }
+ 
+
+.btn-info {
+    background-color: #646363 !important;
+    border-color: #646363 !important; 
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-info:hover {
+    background-color: #17A2B8 !important;
+    border-color: #17A2B8 !important;
+    outline:0 !important;
+}
+
+.btn-success {
+    background-color: #646363 !important;
+    border-color: #646363 !important; 
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-success:hover {
+    background-color: #009130 !important;
+    border-color: #009130 !important;
+    outline:0 !important;
+}
+
+.btn-danger {
+    background-color: #646363 !important;
+    border-color: #646363 !important;
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-danger:hover {
+    background-color: rgb(187, 46, 60) !important;
+    border-color: rgb(187, 46, 60) !important;
+    outline:0 !important;
+}
+
+.btn-warning {
+    background-color: #646363 !important;
+    border-color: #646363 !important;
+    outline:0 !important;
+    outline:0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.btn-warning:hover {
+    background-color: #FFC107 !important;
+    border-color: #FFC107 !important; 
+    outline:0 !important;
+}
+
+
+.btn-secondary {
+    background-color: #646363 !important;
+    border-color: #646363 !important; 
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-secondary:hover {
+    background-color: rgb(187, 46, 60) !important;
+    border-color: rgb(187, 46, 60) !important; 
+    outline:0 !important;
+}
+
+
+
+.btn-outline-secondary:hover {
+    background-color: #646363 !important;
+    border-color: #646363 !important;
+    outline:0 !important;
+    }
+    
+.btn-outline-secondary:active {
+    background-color: #646363 !important;
+    border-color: #646363 !important;
+    outline:0 !important;
+    }
+
+.btn-infoWallet {
+    background-color: #17A2B8 !important;
+    border-color: #17A2B8 !important;
+    color: white !important;
+    outline:0 !important;
+}   
+
+.btn-infoWallet:hover {
+    background-color: #17A2B8 !important;
+    border-color: #17A2B8 !important;
+    color: white !important;
+    outline:0 !important;
+}  
 
 .centerInput{
     margin-left: 10%;
@@ -431,9 +555,46 @@ html, body {
 .sizeImg{
     width: 20px;
     height: 20px;
-    margin-right: 10px;
+    margin-right: 5px;
     margin-left: 5px;
+    background-color: white;
 }
+
+.sizeImg1{
+    width: 31px;
+    height: 31px;
+    background-color: white;
+    position: absolute;
+    border-radius: 5px;
+    margin-left: 3px;
+}
+
+.sizeImg2{
+    width: 31px;
+    height: 31px;
+    background-color: white;
+    border-radius: 5px;
+    float: left;
+    margin-top: 6px;
+    margin-right: 5px;
+    margin-left: 3px;
+}
+
+.buttonSize {
+    border-radius: 5px;
+    width: 30px;
+    height: 31px;
+}
+
+
+
+.centerImage {
+    float: left;
+    margin-top: 13px;
+    margin-bottom: 13px;
+}
+
+
 
 .tabWalletStyle{
     padding-left: 90px
@@ -536,7 +697,8 @@ html, body {
   }
 
   .facheck {
-      color: rgb(4, 255, 4);
+      color: #8cff52;
+      opacity: 1;
   }
 
   .facheckW {
@@ -628,10 +790,6 @@ html, body {
 }
 
 
-#datatables{
-    padding-top: 0px;
-}
-
 .weight {
     font-weight: 600;
 }
@@ -698,9 +856,10 @@ html, body {
 }
 
 .center2{
-    margin-top: 6px;
-    margin-bottom: 6px;
-    margin-right: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    display: inline-block;
+
 }
 
 .centerWal {
@@ -711,12 +870,6 @@ html, body {
 .centerWalName{
     margin-top: 6px;
     margin-bottom: 6px;
-}
-
-.centerImage {
-    float: left;
-    margin-top: 13px;
-    margin-bottom: 13px;
 }
 
 
@@ -765,22 +918,22 @@ html, body {
 }
 
 .colorPrice:hover{
-    color: #17A2B8;
+    color: #6ac13e;
 }
 
 .colorPrice {
-    color: #17A2B8;
+    color: #6ac13e;
 }
 
 .cursorNone{
     cursor: default;
 }
 .colorTotal{
-    color: #DC3545 ;
+    color: #6ac13e; 
 }
 
 .colorTotal:hover {
-    color: #DC3545 ;
+    color: #6ac13e; 
 }
 
 .marginInput{
@@ -822,12 +975,18 @@ html, body {
     margin-right: 20%;
 }
 
+.textDecorationUl{
+    padding-left: 0px !important; 
+    margin-left: 0px !important;
+    list-style-type: none;
+}
+
 .emptyPadding{
-    margin: 4.7% auto; 
+    padding: 4.7% ; 
 }
 
 .fullPadding{
-    margin: 10% auto;
+    padding: 10%;
 }
 
 .emptyPaddingTab{
@@ -837,6 +996,10 @@ html, body {
 
 .fullPaddingTab{
     min-height: 50vh;
+}
+
+.paddingDate{
+    padding-left: 6%
 }
 
 .paddingTableWallet{
@@ -859,22 +1022,56 @@ html, body {
 
 @media screen and (min-width: 1370px) {
     .emptyPadding{
-        margin: 6.9% auto; 
+        padding: 6.9%;
     }
     
     .fullPadding{
-        margin: 12% auto;
+        padding: 12%;
+    }
+  }
+
+  @media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (min-resolution: 192dpi) { 
+    .emptyPadding{
+        padding: 7.9%;
+    }
+    
+    .fullPadding{
+        padding: 13%;
+    }
+}
+
+  @media screen and (min-width: 1025px) and (max-width: 1280px) {
+
+    .emptyPadding{
+        padding: 5.9% ; 
+    }
+    
+    .fullPadding{
+        padding: 14.5% ;
+    }
+
+    .emptyPaddingTab{
+        min-height: 35vh;
+    
+    }
+
+    .fullPaddingTab{
+        min-height: 60vh;
     }
   }
 
 
   @media screen and (min-width: 1870px) {
     .emptyPadding{
-        margin: 11.9% auto; 
+        padding: 11.9% ; 
     }
     
     .fullPadding{
-        margin: 15.5% auto;
+        padding: 15.5% ;
     }
 
     .emptyPaddingTab{
@@ -889,11 +1086,11 @@ html, body {
 
   @media screen and (min-width: 2100px) {
     .emptyPadding{
-        margin: 15% auto; 
+        padding: 15%; 
     }
     
     .fullPadding{
-        margin: 17.8% auto;
+        padding: 17.8%;
     }
 
     .emptyPaddingTab{
@@ -909,11 +1106,11 @@ html, body {
 
   @media screen and (min-width: 2900px) {
     .emptyPadding{
-        margin: 19% auto; 
+        padding: 19%; 
     }
     
     .fullPadding{
-        margin: 21% auto;
+        padding: 21%;
     }
 
     .emptyPaddingTab{
@@ -939,11 +1136,15 @@ html, body {
     }
 
     .emptyPadding{
-        margin: 35% auto; 
+        padding: 35% ; 
+    }
+
+    .paddingDate{
+        padding:none;
     }
     
     .fullPadding{
-        margin: 45% auto;
+        padding: 45%;
     }
 
     .emptyPaddingTab{
@@ -969,12 +1170,16 @@ html, body {
         width:100%;
     }
 
+    .paddingDate{
+        padding:none;
+    }
+
     .emptyPadding{
-        margin: 19% auto; 
+        padding: 19%; 
     }
     
     .fullPadding{
-        margin: 21% auto;
+        padding: 21%;
     }
 
     .emptyPaddingTab{
@@ -993,6 +1198,7 @@ html, body {
   */
   
   @media (min-width: 481px) and (max-width: 812px) {
+
 
     .mobilePadding{
         margin-right: 5px; 
@@ -1064,11 +1270,11 @@ html, body {
     }
 
     .emptyPadding{
-        margin: 10% auto; 
+        padding: 10%; 
     }
     
     .fullPadding{
-        margin: 25% auto;
+        padding: 25%;
     }
 
     .emptyPaddingTab{
@@ -1082,9 +1288,14 @@ html, body {
     .paddingmobile{
         padding-top:70px;
     }
+
     .tableMobileSpeace{
         padding-left: 10px;
         padding-right: 10px;
+    }
+
+    .paddingDate{
+        padding:none;
     }
 
     .tableMobileSpeaceName{
@@ -1104,6 +1315,8 @@ html, body {
   */
   
   @media (min-width: 320px) and (max-width: 480px) {
+
+
     .centerWalName {
         margin-top: 12px;
         margin-bottom: 12px;
@@ -1111,6 +1324,10 @@ html, body {
 
     .tableMobileSpeaceName{
         padding-right: 10px;
+    }
+
+    .paddingDate{
+        padding:none;
     }
 
     .tableMobileSpeace{
@@ -1175,6 +1392,7 @@ html, body {
         padding-top: 0px;
     }
 
+
     .totalSize{
         font-size: 60px;
     }
@@ -1192,11 +1410,11 @@ html, body {
 
 
     .emptyPadding{
-        margin: 10% auto; 
+        padding: 10%; 
     }
     
     .fullPadding{
-        margin: 25% auto;
+        padding: 25%;
     }
 
     .emptyPaddingTab{

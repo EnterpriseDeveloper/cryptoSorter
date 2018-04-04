@@ -1,14 +1,26 @@
-<div class="spynerBasic" *ngIf="loading">
-    <spinner></spinner>
-</div>
+<div class="colorConnect">
+        <div class="spynerBasic" *ngIf="loading">
+            <spinner></spinner>
+        </div>
 
+                
+<div class="tableStyle">
+    <div class="paddingCurrency">
+
+        <div *ngIf='!isLoggedIn' class="paddingTabs textRegist emptyPadding particle text-center">
+                <a class="colorTextLink textDecor" href='#' (click)="link()" (click)="openRegistModal()"
+                >Register now</a><span class="colorText"> to track your favorite or disliked coins.
+                   Add currency coins to your portfolio. It's free! </span>              
+              </div>
+
+<div *ngIf='isLoggedIn'>
 <div *ngIf="dislikeCurrency.length === 0">
         <div *ngIf="!loading" >
              <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">
                     <div class="colorText text-center mobileDisplay">
                         Here you'll see coins which you don't care anymore, 
                         and so removed them from Everything using  
-                        <button class="btn btn-sm btn-outline-danger buttonLike">
+                        <button [routerLink]="['/']" class="btn btn-sm btn-outline-danger buttonLike">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>  button. Nothing yet here!</div> 
 
@@ -35,10 +47,10 @@
     <div *ngIf="dislikeCurrency.length > 0">
         <div [class.emptyPaddingTab]="!isEmptyWallet" [class.fullPaddingTab]="isEmptyWallet">
 
-         <input #autofocus style="width:15%; float:left; margin-right:10px; margin-bottom:10px;" class="form-control search" placeholder="Search" [(ngModel)]="filter">  
-         <div class="lenght1">Showing {{perPage*page - perPage }}-{{perPage*page}} of {{(dislikeCurrency | filter: filter).length}} dislikes.</div>    
+         <input #autofocus style="width:200px; float:left; margin-right:10px; margin-bottom:10px;" class="form-control search" placeholder="Search" [(ngModel)]="filter">  
+         <div class="lenght1">Showing {{perPage*page + 1 - perPage }}-{{perPage*page > (dislikeCurrency | filter:filter).length ? (dislikeCurrency | filter:filter).length : perPage*page}} of {{(dislikeCurrency | filter: filter).length}} dislikes.</div>    
    
-    <div class="tabStyle tableStyle2 paddingBottom">
+    <div class="tabStyle tableStyle2 paddingBottom fullPaddingTab">
     <table class="row-border hover table-striped modileTable" cellspacing="0" width="100%">
                 <thead>
                     <tr>
@@ -67,23 +79,25 @@
           | filter:filter | paginate: { itemsPerPage: perPage, currentPage: page }; let i = index;"
           class="animated" [class.bounceOut]="i == selectedRow">
               <td style="width:20%;" class="colorText tableSize tableMobileSpeaceName">
-                    <img class="sizeImg centerImage"
-                    src="https://chasing-coins.com/api/v1/std/logo/{{dislike.symbol}}">
+                <img [class.titleIndex]="!symbolNoFit(dislike.symbol)"
+                [class.cursor]="symbolNoFit(dislike.symbol)"
+                [src]="getCoinImage(dislike.symbol)" (click)="getWebPage(dislike.symbol)"
+                 type="image" class='sizeImg2' title="{{dislike.id}} Website" />
                     <p class="tableName centerWalName">
                   {{dislike.name}}   
                   <a target="_blank" href="https://coinmarketcap.com/currencies/{{dislike.id}}/" 
                   class="linksTable mobileDisplay">({{dislike.symbol}})</a> </p></td>
-              <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                  <p class="centerWal">{{dislike.formulaValue}}</p></td>
-              <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                  <p class="centerWal">{{dislike.market_cap_usd | number :'1.0'}} $</p></td>
-              <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                  <p class="centerWal">{{dislike['24h_volume_usd'] | number :'1.0'}} $</p></td>
-              <td style="width:14%;" width="100px" class="colorText tableSize text-center weight tableMobileSpeace">
-                  <p class="centerWal"><span [style.color]="dislike.percent_change_24h < 0 ? '#DC3545' : '#009130'">
-                      {{dislike.percent_change_24h | number:'1.2-2'}} %</span></p></td>
-              <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                  <p class="centerWal">{{dislike.price_usd | number:'1.0-5'}} $</p></td>
+              <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                  <p class="centerWal textCenterIndexDel">{{dislike.formulaValue}}</p></td>
+              <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                  <p class="centerWal textCenterMarketDel">{{dislike.market_cap_usd | currencyValueChange }}</p></td>
+              <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                  <p class="centerWal textCenterVolumeDel">{{dislike['24h_volume_usd'] | currencyValueChange }}</p></td>
+              <td style="width:14%;" width="100px" class="colorText tableSizeNumber weight tableMobileSpeace">
+                  <p class="centerWal textCenterPercentDel"><span [style.color]="dislike.percent_change_24h < 0 ? '#ff5e5e' : '#6ac13e'">
+                      {{dislike.percent_change_24h | number:'1.2-2'}}</span></p></td>
+              <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                  <p class="centerWal textCenterPriceDel">{{dislike.price_usd | currencyValueChange }}</p></td>
               <td style="width:10%;" class="text-center tableMobileSpeace">
                     <p class="centerWal"><button class="btn btn-sm btn-secondary delete remove" 
                         (click)='deleteDislike(dislike, i)' rel="tooltip" title="To Everything" data-placement="left">
@@ -134,7 +148,7 @@
   </ul>
 </pagination-template>  
 
-<div class="row paddingTableWallet paddingmobile">
+<div class="row paddingTableWallet paddingmobile mobileDisplay">
     <div class="col">
       <div ngbDropdown class="d-inline-block colorPaging"> Show
         <button class="btn btn-light btn-sm wallet" id="dropdownBasic1" ngbDropdownToggle>{{perPage}}</button>
@@ -146,6 +160,10 @@
       </div>
     </div>
 
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>

@@ -1,0 +1,26 @@
+.textCenterCoinsWal{
+    padding-left:35%;
+ }
+ 
+ .textCenterTotalWal{
+     padding-left:38%;
+ }
+ 
+ .textCenterPriceWal{
+     padding-left:31%;
+  }
+  
+  .textCenterAllocationWal{
+      padding-left:32%;
+  }
+  .textCenterPercentWal{
+     padding-left:35%;
+  }
+
+  .cursor{
+    cursor: pointer;
+  }
+  
+  .titleIndex{
+    pointer-events: none;
+  }

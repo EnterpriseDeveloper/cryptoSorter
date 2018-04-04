@@ -1,5 +1,5 @@
 header{
-    background: linear-gradient(#000000, #3c1f01);
+    background: linear-gradient(#000000, #333333);
 }
 
 .navbarStyle{
@@ -22,8 +22,20 @@ header{
 }
 
 .paddingCurrency{
-    background-color: #3c1f01;
+    background-color: #333333;
 }
+
+.basicColor{
+  background-color: #333333 !important;
+}
+
+
+.paddingNone{
+  padding-bottom: 0px !important;
+  margin-bottom: 0px !important;
+  background-color: #333333;
+}
+
 
 .site-footer{
     height: 150px;
@@ -34,33 +46,52 @@ header{
 
 
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
-    background-color: #301b00;
+    background-color: #212020;
  }
 
  .colorConnect{
-    background-color: #3c1f01;
+    background-color: #333333;
 }
 
 .loginStyle {
-    background-color: #301b00;
-    border-color: #301b00;
+    background-color: #333333;
+    border-color: #333333;
 }
 
 login {
-    background-color: #301b00;
+    background-color: #333333;
 }
 
 .modalStyle{
-    background-color: #301b00;
-    border-color: #301b00;
+    background-color: #333333;
+    border-color: #333333;
   }
 
 
 #everything {
-    color:#868E96;
+    color:white;
     margin-right: 1px; 
     position: relative;
     z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .everything {
+    color:white;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    background-color: #FFC107;
   }
 
   #everything:visited {
@@ -78,6 +109,10 @@ login {
     z-index: 100;
   }
 
+  #everything:focus {
+    outline:0;
+   }
+
   #everything:hover {
     margin-right: 1px;
     color: white;
@@ -89,10 +124,29 @@ login {
 
 
   #toFavorite {
-        color:#868E96;
+        color:white;
         margin-right: 1px;
         position: relative;
         z-index: 100;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 10px;
+        padding-bottom: 12px;
+        border-radius: 5px;
+        cursor: pointer;
+  }
+
+  .toFavorite {
+    color:white;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    background-color: #009130;
   }
 
   #toFavorite:visited {
@@ -110,6 +164,10 @@ login {
     z-index: 100;
   }
 
+  #toFavorite:focus {
+    outline:0;
+   }
+
   #toFavorite:hover {
     margin-right: 1px;
     color: white;
@@ -121,14 +179,33 @@ login {
 
 
    #toDeleted{
-    color:#868E96;
+    color:white;
     margin-right: 1px;
     position: relative;
     z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
    }
 
+   .toDeleted {
+    color:white;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    background-color: rgb(187, 46, 60);
+  }
+
    #toDeleted:visited {
-    background-color: #aa0818;
+    background-color: rgb(187, 46, 60);
     margin-right: 1px;
     color: white;
     position: relative;
@@ -142,21 +219,135 @@ login {
     z-index: 100;
   }
 
+  #toDeleted:focus {
+    outline:0;
+   }
+
    #toDeleted:hover {
     margin-right: 1px;
     color: white;
-    background-color: #aa0818;
+    background-color: rgb(187, 46, 60);
     position: relative;
     z-index: 100;
   }
 
-
-#toWallet{
+  #icoActive{
     color:#868E96;
     margin-right: 1px;
     position: relative;
     z-index: 100;
+   }
+
+   #icoActive:visited {
+    background-color: #ca4fff;
+    margin-right: 1px;
+    color: white;
+    position: relative;
+    z-index: 100;
+  }
+
+  #icoActive:active {
+    margin-right: 1px;
+    color: white;
+    position: relative;
+    z-index: 100;
+  }
+
+   #icoActive:hover {
+    margin-right: 1px;
+    color: white;
+    background-color: #ca4fff;
+    position: relative;
+    z-index: 100;
+  }
+
+  #icoUpComing{
+    color:white;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+   }
+
+   #icoUpComing:visited {
+    background-color: #ca4fff;
+    color:white;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #icoUpComing:active {
+    background-color: #ca4fff;
+    margin-right: 1px;
+    color:white;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+   #icoUpComing:hover {
+    margin-right: 1px;
+    background-color: #ca4fff;
+    color:white;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+
+#toWallet{
+    color:white;
+    margin-right: 1px;
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
     }
+
+    .toWallet{
+      color:white;
+      margin-right: 1px; 
+      position: relative;
+      z-index: 100;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-top: 10px;
+      padding-bottom: 12px;
+      border-radius: 5px;
+      background-color: #17A2B8;
+    }
+
+    #toWallet:focus {
+      outline:0;
+     }
 
 
 #toWallet:visited {
@@ -180,4 +371,86 @@ color: white;
 background-color: #17A2B8;
 position: relative;
 z-index: 100;
+}
+
+.icoActive{
+  background-color: inherit;
+  margin-right: 1px;
+  position: relative;
+  z-index: 100;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+ }
+
+ .colorIco {
+   background-color: rgb(225, 225, 225) !important;
+ }
+
+ .toIco {
+  margin-right: 1px;
+  position: relative;
+  z-index: 100;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: #ca4fff;
+}
+
+ .icoActive:focus {
+  outline:0;
+ }
+
+ .icoActive:visited {
+  background-color: #ca4fff;
+  margin-right: 1px;
+  color: white;
+  position: relative;
+  z-index: 100;
+  border: none;
+}
+
+.dropdown-toggle{
+  color: white;
+}
+
+.dropdown-ico:hover{
+  cursor:  pointer !important;
+  background-color: #ca4fff !important;
+  color: white !important;
+}
+
+.dropdown-item{
+padding-left: 10px !important;
+padding-right: 0px !important;
+}
+
+.dropdown-menu.show {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.icoActive:active {
+  margin-right: 1px;
+  color: white;
+  position: relative;
+  z-index: 100;
+  border: none;
+}
+
+ .icoActive:hover {
+  margin-right: 1px;
+  color: white;
+  background-color: #ca4fff;
+  position: relative;
+  z-index: 100;
+  border: none;
 }

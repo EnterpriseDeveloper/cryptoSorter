@@ -2,8 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn  } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Route, Router } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
 
 import { AngularFireModule } from 'angularfire2';
@@ -46,6 +47,13 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import { CurrencyFilterPipe } from './shared/filter.pipe';
 import { MinFilterPipe } from './shared/minFilter.pipe'; 
 import { ParticlesModule } from 'angular-particle';
+import { CurrencyValueChange } from './shared/number.pipe';
+import { ListcryptocompareService } from './aservices/listcryptocompare.service';
+import { IcoActiveComponent } from './ico/ico-active/ico-active.component';
+import { IcoUpcomingComponent } from './ico/ico-upcoming/ico-upcoming.component';
+import { IcoActiveService } from './aservices/ico-active.service';
+import { DatePipes } from './shared/date.pipe';
+import { DescriptionComponent } from './currency/description/description.component';
 
 
 
@@ -66,6 +74,11 @@ import { ParticlesModule } from 'angular-particle';
     SpinnerComponent,
     CurrencyFilterPipe,
     MinFilterPipe,
+    DatePipes,
+    CurrencyValueChange,
+    IcoActiveComponent,
+    IcoUpcomingComponent,
+    DescriptionComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -77,6 +90,7 @@ import { ParticlesModule } from 'angular-particle';
     MatTabsModule,
     ParticlesModule,
     NgxPaginationModule,
+    HttpClientModule,
     Ng2SearchPipeModule,
     ReactiveFormsModule, 
     DataTablesModule,
@@ -87,7 +101,14 @@ import { ParticlesModule } from 'angular-particle';
     AngularFontAwesomeModule,
     HttpModule,
     RouterModule.forRoot([
-      { path: '', component:AppComponent },
+      { path: '', component: CurrencyComponent },
+      { path: 'favorite', component: LoginTableComponent },
+      { path: 'disliked', component: DeleteTableComponent },
+      { path: 'portfolio', component:WalletComponent },
+      { path: 'ico/active', component: IcoActiveComponent },
+      { path: 'ico/upcoming', component: IcoUpcomingComponent },
+      { path: 'login', component: LoginUserComponent },
+      { path: 'currencies/:id', component: DescriptionComponent },
     ])
   ],
   providers: [
@@ -95,6 +116,8 @@ import { ParticlesModule } from 'angular-particle';
     NotifyService, 
     ItemService,
     DislikeService,
+    IcoActiveService,
+    ListcryptocompareService,
     ApiService,
     NgbActiveModal,
     WalletService,

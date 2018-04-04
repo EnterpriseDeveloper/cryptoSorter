@@ -14,6 +14,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
 import { Coins } from './coins';
 import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 import { HeaderComponent} from '../header/header.component';
+import {LoginUserComponent} from '../login-user/login-user.component';
+import { ListcryptocompareService} from '../aservices/listcryptocompare.service';
 
 type UserFields = 'coinValue'| 'addValueCoin';
 
@@ -32,7 +34,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   @ViewChild('autofocus') autofocus;
 
   public isLoggedIn:boolean;
-  public isEmptyValue: boolean = false;
+  public isEmptyValue: boolean = true;
   public walletValue: any = [];
   public wallets: Observable<Wallet[]>;
   public apiSub: any;
@@ -72,6 +74,9 @@ export class WalletComponent implements OnInit, OnDestroy {
   public selectedRow:number;
   public deleteIndex: any;
   public inputFocused = false;
+  public loadingCoin = false;
+  public listCompareSub: any;
+  public listComapreItem: any;
 
  coinForm: FormGroup ;
  addForm: FormGroup
@@ -111,6 +116,8 @@ export class WalletComponent implements OnInit, OnDestroy {
     public modalService: NgbModal,
     public fb: FormBuilder,
     public headerComponent: HeaderComponent,
+    public listCompare: ListcryptocompareService,
+    public http: Http
   ) {
     this.loading = true;  
     this.userSub = this.authService.user.subscribe(
@@ -118,6 +125,7 @@ export class WalletComponent implements OnInit, OnDestroy {
         if (auth == null) {
           this.isLoggedIn = false;
           this.walletValue = [];
+          this.loading = false;
         } else {
           this.isLoggedIn = true;
           this.wallets = this.walletService.getListWallet();
@@ -132,6 +140,7 @@ export class WalletComponent implements OnInit, OnDestroy {
 
 
    getWalletList(){ 
+    let promise = new Promise((resolve, reject) =>{
  this.walletSub = this.wallets.subscribe((walletData)=>{
       this.walletData = walletData;
       this.walletValue = [];
@@ -139,28 +148,41 @@ export class WalletComponent implements OnInit, OnDestroy {
         this.walletData.forEach(walletData =>{
         return this.walletValue.push(walletData.id);
       })
-      this.apiSub = this.apiService.get()  
-      .subscribe((dataItem) => {
-        this.dataTables = dataItem; 
-  
-       this.filterWallet =  this.dataTables.filter((i) => {
-          return this.walletValue.indexOf(i.id) != -1;
-       });  
-      
-      this.connection = _.map(this.filterWallet, (item) => {
-        return _.assign(item, _.find(this.walletData, ['id', item['id'] ]));
-    });
-
-    this.isEmptyFind();
-
-     let filterCur = this.dataTables.filter((i) => {
-      return this.walletValue.indexOf(i.id) === -1;
-   }); 
-  
-    this.items = filterCur;
-     });
+      resolve(this.walletValue);
     })
+  });
 
+promise.then(()=>{
+ this.getData();
+})  
+
+};
+
+  getData(){
+    this.listCompareSub = this.listCompare.get()
+    .subscribe((listItem) => {
+      this.listComapreItem = listItem;
+    this.apiSub = this.apiService.get()  
+    .subscribe((dataItem) => {
+      this.dataTables = dataItem; 
+
+     this.filterWallet =  this.dataTables.filter((i) => {
+        return this.walletValue.indexOf(i.id) != -1;
+     });  
+    
+    this.connection = _.map(this.filterWallet, (item) => {
+      return _.assign(item, _.find(this.walletData, ['id', item['id'] ]));
+  });
+
+  this.isEmptyFind();
+
+   let filterCur = this.dataTables.filter((i) => {
+    return this.walletValue.indexOf(i.id) === -1;
+ }); 
+
+  this.items = filterCur;
+   });
+  })
   }
 
 
@@ -171,6 +193,7 @@ isEmptyFind(){
   return this.isEmptyValue = false;
   }else{
    this.loading = false;
+   this.loadingCoin = false;
    return this.isEmptyValue = true;
   };
 }
@@ -234,11 +257,62 @@ allocation(){
 
  this.walletsCoin = this.newArray;
  this.loading = false; 
+ this.loadingCoin = false;
 
- setTimeout(()=>{
-  this.autofocus.nativeElement.focus()
- },500)
+ if(this.isLoggedIn == false){
+   return
+ } else {
+  setTimeout(()=>{
+    this.autofocus.nativeElement.focus()
+   },500)
+ }
 
+}
+
+symbolNoFit(symbol){
+  symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+  symbol = (symbol === "VERI" ? "VRM" : symbol);
+  symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+  
+  if( this.listComapreItem.Data[symbol] === undefined){
+    return false
+  }else{
+   return true
+  }
+}
+
+getCoinImage(symbol){
+  symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+  symbol = (symbol === "VERI" ? "VRM" : symbol);
+  symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+  
+  if( this.listComapreItem.Data[symbol] === undefined){
+    return "assets/icon.png";
+  }else{
+   return "https://www.cryptocompare.com" + this.listComapreItem.Data[symbol].ImageUrl;
+  }
+} 
+
+getWebPage(symbol){
+
+  let webPage 
+
+  symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+  symbol = (symbol === "VERI" ? "VRM" : symbol);
+  symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+
+  if( this.listComapreItem.Data[symbol] === undefined){
+    return
+  }else{
+    let page = 'https://cors-anywhere.herokuapp.com/https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id='+ this.listComapreItem.Data[symbol].Id
+    this.http         
+   .get(page)
+   .map(res =>  res.json())
+   .subscribe((web)=>{
+     webPage = web;
+     return  window.open(webPage.Data.General.WebsiteUrl , '_blank');
+   });
+  }
 }
 
   //sorting
@@ -267,11 +341,15 @@ public doSelect(value: any) {
   };
 }
 
+
+
 createWallet(addCoins){
+  this.loadingCoin = true;
   this.wallet.id = this.currencyAdd.id;
   this.wallet.coins = addCoins;
   this.walletService.createWallet(this.wallet);
   this.addModal.close();
+  this.getWalletList();
 }
 
 getValueCoin(wallet, tabCoin){
@@ -284,12 +362,14 @@ getValueCoin(wallet, tabCoin){
 
 
   updateAmount(coin, coinAmount: number,){
+    this.loadingCoin = true;
     let coins = coin.id;
     let findCoin = this.walletData.find((i)=> {
       return coins.indexOf(i.id) != -1;
     });
     this.walletService.updateCoin(findCoin.$key,{coins: coinAmount} );
     this.modalCoin.close()
+    this.getWalletList();
     }
 
 
@@ -304,6 +384,7 @@ getValueCoin(wallet, tabCoin){
   }
 
   deleteCoins(deleteCurrency){
+
     let coins = deleteCurrency.id;
     let findCoin = this.walletData.find((i)=> {
       return coins.indexOf(i.id) != -1;
@@ -315,6 +396,8 @@ getValueCoin(wallet, tabCoin){
       this.walletService.deleteCoin(findCoin.$key);
       this.walletsCoin.splice(index, 1);
       this.selectedRow = NaN;
+      this.loadingCoin = true;
+      this.getWalletList();
     },750)
   };
 
@@ -387,10 +470,23 @@ getValueCoin(wallet, tabCoin){
       }
     }
 
+    link(){
+      return false;
+    }
+
+    openRegistModal(){
+      const modalRef = this.modalService.open(LoginUserComponent);
+      $('.modal-content').animate({ opacity: 1 });
+      $('.modal-backdrop').animate({ opacity: 0.9 });
+    }
+
     ngOnDestroy(){
-this.userSub.unsubscribe();
-this.walletSub.unsubscribe();
-this.buildSub.unsubscribe();
+      if( this.isLoggedIn == true){
+        this.userSub.unsubscribe();
+        this.walletSub.unsubscribe();
+        this.buildSub.unsubscribe();
+        this.listCompareSub.unsubscribe();
+      }
     }
   
 

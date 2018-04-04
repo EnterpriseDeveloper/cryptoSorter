@@ -1,0 +1,105 @@
+<div class="colorConnect">
+        <div class="spynerBasic" *ngIf="loading">
+            <spinner></spinner>
+        </div>
+        
+        
+        <div class="tableStyle">
+                <div class="paddingCurrency">
+
+<div [class.display]='!loadingTable'>
+        <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">
+                <p class="colorText text-center paddingCenter">
+                        Please wait while we're brainstorming over a thousand 
+                        of cryptocurrencies. Once loaded, navigation will be 
+                        lightning fast! Still waiting? Try guessing which coin is moon today!
+                </p>
+       </div>
+</div>
+
+<div [class.display]='loadingTable'>
+  <div class="tabStyle tableStyle2 particle fullPaddingTab">
+      <table id="icoActive-table" class="row-border hover table-striped modileTable" cellspacing="0" width="100%">
+       <!--   <div class="lenght">Showing {{perPage*page - perPage }}-{{perPage*page > icoData.length ? icoData.length : perPage*page}} of {{icoData.length}} items.</div>
+       -->
+        <thead>
+              <tr>
+                 <th class="colorText text-center">ICO name</th>   
+                 <th class="colorText text-center">Starting in</th>  
+                 <th class="colorText text-center">Ending in</th>  
+                 <th class="colorText text-center">Description</th>  
+              </tr>
+            </thead>
+           
+
+<tbody>
+    <tr *ngFor="let ico of icoData | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index ;">
+        <td  class="colorIco colorText tableSize text-center tableMobileSpeace">
+            <a href="{{ico.website}}" target="_blank"><img title="www.{{ico.name}}.com" src="{{ico.image}}"/></a></td>
+          <td class="colorText tableSizeNumber text-center tableMobileSpeace"><p class="centerWal">
+              {{ico.start_time | datePipes }}</p></td>
+          <td class="colorText tableSizeNumber text-center tableMobileSpeace">
+              <p class="centerWal">{{ico.end_time  | datePipes }}</p></td>
+            <td style="width:30%" class="colorText tableMobileSpeace">
+                <p class="centerWal">{{ico.description}}.</p></td>
+</tr>
+
+</tbody>
+</table>
+
+<pagination-template class="buttonTabs padding-right" #p="paginationApi" (pageChange)="onPageChange($event, 150)">
+
+  <ul class="pagination">
+     <li class="page-item" [class.disabled]="p.isFirstPage()">
+          <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(1)">
+                  <span class="screenDisplay">&#171;</span>
+                  <span class="mobileDisplay">First</span>
+          </a>
+      </li>
+      <li class="page-item" [class.disabled]="p.isFirstPage()">
+          <a class="page-link" href='#' (click)="link()" (click)="p.previous()">
+                  <span class="screenDisplay">&#8249;</span>
+                  <span class="mobileDisplay">Previous</span>
+          </a>
+       </li>
+  
+  
+       <li class="page-item" *ngFor="let page of p.pages" [class.active]="p.getCurrent() === page.value">
+           <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(page.value)">{{page.value}}</a>
+        </li>
+        <li class="page-item" [class.disabled]="p.isLastPage()">
+            <a class="page-link" href='#' (click)="link()" (click)="p.next()">
+                  <span class="screenDisplay">&#8250;</span>
+                  <span class="mobileDisplay">Next</span>
+              </a>
+        </li>
+        <li class="page-item" [class.disabled]="p.isLastPage()">
+             <a class="page-link" href='#' (click)="link()" (click)="p.getLastPage()">
+                  <span class="screenDisplay">&#187;</span>
+                  <span class="mobileDisplay">Last</span>
+              </a>
+         </li>
+    </ul>
+  </pagination-template> 
+
+<div class="row paddingTableWallet paddingmobile mobileDisplay">
+      <div class="col">
+        <div ngbDropdown class="d-inline-block colorPaging"> Show
+          <button class="btn btn-light btn-sm wallet" id="dropdownBasic1" ngbDropdownToggle>{{perPage}}</button>
+          <div class="dropdownMenu" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button class="dropdown-item wallet" (click)="switchCase('25')">25</button>
+            <button class="dropdown-item wallet" (click)="switchCase('50')">50</button>
+            <button class="dropdown-item wallet" (click)="switchCase('all')">All</button>
+          </div> items.
+        </div>
+      </div>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="push"></div>

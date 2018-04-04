@@ -1,0 +1,26 @@
+.cursor{
+    cursor: pointer;
+  }
+  
+  .titleIndex{
+    pointer-events: none;
+  }
+
+  .textCenterMarketLike{
+    padding-left:25%;
+ }
+ 
+ .textCenterIndexLike{
+     padding-left:37%;
+ }
+ 
+ .textCenterVolumeLike{
+     padding-left:32%;
+  }
+  
+  .textCenterPriceLike{
+      padding-left:30%;
+  }
+  .textCenterPercentLike{
+     padding-left:35%;
+  }

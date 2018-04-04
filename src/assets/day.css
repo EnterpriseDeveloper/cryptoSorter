@@ -1,9 +1,9 @@
 header{
-    background: linear-gradient(#002D3B, rgb(191, 228, 240));
+    background: linear-gradient(#afcbf7, white);
 }
 
 .navbarStyle{
-    background-color: #002D3B;
+    background-color: #afcbf7;
     height: 80px;
 }
 
@@ -22,23 +22,23 @@ header{
 }
 
 .paddingCurrency{
-    background-color: rgb(191, 228, 240);
+    background-color: white;
 }
 
 .site-footer{
     height: 150px;
-    background-color: #002D3B;
+    background-color: #afcbf7;
     padding-bottom: 50px;
     width: 100%;
 }
 
 
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
-    background-color: #06556d;
+    background-color: #afcbf7;
  }
 
  .colorConnect{
-    background-color: rgb(191, 228, 240);
+    background-color: white;
 }
 
 .modalStyle{
@@ -127,7 +127,7 @@ login{
    }
 
    #toDeleted:visited {
-    background-color: #aa0818;
+    background-color: rgb(187, 46, 60);
     margin-right: 1px;
     color: black;
     position: relative;
@@ -144,7 +144,7 @@ login{
    #toDeleted:hover {
     margin-right: 1px;
     color: black;
-    background-color: #aa0818;
+    background-color: rgb(187, 46, 60);
     position: relative;
     z-index: 100;
   }

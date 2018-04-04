@@ -1,13 +1,26 @@
-<div class="spynerBasic" *ngIf="loading">
-    <spinner></spinner>
-</div>
+<div class="colorConnect">
+        <div class="spynerBasic" *ngIf="loading">
+            <spinner></spinner>
+        </div>
+        
+        
+        <div class="tableStyle">
+                <div class="paddingCurrency">
+
+       <div *ngIf='!isLoggedIn' class="paddingTabs textRegist emptyPadding particle text-center">
+            <a class="colorTextLink textDecor" href='#' (click)="link()" (click)="openRegistModal()"
+                >Register now</a><span class="colorText"> to track your favorite or disliked coins.
+                    Add currency coins to your portfolio. It's free! </span>              
+                     </div>
+                
+<div *ngIf='isLoggedIn'>                   
 
 <div *ngIf="likeCurrency.length === 0">
 <div *ngIf="!loading">
     <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet"> 
        <div class="colorText text-center mobileDisplay">
            Here you'll track most beloved coins. To add a coin, use 
-           <button class="btn btn-sm btn-outline-success buttonLike">
+           <button [routerLink]="['/']" class="btn btn-sm btn-outline-success buttonLike">
         <i class="fa fa-thumbs-up" aria-hidden="true"></i>
     </button> button in Everything. Nothing yet here!</div>
 
@@ -33,11 +46,11 @@
 
 
             <div>
-                    <input #autofocus style="width:15%; float:left; margin-right:10px; margin-bottom:10px;" class="form-control search" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="filter">
-                    <div class="lenght1">Showing {{perPage*page - perPage }}-{{perPage*page}} of {{(likeCurrency | filter:filter).length}} likes.</div>   
+                    <input #autofocus style="width:200px; float:left; margin-right:10px; margin-bottom:10px;" class="form-control search" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="filter">
+                    <div class="lenght1">Showing {{perPage*page + 1 - perPage }}-{{perPage*page > (likeCurrency | filter:filter).length ? (likeCurrency | filter:filter).length : perPage*page}} of {{(likeCurrency | filter:filter).length}} likes.</div>   
                 </div>
 
-    <div class="tabStyle tableStyle2">
+    <div class="tabStyle tableStyle2 fullPaddingTab">
         <table class="row-border hover table-striped modileTable" cellspacing="0" width="100%">
                 <thead>
                     <tr>
@@ -66,26 +79,29 @@
                     | filter:filter | paginate: { itemsPerPage: perPage, currentPage: page }; let i = index;"
                     class="animated" [class.bounceOut]="i == selectedRow">
                         <td style="width:20%;" class="colorText tableSize tableMobileSpeaceName">
-                                <img class="sizeImg centerImage"
-                                src="https://chasing-coins.com/api/v1/std/logo/{{like.symbol}}">
+                            <img [class.titleIndex]="!symbolNoFit(like.symbol)"
+                            [class.cursor]="symbolNoFit(like.symbol)"
+                            [src]="getCoinImage(like.symbol)" (click)="getWebPage(like.symbol)"
+                             type="image" class='sizeImg2' title="{{like.id}} Website" />
                                 <p class="tableName centerWalName">
                             {{like.name}}   
                             <a target="_blank" href="https://coinmarketcap.com/currencies/{{like.id}}/" 
                             class="linksTable mobileDisplay">({{like.symbol}})</a> </p></td>
-                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                            <p class="centerWal">{{like.formulaValue}}</p></td>
-                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                            <p class="centerWal">{{like.market_cap_usd | number :'1.0'}} $</p></td>
-                        <td style="width:14%;" class="colorText tableSize text-center tableMobileSpeace">
-                            <p class="centerWal">{{like['24h_volume_usd'] | number :'1.0'}} $</p></td>
-                        <td style="width:14%;" class="colorText tableSize text-center weight tableMobileSpeace">
-                            <p class="centerWal"><span 
-                            [style.color]="like.percent_change_24h < 0 ? '#DC3545' : '#009130'">
-                            {{like.percent_change_24h | number: '1.2-2'}} %</span></p></td>
-                        <td style="width:14%;"  class="colorText tableSize text-center weight2 tableMobileSpeace"><p class="centerWal">
-                            {{like.price_usd | number :'1.0-5'}} $</p></td>
+                        <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                            <p class="centerWal textCenterIndexLike">{{like.formulaValue}}</p></td>
+                        <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                            <p class="centerWal textCenterMarketLike">{{like.market_cap_usd | currencyValueChange }}</p></td>
+                        <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
+                            <p class="centerWal textCenterVolumeLike">{{like['24h_volume_usd'] | currencyValueChange }}</p></td>
+                        <td style="width:14%;" class="colorText tableSizeNumber weight tableMobileSpeace">
+                            <p class="centerWal textCenterPercentLike"><span 
+                            [style.color]="like.percent_change_24h < 0 ? '#ff5e5e' : '#6ac13e'">
+                            {{like.percent_change_24h | number: '1.2-2'}}</span></p></td>
+                        <td style="width:14%;"  class="colorText tableSizeNumber weight2 tableMobileSpeace">
+                            <p class="centerWal textCenterPriceLike">
+                            {{like.price_usd | currencyValueChange }}</p></td>
                         <td style="width:10%;" class="text-center tableMobileSpeace">
-                                <p class="centerWal"><button (click)='deleteLikes(like, i)' class="btn btn-sm btn-secondary delete remove"
+                                <p class="centerWal"><button (click)='deleteLikes(like, i)' class="btn btn-sm btn-success delete remove"
                                       rel="tooltip" title="Remove" data-placement="left">
                                 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                             </button></p>
@@ -132,7 +148,7 @@
                   </ul>
                 </pagination-template> 
 
-                    <div class="row paddingTableWallet paddingmobile">
+                    <div class="row paddingTableWallet paddingmobile mobileDisplay">
                             <div class="col">
                               <div ngbDropdown class="d-inline-block colorPaging"> Show
                                 <button class="btn btn-light btn-sm wallet" id="dropdownBasic1" ngbDropdownToggle>{{perPage}}</button>
@@ -149,7 +165,11 @@
         </div>
       </div>  
      </div> 
-    </div>   
+    </div> 
+    </div>  
+</div>  
+</div> 
+</div>  
 
     <div class="push"></div>
 

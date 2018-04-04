@@ -8,6 +8,9 @@ import { Dislikes } from '../aservices/Dislikes';
 import { ApiService } from '../aservices/api-service.service';
 import { Observable } from 'rxjs/Observable';
 import { HeaderComponent } from '../header/header.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {LoginUserComponent} from '../login-user/login-user.component';
+import { ListcryptocompareService } from '../aservices/listcryptocompare.service';
 
 
 @Component({
@@ -43,6 +46,8 @@ export class DeleteTableComponent implements OnDestroy {
   public perPage = 25;
   public filter:any;
   public selectedRow: number;
+  public listCompareSub: any;
+  public listComapreItem: any;
 
 
   constructor(
@@ -50,13 +55,17 @@ export class DeleteTableComponent implements OnDestroy {
     private apiService: ApiService,
     private authService: AuthService,
     private headerComponent: HeaderComponent,
+    private modalService: NgbModal,
+    private listCompare: ListcryptocompareService,
+    private http: Http
   )  {
-    this.loading = true;
+
    this.userSub = this.authService.user.subscribe(
       (auth) => {
         if (auth == null) {
           this.isLoggedIn = false;
         } else {
+          this.loading = true;
           this.isLoggedIn = true;
           this.dislikes = this.dislikeService.getListDislike();
           this.getDislikeList();
@@ -85,6 +94,9 @@ export class DeleteTableComponent implements OnDestroy {
     };
 
     getData(){
+      this.listCompareSub = this.listCompare.get()
+      .subscribe((listItem) => {
+        this.listComapreItem = listItem;
       this.apiSub = this.apiService.get()  
       .subscribe((dataItem) => {
         this.dataTables = dataItem;  
@@ -93,7 +105,8 @@ export class DeleteTableComponent implements OnDestroy {
        });  
        this.isEmptyWallet = this.headerComponent.isEmpty();
        this.createTable(); 
-    });
+      });
+     })
     }
 
 
@@ -135,11 +148,60 @@ export class DeleteTableComponent implements OnDestroy {
       this.dislikeLenght = this.dislikeCurrency.length;
       this.loading = false; 
 
-      setTimeout(()=>{
-        this.autofocus.nativeElement.focus()
-      },500)
-
+      if(this.isLoggedIn == true){
+        if(this.dislikeLenght != 0){
+          setTimeout(()=>{
+            this.autofocus.nativeElement.focus()
+          },500)
+        }
+     }
     };
+
+    symbolNoFit(symbol){
+      symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+      symbol = (symbol === "VERI" ? "VRM" : symbol);
+      symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      
+      if( this.listComapreItem.Data[symbol] === undefined){
+        return false
+      }else{
+       return true
+      }
+    }
+
+    getCoinImage(symbol){
+      symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+      symbol = (symbol === "VERI" ? "VRM" : symbol);
+      symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      
+      if( this.listComapreItem.Data[symbol] === undefined){
+        return "assets/icon.png";
+      }else{
+       return "https://www.cryptocompare.com" + this.listComapreItem.Data[symbol].ImageUrl;
+      }
+    } 
+
+    getWebPage(symbol){
+
+      let webPage 
+
+      symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+      symbol = (symbol === "VERI" ? "VRM" : symbol);
+      symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+
+      if( this.listComapreItem.Data[symbol] === undefined){
+        return
+      }else{
+        let page = 'https://cors-anywhere.herokuapp.com/https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id='+ this.listComapreItem.Data[symbol].Id
+        this.http         
+       .get(page)
+       .map(res =>  res.json())
+       .subscribe((web)=>{
+         webPage = web;
+         return  window.open(webPage.Data.General.WebsiteUrl , '_blank');
+       });
+      }
+    }
 
 
           //sorting
@@ -200,11 +262,18 @@ export class DeleteTableComponent implements OnDestroy {
      },750)
   } 
 
+  openRegistModal(){
+    const modalRef = this.modalService.open(LoginUserComponent);
+    $('.modal-content').animate({ opacity: 1 });
+    $('.modal-backdrop').animate({ opacity: 0.9 });
+  }
+
 
   ngOnDestroy(){
-    this.userSub.unsubscribe();
-    this.dislikeSub.unsubscribe();
-    this.apiSub.unsubscribe();
+    if(this.isLoggedIn == true){
+      this.userSub.unsubscribe();
+      this.dislikeSub.unsubscribe();
+    }
   }
 
 

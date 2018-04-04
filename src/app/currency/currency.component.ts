@@ -8,6 +8,9 @@ import { ItemService } from '../aservices/item.service';
 import { Likes } from '../aservices/Likes';
 import { HeaderComponent } from '../header/header.component';
 import { Currency } from '../shared/currency';
+import { ListcryptocompareService} from '../aservices/listcryptocompare.service';
+import "rxjs/Rx";
+import { Router } from '@angular/router';
 
 import { ApiService } from '../aservices/api-service.service';
 import { AuthService } from '../aservices/auth.service';
@@ -19,6 +22,7 @@ import { WalletService } from '../aservices/wallet.service';
 import { Wallet } from '../aservices/Wallet';
 import { reject } from 'q';
 import { resolve } from 'url';
+import * as _ from "lodash";
 declare var jquery:any;
 declare var $ :any;
 
@@ -30,7 +34,10 @@ type FormErrors = { [u in UserFields]: string };
   selector: 'currency',
   templateUrl: './currency.component.html',
   styleUrls: ['./currency.component.css'],
-  providers: [ApiService, WalletService, HeaderComponent]
+  providers: [ApiService,
+     WalletService, 
+     HeaderComponent,
+    ListcryptocompareService]
 })
 export class CurrencyComponent implements OnDestroy{
 
@@ -91,6 +98,8 @@ export class CurrencyComponent implements OnDestroy{
   public addedCoin: any = NaN;
   public indexWallet: number;
   public minIndex: any;
+  public listCompareSub: any;
+  public listComapreItem: any;
  
 
   constructor(
@@ -102,12 +111,15 @@ export class CurrencyComponent implements OnDestroy{
     public loginUser: LoginUserComponent,
     public walletService: WalletService,
     public fb: FormBuilder,
-    public headerComponent: HeaderComponent  ) {
-    this.loading = true;  
+    public headerComponent: HeaderComponent,
+    public listCompare: ListcryptocompareService,
+    public router: Router,
+    public http: Http) {
     this.loadingTable = true;  
    this.userSub = this.authService.user.subscribe(
       (auth) => {
         if (auth == null) {
+          this.loading = true;  
           this.isLoggedIn = false;
           this.dislikeValue = [];
           this.likeValue = [];
@@ -117,6 +129,7 @@ export class CurrencyComponent implements OnDestroy{
           this.page = 1;
 
         } else {
+          this.loading = true;  
           this.isLoggedIn = true;
           this.likes = this.likeService.getListLike();
           this.wallets = this.walletService.getListWallet();
@@ -129,11 +142,29 @@ export class CurrencyComponent implements OnDestroy{
         }
       });
       this.minfilter.formulaValue = Number(localStorage.getItem("minIndex"));
+      if(this.minfilter.formulaValue == 0){
+         this.minfilter.formulaValue = NaN;
+      }
       this.filter.formulaValue = Number(localStorage.getItem("maxIndex"));
+      if(this.filter.formulaValue == 0){
+        this.filter.formulaValue = NaN;
+     }
       this.minfilter.market_cap_usd = Number(localStorage.getItem("minMarket"));
+      if(this.minfilter.market_cap_usd == 0){
+        this.minfilter.market_cap_usd = NaN;
+     }
       this.filter.market_cap_usd = Number(localStorage.getItem("maxMarket"));
+      if(this.filter.market_cap_usd == 0){
+        this.filter.market_cap_usd = NaN;
+     }
       this.minfilter['24h_volume_usd'] = Number(localStorage.getItem("minVolume"));
+      if(this.minfilter['24h_volume_usd'] == 0){
+        this.minfilter['24h_volume_usd'] = NaN;
+     }
       this.filter['24h_volume_usd'] = Number(localStorage.getItem("maxVolume"));
+      if(this.filter['24h_volume_usd'] == 0){
+        this.filter['24h_volume_usd'] = NaN;
+     }
   }
 
   minIndexChange(value){
@@ -195,19 +226,69 @@ export class CurrencyComponent implements OnDestroy{
 
    promise.then(()=>{
      this.getData();
-   }
-  )     
+   })  
+   
     };
 
     getData(){
-      this.apiSub = this.apiService.get()  
-      .subscribe((dataItem) => {
-        this.dataTables = dataItem;  
-        this.filterDislike = this.dataTables.filter((i) => {
-          return this.dislikeValue.indexOf(i.id) === -1;
-       });  
-       this.index(); 
-    });
+      this.listCompareSub = this.listCompare.get()
+      .subscribe((listItem) => {
+        this.listComapreItem = listItem;
+        this.apiSub = this.apiService.get()  
+        .subscribe((dataItem) => {
+          this.dataTables = dataItem;  
+          this.filterDislike = this.dataTables.filter((i) => {
+            return this.dislikeValue.indexOf(i.id) === -1;
+         });  
+         this.index(); 
+        });
+      })
+    }
+
+    symbolNoFit(symbol){
+      symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+      symbol = (symbol === "VERI" ? "VRM" : symbol);
+      symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      
+      if( this.listComapreItem.Data[symbol] === undefined){
+        return false
+      }else{
+       return true
+      }
+    }
+
+    getCoinImage(symbol){
+      symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+      symbol = (symbol === "VERI" ? "VRM" : symbol);
+      symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      
+      if( this.listComapreItem.Data[symbol] === undefined){
+        return "assets/icon.png";
+      }else{
+       return "https://www.cryptocompare.com" + this.listComapreItem.Data[symbol].ImageUrl;
+      }
+    } 
+
+    getWebPage(symbol){
+
+      let webPage 
+
+      symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+      symbol = (symbol === "VERI" ? "VRM" : symbol);
+      symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+
+      if( this.listComapreItem.Data[symbol] === undefined){
+        return
+      }else{
+        let page = 'https://cors-anywhere.herokuapp.com/https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id='+ this.listComapreItem.Data[symbol].Id
+        this.http         
+       .get(page)
+       .map(res =>  res.json())
+       .subscribe((web)=>{
+         webPage = web;
+         return  window.open(webPage.Data.General.WebsiteUrl , '_blank');
+       });
+      }
     }
 
 
@@ -220,13 +301,13 @@ export class CurrencyComponent implements OnDestroy{
   
      function getFormulaValue(dataItem) {
 
-      dataItem['24h_volume_usd'] = Number.parseInt(dataItem['24h_volume_usd']);
+      dataItem['24h_volume_usd'] = Number(dataItem['24h_volume_usd']);
 
       dataItem.percent_change_24h = Number(dataItem.percent_change_24h);
 
       dataItem.price_usd = Number(dataItem.price_usd);
 
-      dataItem.market_cap_usd = Number.parseInt(dataItem.market_cap_usd);
+      dataItem.market_cap_usd = Number(dataItem.market_cap_usd);
   
         let modul = Math.abs(dataItem.percent_change_24h);
         let formula = ((dataItem['24h_volume_usd']/ ((modul / 100 ) + 1 ) / parseInt(dataItem.market_cap_usd)) * 100);
@@ -357,6 +438,7 @@ createWallet(coins){
   this.wallet.coins = coins;
 this.walletService.createWallet(this.wallet);
 this.addedCoin = this.indexWallet;
+this.router.navigate(['']);
     setTimeout(()=>{
       this.addedCoin = NaN;
     },500);
@@ -405,6 +487,18 @@ walletColor(row){
   return this.walletValue.indexOf(row.id) != -1;
 }
 
+gotoDetail(id): void {
+  id = (id === "MIOTA" ? "IOT" : id);
+  id = (id === "VERI" ? "VRM" : id);
+  id = (id === "ETHOS" ? "BQX" : id);
+
+  if( this.listComapreItem.Data[id] === undefined){
+    return
+  }else{
+  this.router.navigate(['currencies/', id ]);
+  }
+}
+
 
 
 ngOnDestroy(){
@@ -412,7 +506,6 @@ this.userSub = this.authService.user.subscribe(
   (auth) => {
     if (auth == null) {
       this.formSub.unsubscribe();
-      this.apiSub.unsubscribe();
     } else {
       this.dislikeSub.unsubscribe();
       this.likeSub.unsubscribe();

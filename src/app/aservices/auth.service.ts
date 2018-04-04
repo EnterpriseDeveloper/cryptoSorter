@@ -23,7 +23,7 @@ export class AuthService {
 
     this.user = this.afAuth.authState 
       .switchMap((user) => {
-        if (user) {
+        if (user) {          
           return  this.afs.object(`/users/${user.uid}`);
         } else {
           return Observable.of(null);
