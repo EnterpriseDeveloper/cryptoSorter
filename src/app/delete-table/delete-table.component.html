@@ -82,22 +82,22 @@
                 <img [class.titleIndex]="!symbolNoFit(dislike.symbol)"
                 [class.cursor]="symbolNoFit(dislike.symbol)"
                 [src]="getCoinImage(dislike.symbol)" (click)="getWebPage(dislike.symbol)"
-                 type="image" class='sizeImg2' title="{{dislike.id}} Website" />
+                 type="image" class='sizeImg2' title="{{dislike.name}} website" />
                     <p class="tableName centerWalName">
                   {{dislike.name}}   
                   <a target="_blank" href="https://coinmarketcap.com/currencies/{{dislike.id}}/" 
                   class="linksTable mobileDisplay">({{dislike.symbol}})</a> </p></td>
               <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                  <p class="centerWal textCenterIndexDel">{{dislike.formulaValue}}</p></td>
+                  <p class="centerWal text-center">{{dislike.formulaValue}}</p></td>
               <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                  <p class="centerWal textCenterMarketDel">{{dislike.market_cap_usd | currencyValueChange }}</p></td>
+                  <p class="centerWal  text-center">{{dislike.market_cap_usd | currencyValueChange }}</p></td>
               <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                  <p class="centerWal textCenterVolumeDel">{{dislike['24h_volume_usd'] | currencyValueChange }}</p></td>
+                  <p class="centerWal  text-center">{{dislike['24h_volume_usd'] | currencyValueChange }}</p></td>
               <td style="width:14%;" width="100px" class="colorText tableSizeNumber weight tableMobileSpeace">
-                  <p class="centerWal textCenterPercentDel"><span [style.color]="dislike.percent_change_24h < 0 ? '#ff5e5e' : '#6ac13e'">
+                  <p class="centerWal text-center"><span [style.color]="dislike.percent_change_24h < 0 ? '#ff5e5e' : '#6ac13e'">
                       {{dislike.percent_change_24h | number:'1.2-2'}}</span></p></td>
               <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                  <p class="centerWal textCenterPriceDel">{{dislike.price_usd | currencyValueChange }}</p></td>
+                  <p class="centerWal text-center">{{dislike.price_usd | currencyValueChange }}</p></td>
               <td style="width:10%;" class="text-center tableMobileSpeace">
                     <p class="centerWal"><button class="btn btn-sm btn-secondary delete remove" 
                         (click)='deleteDislike(dislike, i)' rel="tooltip" title="To Everything" data-placement="left">

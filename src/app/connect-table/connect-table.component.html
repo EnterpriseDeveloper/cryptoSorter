@@ -50,7 +50,7 @@
         <li id="everything" [routerLink]="['/']" routerLinkActive="everything" [routerLinkActiveOptions]="{ exact: true }">Everything</li>
         <li id="toFavorite" [routerLink]="['/favorite']" routerLinkActive="toFavorite" >Favorite</li>
         <li id="toDeleted" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
-        <li id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet">Portfolio</li>
+        <li id="toWallet" [routerLink]="['/portfolio/:id']" routerLinkActive="toWallet">Portfolio</li>
         <li>
             <div ngbDropdown class="d-inline-block">
                 <button routerLinkActive="toIco" class="icoActive" id="dropdownBasic1" ngbDropdownToggle><span class="colorText">ICO</span></button>

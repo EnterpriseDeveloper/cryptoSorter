@@ -82,23 +82,23 @@
                             <img [class.titleIndex]="!symbolNoFit(like.symbol)"
                             [class.cursor]="symbolNoFit(like.symbol)"
                             [src]="getCoinImage(like.symbol)" (click)="getWebPage(like.symbol)"
-                             type="image" class='sizeImg2' title="{{like.id}} Website" />
+                             type="image" class='sizeImg2' title="{{like.name}} website" />
                                 <p class="tableName centerWalName">
                             {{like.name}}   
                             <a target="_blank" href="https://coinmarketcap.com/currencies/{{like.id}}/" 
                             class="linksTable mobileDisplay">({{like.symbol}})</a> </p></td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                            <p class="centerWal textCenterIndexLike">{{like.formulaValue}}</p></td>
+                            <p class="centerWal text-center">{{like.formulaValue}}</p></td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                            <p class="centerWal textCenterMarketLike">{{like.market_cap_usd | currencyValueChange }}</p></td>
+                            <p class="centerWal text-center">{{like.market_cap_usd | currencyValueChange }}</p></td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                            <p class="centerWal textCenterVolumeLike">{{like['24h_volume_usd'] | currencyValueChange }}</p></td>
+                            <p class="centerWal text-center">{{like['24h_volume_usd'] | currencyValueChange }}</p></td>
                         <td style="width:14%;" class="colorText tableSizeNumber weight tableMobileSpeace">
-                            <p class="centerWal textCenterPercentLike"><span 
+                            <p class="centerWal text-center"><span 
                             [style.color]="like.percent_change_24h < 0 ? '#ff5e5e' : '#6ac13e'">
                             {{like.percent_change_24h | number: '1.2-2'}}</span></p></td>
                         <td style="width:14%;"  class="colorText tableSizeNumber weight2 tableMobileSpeace">
-                            <p class="centerWal textCenterPriceLike">
+                            <p class="centerWal text-center">
                             {{like.price_usd | currencyValueChange }}</p></td>
                         <td style="width:10%;" class="text-center tableMobileSpeace">
                                 <p class="centerWal"><button (click)='deleteLikes(like, i)' class="btn btn-sm btn-success delete remove"

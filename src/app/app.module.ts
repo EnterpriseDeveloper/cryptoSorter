@@ -54,7 +54,7 @@ import { IcoUpcomingComponent } from './ico/ico-upcoming/ico-upcoming.component'
 import { IcoActiveService } from './aservices/ico-active.service';
 import { DatePipes } from './shared/date.pipe';
 import { DescriptionComponent } from './currency/description/description.component';
-
+import { SharedLinkService } from './aservices/shared-link.service';
 
 
 @NgModule({
@@ -105,6 +105,7 @@ import { DescriptionComponent } from './currency/description/description.compone
       { path: 'favorite', component: LoginTableComponent },
       { path: 'disliked', component: DeleteTableComponent },
       { path: 'portfolio', component:WalletComponent },
+      { path: 'portfolio/:id', component:WalletComponent },
       { path: 'ico/active', component: IcoActiveComponent },
       { path: 'ico/upcoming', component: IcoUpcomingComponent },
       { path: 'login', component: LoginUserComponent },
@@ -119,6 +120,7 @@ import { DescriptionComponent } from './currency/description/description.compone
     IcoActiveService,
     ListcryptocompareService,
     ApiService,
+    SharedLinkService,
     NgbActiveModal,
     WalletService,
     LoginUserComponent,

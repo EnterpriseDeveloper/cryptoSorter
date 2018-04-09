@@ -131,8 +131,9 @@ export class CurrencyComponent implements OnDestroy{
         } else {
           this.loading = true;  
           this.isLoggedIn = true;
+          let userId = auth.uid;
           this.likes = this.likeService.getListLike();
-          this.wallets = this.walletService.getListWallet();
+          this.wallets = this.walletService.getListWallet(userId);
           this.dislikes = this.dislikeService.getListDislike();
           this.getLikeList();
           this.getWalletList();

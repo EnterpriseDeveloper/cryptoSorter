@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewEncapsulation, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators,} from '@angular/forms';
@@ -16,6 +16,9 @@ import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 import { HeaderComponent} from '../header/header.component';
 import {LoginUserComponent} from '../login-user/login-user.component';
 import { ListcryptocompareService} from '../aservices/listcryptocompare.service';
+import { SharedLinkService } from '../aservices/shared-link.service';
+import { ActivatedRoute  } from '@angular/router';
+import { AngularFireDatabase } from "angularfire2/database-deprecated";
 
 type UserFields = 'coinValue'| 'addValueCoin';
 
@@ -32,11 +35,11 @@ type FormErrors = { [u in UserFields]: string };
 export class WalletComponent implements OnInit, OnDestroy {
 
   @ViewChild('autofocus') autofocus;
+  @ViewChild('autofocusWallets') autofocusWallet: ElementRef;
 
   public isLoggedIn:boolean;
   public isEmptyValue: boolean = true;
   public walletValue: any = [];
-  public wallets: Observable<Wallet[]>;
   public apiSub: any;
   public userSub: any;
   public dataTables: any;
@@ -77,6 +80,8 @@ export class WalletComponent implements OnInit, OnDestroy {
   public loadingCoin = false;
   public listCompareSub: any;
   public listComapreItem: any;
+  public userEmail: string;
+  public userId: string;
 
  coinForm: FormGroup ;
  addForm: FormGroup
@@ -113,11 +118,14 @@ export class WalletComponent implements OnInit, OnDestroy {
     private apiService: ApiService,
     public authService: AuthService,
     public walletService: WalletService,
+    public sharedService: SharedLinkService,
     public modalService: NgbModal,
     public fb: FormBuilder,
     public headerComponent: HeaderComponent,
     public listCompare: ListcryptocompareService,
-    public http: Http
+    public http: Http,
+    public activityRouter: ActivatedRoute,
+    public db: AngularFireDatabase 
   ) {
     this.loading = true;  
     this.userSub = this.authService.user.subscribe(
@@ -126,10 +134,13 @@ export class WalletComponent implements OnInit, OnDestroy {
           this.isLoggedIn = false;
           this.walletValue = [];
           this.loading = false;
+          this.getIdLink();
         } else {
+          this.userEmail = auth.email;
+          this.userId = auth.uid;
           this.isLoggedIn = true;
-          this.wallets = this.walletService.getListWallet();
-          this.getWalletList();
+          this.getWalletList(this.userId);
+        //  this.pushDataShareLink(); записывать только раз.
         }
       });
    }
@@ -138,10 +149,34 @@ export class WalletComponent implements OnInit, OnDestroy {
     this.buildForm();
    }
 
+   private idLink: string;
+   private linkIsempty: boolean;
+   private sharedData : any;
+   private userIdLink: any;
+   getIdLink(){
+     this.idLink = this.activityRouter.snapshot.paramMap.get('id');
+     if(this.idLink == ':id'){
+       this.linkIsempty = true;
+       return
+     }else{
+       this.linkIsempty = false;
+       this.loading = true;
+       this.isLoggedIn = true;
+         this.db.list('/accessShared/'+ this.idLink + '/')
+         .subscribe((shared)=>{
+           this.sharedData = shared;
+           this.userId =this.sharedData[0].$value
+           console.log(this.userId)
+           this.getWalletList(this.userId);
+         })
 
-   getWalletList(){ 
+     }
+   }
+
+
+   getWalletList(idUser){ 
     let promise = new Promise((resolve, reject) =>{
- this.walletSub = this.wallets.subscribe((walletData)=>{
+ this.walletSub = this.walletService.getListWallet(idUser).subscribe((walletData)=>{
       this.walletData = walletData;
       this.walletValue = [];
       this.isEmptyWallet = this.headerComponent.isEmpty();
@@ -334,9 +369,13 @@ openModuleAdd(addCoin){
 
 public doSelect(value: any) { 
   this.currencyAdd = this.dataTables.find(myObj => myObj.id === value);
+
   if(this.currencyAdd.length > 0){
   return this.chosenCur = false;
   }else{
+  //  setTimeout(()=>{
+  //    this.autofocusWallet.nativeElement.focus();
+  //  },1000);
    return this.chosenCur = true;
   };
 }
@@ -349,7 +388,7 @@ createWallet(addCoins){
   this.wallet.coins = addCoins;
   this.walletService.createWallet(this.wallet);
   this.addModal.close();
-  this.getWalletList();
+  this.getWalletList(this.userId);
 }
 
 getValueCoin(wallet, tabCoin){
@@ -369,7 +408,7 @@ getValueCoin(wallet, tabCoin){
     });
     this.walletService.updateCoin(findCoin.$key,{coins: coinAmount} );
     this.modalCoin.close()
-    this.getWalletList();
+    this.getWalletList(this.userId);
     }
 
 
@@ -397,7 +436,7 @@ getValueCoin(wallet, tabCoin){
       this.walletsCoin.splice(index, 1);
       this.selectedRow = NaN;
       this.loadingCoin = true;
-      this.getWalletList();
+      this.getWalletList(this.userId);
     },750)
   };
 
@@ -480,8 +519,34 @@ getValueCoin(wallet, tabCoin){
       $('.modal-backdrop').animate({ opacity: 0.9 });
     }
 
+    public sharedLink: string;
+
+    pushDataShareLink(){
+      this.sharedLink = btoa(this.userEmail).slice(-10);
+      this.sharedService.addShare(this.sharedLink, this.userId);
+    }
+
+    private sharedLinkModal;
+    getSharedLink(shareLinkModal){
+      this.sharedLinkModal = this.modalService.open(shareLinkModal, { windowClass: 'dark-modal' })
+      $('.modal-content').animate({ opacity: 1 });
+      $('.modal-backdrop').animate({ opacity: 0.9 });
+    }
+
+    deploySharedAccess(){
+
+    }
+
+
+    
+
     ngOnDestroy(){
       if( this.isLoggedIn == true){
+       this.userSub.unsubscribe();
+        this.walletSub.unsubscribe();
+        this.buildSub.unsubscribe();
+        this.listCompareSub.unsubscribe();
+      }if(this.linkIsempty == false){
         this.userSub.unsubscribe();
         this.walletSub.unsubscribe();
         this.buildSub.unsubscribe();

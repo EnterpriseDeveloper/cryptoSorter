@@ -33,7 +33,8 @@ export class ConnectTableComponent implements OnDestroy {
           this.isLoggedIn = false;
         } else {
           this.isLoggedIn = true;
-          this.wallets = this.walletService.getListWallet();
+          let userId = auth.uid
+          this.wallets = this.walletService.getListWallet(userId);
           this.getWalletList();
         }
       });

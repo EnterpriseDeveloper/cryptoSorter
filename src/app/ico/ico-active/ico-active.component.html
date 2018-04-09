@@ -36,11 +36,11 @@
           <tr *ngFor="let ico of icoData | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index ;">
             <td  class="colorIco colorText tableSize text-center tableMobileSpeace">
                 <a href="{{ico.website}}" target="_blank"><img title="www.{{ico.name}}.com" src="{{ico.image}}"/></a></td>
-              <td class="colorText tableSizeNumber tableMobileSpeace paddingDate"><p class="centerWal">
+              <td style="width:20%" class="colorText tableSizeNumber tableMobileSpeace"><p class="centerWal text-center">
                 {{ico.start_time | datePipes }} </p></td>
-                <td class="colorText tableSizeNumber tableMobileSpeace paddingDate">
-                    <p class="centerWal">{{ico.end_time  | datePipes }} </p></td>
-                  <td style="width:150px" class="colorText text-left tableMobileSpeace">
+                <td style="width:20%" class="colorText tableSizeNumber tableMobileSpeace">
+                    <p class="centerWal text-center">{{ico.end_time  | datePipes }} </p></td>
+                  <td style="width:30%" class="colorText text-left tableMobileSpeace">
                       <p class="centerWal">{{ico.description}}.</p></td>
 </tr>
 

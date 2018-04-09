@@ -220,7 +220,7 @@ export class LoginTableComponent implements OnDestroy{
         window.scrollBy( 0, scrollStep );
     }
     else clearInterval(scrollInterval); 
-},15);
+          },15);
     if (e)
       this.page = e;
   }

@@ -53,6 +53,7 @@
             <input #autofocus style="width:200px; float:left" class="form-control search" type="text" placeholder="Search"
                 [(ngModel)]="filter">
             <button class="btn btn-infoWallet addCoinBut wallet buttonsTabs2 mobileDisplay" (click)="openModuleAdd(addCoin)">Add Coin</button>
+            <button class="btn" (click)="getSharedLink(shareLinkModal)">Shared Link</button>
         </div>
         <div class="tabStyle tableStyle2 fullPaddingTab">
 
@@ -86,29 +87,29 @@
                                 <img [class.titleIndex]="!symbolNoFit(wallet.symbol)"
                                 [class.cursor]="symbolNoFit(wallet.symbol)"
                                 [src]="getCoinImage(wallet.symbol)" (click)="getWebPage(wallet.symbol)"
-                                 type="image" class='sizeImg2' title="{{wallet.id}} Website" />
+                                 type="image" class='sizeImg2' title="{{wallet.name}} website" />
                             <p class="tableName centerWalName">
                                 {{ wallet.name }}
                                 <a target="_blank" href="https://coinmarketcap.com/currencies/{{wallet.id}}/" class="linksTable mobileDisplay tableMobileSpeace">({{wallet.symbol}})</a>
                             </p>
                         </td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                            <p class="centerWal textCenterCoinsWal">{{ wallet.coins | number }}</p>
+                            <p class="centerWal text-center">{{ wallet.coins | number }}</p>
                         </td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                            <p class="centerWal textCenterPriceWal">{{ wallet.price_usd | currencyValueChange}}</p>
+                            <p class="centerWal text-center">{{ wallet.price_usd | currencyValueChange}}</p>
                         </td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                            <p class="centerWal textCenterTotalWal">{{ wallet.total | currencyValueChange}}</p>
+                            <p class="centerWal text-center">{{ wallet.total | currencyValueChange}}</p>
                         </td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                            <p class="centerWal textCenterPercentWal">
+                            <p class="centerWal text-center">
                                 <span [style.color]="wallet.percent_change_24h < 0 ? '#ff5e5e' : '#6ac13e'">
                                     {{ wallet.percent_change_24h}}</span>
                             </p>
                         </td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                            <p class="centerWal textCenterAllocationWal">{{ wallet.allocation | number:'1.2-2' }}</p>
+                            <p class="centerWal text-center">{{ wallet.allocation | number:'1.2-2' }}</p>
                         </td>
                         <td style="width:10%;" class="text-center mobileDisplay">
                             <p class="centerWal">
@@ -202,6 +203,30 @@
 
 </ng-template>
 
+<ng-template #shareLinkModal let-c="close" let-d="dismiss">
+    <div class="modal-body modalStyle">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title colorText text-center">Shared Link</h4>
+
+        <p class="colorText text-center">Your link to share: </p>
+    <p class="colorText text-center">https://cryptosorter.com/portfolio/{{sharedLink}}</p>
+
+          <div class="radio text-center">
+            <label class="colorText"><input type="radio" name="optradio" checked="checked">Close access</label>
+          </div>
+          <div class="radio text-center">
+            <label class="colorText"><input type="radio" name="optradio" checked="!checked">Open access to everyone</label>
+          </div>
+        
+
+        <button type="button" class="btn btn-outline-secondary buttonTabs wallet" (click)="c('Close click')">Cancel</button>
+
+    </div>
+
+</ng-template>
+
 
 
 <ng-template #addCoin let-c="close" let-d="dismiss">
@@ -257,14 +282,14 @@
                         <tr>
                             <td class="tabWalletStyle colorText padWalletTable">Amount:</td>
                             <td class="walletInputCoin padWalletTable">
-                                <form *ngIf="chosenCur" [formGroup]="addForm" class="form-inline">
-                                    <input (input)="addCoins = $event.target.value"  value='{{addCoins}}' class="form-control" type="number" id="example-search-input"
-                                        formControlName="addValueCoin" required>
+                                <form [formGroup]="addForm"  class="form-inline">
+                                    <input #autofocusWallets  (input)="addCoins = $event.target.value"  value='{{addCoins}}' class="form-control" type="number" id="example-search-input"
+                                        formControlName="addValueCoin">
                                 </form>
                             </td>
                             <td>
                                 <button class="btn btn-info paddingTabBut" [disabled]="!addForm.valid" [class.wallet]='addForm.valid' (click)="createWallet(addCoins)">Add</button>
-                            </td>
+                            </td> 
 
                         </tr>
                         <tr>

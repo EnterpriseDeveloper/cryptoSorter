@@ -42,7 +42,8 @@ export class HeaderComponent implements OnInit, OnDestroy{
         if (auth == null) {
           this.walletValue = [];
         } else {
-          this.wallets = this.walletService.getListWallet();
+          let userId = auth.uid;
+          this.wallets = this.walletService.getListWallet(userId);
           this.getWalletList();
         }
       }

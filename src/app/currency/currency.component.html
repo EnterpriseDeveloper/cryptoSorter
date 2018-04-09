@@ -128,7 +128,7 @@
                         <img [class.titleIndex]="!symbolNoFit(row.symbol)"
                         [class.cursor]="symbolNoFit(row.symbol)"
                         [src]="getCoinImage(row.symbol)" (click)="getWebPage(row.symbol)"
-                         type="image" class='sizeImg1' title="{{row.id}} Website" />
+                         type="image" class='sizeImg1' title="{{row.name}} website" />
 
                 </div>             
                 </td> 
@@ -143,16 +143,16 @@
                     </p> 
                 </td>
                 <td class="colorText tableSizeNumber tableMobileSpeace">
-                    <p class="centerWal textCenterIndex">{{row.formulaValue | number :'1.2-2'}}</p></td>
-                <td class="colorText tableSizeNumber tableMobileSpeace"><p class="centerWal textCenterMarket">
+                    <p class="centerWal text-center">{{row.formulaValue | number :'1.2-2'}}</p></td>
+                <td class="colorText tableSizeNumber tableMobileSpeace"><p class="centerWal text-center">
                     {{row.market_cap_usd | currencyValueChange }}</p></td>
                 <td class="colorText tableSizeNumber tableMobileSpeace">
-                    <p class="centerWal textCenterVolume">{{row['24h_volume_usd'] | currencyValueChange }}</p></td>
+                    <p class="centerWal text-center">{{row['24h_volume_usd'] | currencyValueChange }}</p></td>
                 <td style="width:8%" class="colorText tableSizeNumber weight tableMobileSpeace">
-                    <p class="centerWal textCenterPercent"><span [style.color]="row.percent_change_24h < 0 ? '#ff5e5e' : '#6ac13e'">
+                    <p class="centerWal text-center"><span [style.color]="row.percent_change_24h < 0 ? '#ff5e5e' : '#6ac13e'">
                         {{row.percent_change_24h | number :'1.2'}}</span></p></td>
                     <td style="width:8%" class="colorText tableSizeNumber tableMobileSpeace">
-                        <p class="centerWal textCenterPrice">{{row.price_usd |  currencyValueChange }}</p></td> 
+                        <p class="centerWal text-center">{{row.price_usd |  currencyValueChange }}</p></td> 
     </tr>
     <tr *ngIf="(data | currencyfilter: filter | minfilter: minfilter).length === 0">
             <td colspan="7" class="colorText text-center">No matching records found</td>
