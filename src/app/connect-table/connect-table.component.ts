@@ -3,7 +3,8 @@ import { AuthService } from '../aservices/auth.service';
 import {Observable} from 'rxjs/Observable';
 import {Wallet} from '../aservices/Wallet';
 import {WalletService} from '../aservices/wallet.service';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
+import {ListWalletService} from '../wallet/service/list-wallet.service';
 
 @Component({
   selector: 'connectTable',
@@ -14,32 +15,49 @@ import {Router} from '@angular/router';
 export class ConnectTableComponent implements OnDestroy {
 
   public isLoggedIn: boolean;
-  public currentOrientation = 'horizontal';
   private wallets: Observable<Wallet[]>;
   private walletSub: any;
   private walletData: any = [];
   private walletValue: any = [];
   public walletEmpty: boolean = true;
-  public showMenu: boolean = false;
+  public userSub: any;
+  public listSub: any;
+  public listWallet: any;
+
 
   constructor(
     public authService: AuthService,
     private walletService: WalletService,
     public route: Router,
+    private activityRouter: ActivatedRoute,
+    private listWalletService: ListWalletService
   )  {
-    this.authService.user.subscribe(
+    this.userSub = this.authService.user.subscribe(
       (auth) => {
         if (auth == null) {
           this.isLoggedIn = false;
         } else {
           this.isLoggedIn = true;
-          let userId = auth.uid
-          this.wallets = this.walletService.getListWallet(userId);
-          this.getWalletList();
+         this.listSub = this.listWalletService.getListWallet().subscribe((data)=> { 
+           this.listWallet = data
+            let path = data[0].id
+            let userId = data[0].userID
+            this.wallets = this.walletService.getListWallet(userId, path);
+            this.getWalletList();
+            })
         }
       });
-      if (window.matchMedia('screen and (max-width: 700px)').matches) {
-        this.currentOrientation = 'vertical';
+
+  }
+
+
+
+  shareLink(){
+      let linkSession =  sessionStorage.getItem("linkShare");  
+      if(linkSession == 'null' || linkSession == null){
+        this.route.navigate(['/portfolio/:id']);
+      }else{
+        this.route.navigate(['/portfolio/', linkSession]);
       }
   }
 
@@ -52,20 +70,24 @@ export class ConnectTableComponent implements OnDestroy {
           return this.walletValue.push(walletData.id);
         });
         if(this.walletData.length > 0 ){
-          this.route.navigate(['/portfolio']);
+          return this.walletEmpty = false;
+        }else if(this.listWallet.length >= 2){
           return this.walletEmpty = false;
         }else{
-          this.route.navigate(['']);
           return this.walletEmpty = true;
         }
    });
   }
 
-  toggle() { this.showMenu = !this.showMenu; }
+
 
 
   ngOnDestroy(){
-    this.walletSub.unsubscribe();
+    this.userSub.unsubscribe();
+    if(this.isLoggedIn == true){
+      this.listSub.unsubscribe();
+      this.walletSub.unsubscribe();
+    }
   }
 
 }

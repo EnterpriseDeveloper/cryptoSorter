@@ -1,30 +1,42 @@
-<form [formGroup]="userForm"  *ngIf="newUser"  (ngSubmit)="signup()">
+<form [formGroup]="userForm"  
+      *ngIf="newUser"  
+      (ngSubmit)="signup()"
+      class='userFormAnimation'>
 
-  <h3 class="colorText text-center">New to here?</h3>
-  <div class="colorText text-center">Registered users enjoy all features for free and portfolio.<p class="button is-small colorText2 text-center" (click)="toggleForm()">Already Registered?</p></div>
+  <h3 class="colorText text-center">
+    New to here? Register now!
+  </h3>
+  <div class="colorText text-center">
+    Registered users enjoy all features and stay rich!
+      <p class="button is-small colorText2 text-center" 
+        (click)="toggleForm()">
+          Already registered?
+      </p>
+  </div>
 
 
   <div >
     <div class="container">	
-     <label class="colorText "for="email">Email</label>
+     <label class="colorText "for="email">Email (valid email address, please)</label>
      <input type="email" id="email" class="form-control"
          formControlName="email" required >
 
-     <div *ngIf="formErrors.email" class="alert alert-danger">
+     <!-- <div *ngIf="formErrors.email" class="alert alert-danger">
       {{ formErrors.email }}
-     </div>
+     </div> -->
 
-     <label class="colorText paddingTop" for="password">Password</label>
+     <label class="colorText paddingTopForInput" for="password">Password (6+ characters long, letters and numbers)</label>
      <input type="password" id="password" class="form-control"
             formControlName="password" required >
    
-     <div *ngIf="formErrors.password" class="alert alert-danger">
+     <!-- <div *ngIf="formErrors.password" class="alert alert-danger">
        {{ formErrors.password }}
-     </div>
+     </div> -->
    
-     <div *ngIf="userForm.valid" class="alert alert-success">Form is valid</div>
+   <!--  <div *ngIf="userForm.valid" class="alert alert-success">Form is valid</div> -->
+
      <button type="submit" class="btn btn-lg btn-primary btn-block btn-pos paddingInput2"
-      [class.wallet]="userForm.valid" [disabled]="!userForm.valid">Submit</button>
+      [class.wallet]="userForm.valid" [disabled]="!userForm.valid">Let’s go!</button>
 
     </div>
   </div>  
@@ -33,37 +45,38 @@
 </form>
 
 
-<form [formGroup]="userForm"  *ngIf="!newUser"  (ngSubmit)="login()">
+<form [formGroup]="userForm"  *ngIf="!newUser"  (ngSubmit)="login()" class='userFormAnimation'>
 
   <h3 class="colorText text-center">Existing user login</h3>
-  <div class="colorText text-center">Registered users enjoy all features for free and portfolio.<p class="button is-small colorText2 text-center" (click)="toggleForm()">New User ?</p></div>
+  <div class="colorText text-center">Registered users enjoy all features and stay rich!<p class="button is-small colorText2 text-center" (click)="toggleForm()">New user ?</p></div>
 
   <div>
     <div class="container">	
-     <label class="colorText" for="email">Email</label>
+     <label class="colorText" for="email">Email (valid email address, please)</label>
      <input type="email" id="email" class="form-control"
          formControlName="email" required >
 
-     <div *ngIf="formErrors.email" class="alert alert-danger">
+     <!-- <div *ngIf="formErrors.email" class="alert alert-danger">
       {{ formErrors.email }}
-     </div>
+     </div> -->
 
-     <label class="colorText paddingTop" for="password">Password</label>
+     <label class="colorText paddingTopForInput" for="password">Password (6+ characters long, letters and numbers)</label>
      <input type="password" id="password" class="form-control"
          formControlName="password" required >
 
-     <div *ngIf="formErrors.password" class="alert alert-danger">
+     <!-- <div *ngIf="formErrors.password" class="alert alert-danger">
     {{ formErrors.password }}
-     </div>
+     </div> -->
      
-     <div *ngIf="userForm.valid" class="alert alert-success ">Form Looks Valid</div>
+   <!--  <div *ngIf="userForm.valid" class="alert alert-success ">Form Looks Valid</div> -->
+
      <button type="submit" class="btn btn-lg btn-primary btn-block btn-pos paddingInput2" 
-      [class.wallet]="userForm.valid" [disabled]="!userForm.valid">Submit</button>
+      [class.wallet]="userForm.valid" [disabled]="!userForm.valid">Let’s go!</button>
 
   
 
-  <a *ngIf="!passReset && userForm.controls.email.valid" (click)="resetPassword()"><p class="text-center colorText3">Reset password for {{userForm.value.email}}?</p></a>
-  <p *ngIf="passReset" class="colorText">Reset requested. Check your email instructions.</p>
+  <a *ngIf="!passReset && userForm.controls.email.valid" (click)="resetPassword()"><p style="font-size: 16px;" class="text-center colorText3">Reset password for {{userForm.value.email}}?</p></a>
+  <p *ngIf="passReset" style="padding-bottom: 20px; font-size: 16px;" class="colorText text-center">New password has been sent to your email. Please check your email for further instructions.</p>
     </div>
   </div>
 

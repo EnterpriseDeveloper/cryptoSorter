@@ -1,5 +1,9 @@
+
 .sk-folding-cube {
-    margin: 20% auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+    margin-bottom: 0px;
     width: 80px;
     height: 80px;
     position: relative;
@@ -23,7 +27,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #212020;
+    background-color: #ca9907;
     -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
             animation: sk-foldCubeAngle 2.4s infinite linear both;
     -webkit-transform-origin: 100% 100%;
@@ -88,7 +92,15 @@
 
   @media screen and (min-width: 1370px) {
     .sk-folding-cube {
-      margin: 20.5% auto;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 20.5%;
+      margin-bottom: 0px;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      -webkit-transform: rotateZ(45deg);
+              transform: rotateZ(45deg);
       width: 80px;
       height: 80px;
       position: relative;
@@ -100,7 +112,15 @@
 
   @media screen and (min-width: 1870px) {
     .sk-folding-cube {
-      margin: 20.5% auto;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 20.5%;
+      margin-bottom: 0px;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      -webkit-transform: rotateZ(45deg);
+              transform: rotateZ(45deg);
       width: 100px;
       height: 100px;
       position: relative;
@@ -111,7 +131,15 @@
 
   @media screen and (min-width: 2100px) {
     .sk-folding-cube {
-      margin: 20.5% auto;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 20.5%;
+      margin-bottom: 0px;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      -webkit-transform: rotateZ(45deg);
+              transform: rotateZ(45deg);
       width: 120px;
       height: 120px;
       position: relative;
@@ -123,7 +151,15 @@
 
   @media screen and (min-width: 2900px) {
     .sk-folding-cube {
-      margin: 20% auto;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 20%;
+      margin-bottom: 0px;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      -webkit-transform: rotateZ(45deg);
+              transform: rotateZ(45deg);
       width: 140px;
       height: 140px;
       position: relative;
@@ -136,7 +172,15 @@
   @media (min-width: 768px) and (max-width: 1024px) {
     
     .sk-folding-cube {
-      margin: 50% auto;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 50%;
+      margin-bottom: 0px;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      -webkit-transform: rotateZ(45deg);
+              transform: rotateZ(45deg);
       width: 120px;
       height: 120px;
       position: relative;
@@ -146,15 +190,19 @@
     
   }
   
-  /* 
-    ##Device = Tablets, Ipads (landscape)
-    ##Screen = B/w 768px to 1024px
-  */
   
   @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
     
     .sk-folding-cube {
-      margin: 30% auto;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 30%;
+      margin-bottom: 0px;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      -webkit-transform: rotateZ(45deg);
+              transform: rotateZ(45deg);
       width: 120px;
       height: 120px;
       position: relative;
@@ -165,15 +213,19 @@
     
   }
   
-  /* 
-    ##Device = Low Resolution Tablets, Mobiles (Landscape)
-    ##Screen = B/w 481px to 767px
-  */
   
   @media (min-width: 481px) and (max-width: 767px) {
 
     .sk-folding-cube {
-      margin: 75% auto;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 75%;
+      margin-bottom: 0px;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      -webkit-transform: rotateZ(45deg);
+              transform: rotateZ(45deg);
       width: 80px;
       height: 80px;
       position: relative;
@@ -183,14 +235,18 @@
 
   }
   
-  /* 
-    ##Device = Most of the Smartphones Mobiles (Portrait)
-    ##Screen = B/w 320px to 479px
-  */
   
   @media (min-width: 320px) and (max-width: 480px) {
     .sk-folding-cube {
-      margin: 75% auto;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 75%;
+      margin-bottom: 0px;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      -webkit-transform: rotateZ(45deg);
+              transform: rotateZ(45deg);
       width: 80px;
       height: 80px;
       position: relative;
@@ -199,3 +255,12 @@
     }
     
   }
+
+  .loaingSpinner{
+    padding-top: 20px;
+    font-size: 26px;
+    color: rgb(143, 143, 143)
+  }
+
+
+

@@ -24,3 +24,7 @@
   .textCenterPercentLike{
      padding-left:35%;
   }
+
+  .dropdown-toggle {
+    color: black;
+}

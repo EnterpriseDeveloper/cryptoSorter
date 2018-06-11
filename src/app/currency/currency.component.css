@@ -9,4 +9,25 @@
 .pad{
   padding-right: 38px;
 }
-  
+
+.inputSortingStyle{
+  border: 3px solid #FFC107;
+}
+
+.colorForButton {
+  color:red !important;
+}
+
+.posotionAdd {
+  float: right;
+  position: relative;
+  margin-top: 0px !important;
+  padding-bottom: 0px !important;
+  margin-bottom: 0px !important;
+  padding-bottom: 0px !important;
+  padding-right: 5px !important;
+  top: 5px;
+}
+
+
+

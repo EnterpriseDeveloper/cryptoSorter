@@ -1,50 +1,58 @@
-<div class="container">
-  <div *ngIf="auth.user | async; then authenticated else guest">
-    <!-- template will replace this div -->
-  </div>
-</div> 
+<div>
 
-<ng-template #guest>
+    <div class="spynerBasic" *ngIf="loadSpiner">
+        <spinner></spinner>
+    </div>
+
+<div *ngIf='!isLoggedIn'>
+    <particles class="mobileDisplay" [params]="myParams" [style]="myStyle" [width]="width" [height]="height"></particles> 
+</div>
+   
+
+<div class='headerMobile' *ngIf='!isLoggedIn'>
   
-    <particles [params]="myParams" [style]="myStyle" [width]="width" [height]="height"></particles>
-
-        <p class="text-center colorText textLogo cursorNone">CryptoSorter</p>
+        <p class="mobileDisplay text-center colorText textLogo cursorNone"><img class="mobileDisplay" style="height:110px; width:120px; padding-right:30px; padding-bottom:15px" src="../../assets/favicon-256.png">CryptoSorter</p>
 
         <p class="text-center colorText textHeader fedorStyle paddingHeader cursorNone">
-          Recognizing a cryptocurrency's investment potential is a challenge. 
-          With over a thousand of coins out there, a quick analysis is not feasible.
-          We engineered Crypto Value Index (CVI) that shows a higher short term 
-          potential for coins with higher CVI values.
+            One-stop service to handle and track cryptocurrency funds! 1500+ crypto coins 
+            with filters and lists, portfolio with sharing, active and upcoming ICOs, and 
+            know-how engineered Crypto Volatility Index.
         </p>
 
-        <p class="text-center colorText textHeader fedorStyle posTextLog cursorNone">
-          For long term holders and portfolio managers, we made handy crypto 
-          portfolio tracker - your private spacecraft to the moon O)*
+        <p class="text-center colorText textHeader fedorStyle posTextLog cursorNone screenDisplay" style="padding-bottom:25px;">
+          Mobile website has limited functionality.
         </p> 
 
 
-</ng-template>
+      </div>
 
-<ng-template #authenticated>
+<div *ngIf='isLoggedIn'>
 
 
-     <div [class.display]="!loading"> 
-      <p class="totalSize2 colorText textLogo text-center alert">loading...</p>
+     <div *ngIf="loading"> 
+      <p class="totalSize2 colorText textLogo text-center alert">Portfolio is loading...</p>
      </div>
 
-  <div [class.display]='isEmptyValue'>
    <div *ngIf="!loading"> 
-      <p class="totalSize colorText textLogo text-center alert" >
-        {{totalSum | number:'1.0'}} $
+     <div *ngIf='isEmptyValue'>
+      <div id='total' style="padding-bottom: 0px; margin-bottom: 0px;" class="totalSize colorText textLogo text-center alert" >
+        {{totalSum | number:'1.0'}} $ <span *ngIf='showTotalModuleL' class="persentUsdSize" >({{totalModule | number:'1.0' }} $)</span>
+      </div>
+
+      <p class="persentUsdSize24 colorText text-center alert" > 
+        24h change:
       </p>
 
-      <p class="persentUsdSize colorText text-center alert" > 
-        Daily change:&nbsp; <span [style.color]="persentUSD < 0 ? '#ff5e5e' : '#6ac13e'">
-        {{persentUSD | number:'1.0'}} $ &nbsp;({{persentTotal}} %)</span>
+      <p style="padding-bottom: 20px;" class="persentUsdSize colorText text-center alert" > 
+        <span [style.color]="persentUSD < 0 ? '#ff5e5e' : '#6ac13e'">
+        {{persentUSD | number:'1.0'}} $ </span>
+         &nbsp;|&nbsp;
+         {{persentTotal}} %
       </p>
-
-  </div> 
+    </div> 
   </div>
   
   
-</ng-template>
+</div>
+</div> 
+

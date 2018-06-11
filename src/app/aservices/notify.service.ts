@@ -12,16 +12,19 @@ export interface Msg {
 export class NotifyService {
 
   private _msgSource = new Subject<Msg | null>();
+  public style: string;
 
   msg = this._msgSource.asObservable();
 
   update(content: string, style: 'error' | 'info' | 'success') {
     const msg: Msg = { content, style };
+    this.style = style
     this._msgSource.next(msg);
     var self = this;
     setTimeout(function(){
       self.clear();
-    }, 2000);
+    }, 6000);
+
   }
  
   clear() {

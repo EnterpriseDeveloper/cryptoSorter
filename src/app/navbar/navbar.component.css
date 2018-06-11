@@ -1,0 +1,29 @@
+.styleIcon{
+  color:#007BFF; 
+  margin-left:10px; 
+  margin-right: 20px; 
+  margin-top: 20px;
+}
+
+.textDecorationUl{
+    padding-left: 0px !important; 
+    margin-left: 0px !important;
+    list-style-type: none;
+    position: relative;
+    z-index: 999;
+    width: 50%;
+    left: 50%;
+    animation: menu 1.5s;
+}
+
+@keyframes menu {
+    from {
+    left: 100%;
+    }
+
+    to{
+    left: 50%;    
+    }
+
+}
+

@@ -7,45 +7,58 @@
         <div class="tableStyle">
                 <div class="paddingCurrency">
 
-    <div [class.display]='!loadingTable'>
+    <!-- <div [class.display]='!loadingTable'>
             <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">
-                    <p class="colorText text-center paddingCenter">
-                            Please wait while we're brainstorming over a thousand 
-                            of cryptocurrencies. Once loaded, navigation will be 
-                            lightning fast! Still waiting? Try guessing which coin is moon today!
-                    </p>
+                <p style="font-size: 30px;" class="colorText text-center paddingCenter">
+                    Loading…
+                </p>
            </div>
-    </div>
+    </div> -->
 
-<div [class.display]='loadingTable'>
-  <div class="tabStyle tableStyle2 particle fullPaddingTab">
-      <table id="icoActive-table" class="row-border hover table-striped modileTable" cellspacing="0" width="100%">
-       <!--   <div class="lenght">Showing {{perPage*page - perPage }}-{{perPage*page > icoData.length ? icoData.length : perPage*page}} of {{icoData.length}} items.</div>
-       -->
-        <thead>
-                      <tr>
-                         <th class="colorText text-center">ICO name</th>   
-                         <th class="colorText text-center">Started ago</th>  
-                         <th class="colorText text-center">Ending in</th>  
-                         <th class="colorText text-center">Description</th>  
-                      </tr>
-                    </thead>
-                   
+    <ng-template #tipContent>{{contetnToCopy}}</ng-template>
+
+
+    <div [class.display]='loadingTable'>
+        <div class="tabStyle3 tableStyle2 particle">
+         <div [class.emptyPaddingTab]="!isEmptyWallet" [class.fullPaddingTab]="isEmptyWallet">
+            <table id="icoActive-table" class="row-border hover table-striped modileTableIco" cellspacing="0" width="100%">
+             <!--   <div class="lenght">Showing {{perPage*page - perPage }}-{{perPage*page > icoData.length ? icoData.length : perPage*page}} of {{icoData.length}} items.</div>
+             -->
+              <thead class="tableHeaderDisplayNone">
+                    <tr>
+                       <th class="colorText text-center">Active ICO name</th>   
+                       <th class="colorText text-center">Started ago</th>  
+                       <th class="colorText text-center">Ending in</th>  
+                       <th class="colorText text-center">Description (tap to save)</th>  
+                    </tr>
+                  </thead>
+
+                  <thead class="mobileDisplay">
+                    <tr>
+                       <th class="colorText text-center">Active ICO name</th>   
+                       <th class="colorText text-center">Started ago</th>  
+                       <th class="colorText text-center">Ending in</th>  
+                       <th class="colorText text-center">Description</th>  
+                    </tr>
+                  </thead>
+                  
       
-      <tbody>
-          <tr *ngFor="let ico of icoData | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index ;">
-            <td  class="colorIco colorText tableSize text-center tableMobileSpeace">
-                <a href="{{ico.website}}" target="_blank"><img title="www.{{ico.name}}.com" src="{{ico.image}}"/></a></td>
-              <td style="width:20%" class="colorText tableSizeNumber tableMobileSpeace"><p class="centerWal text-center">
-                {{ico.start_time | datePipes }} </p></td>
-                <td style="width:20%" class="colorText tableSizeNumber tableMobileSpeace">
-                    <p class="centerWal text-center">{{ico.end_time  | datePipes }} </p></td>
-                  <td style="width:30%" class="colorText text-left tableMobileSpeace">
-                      <p class="centerWal">{{ico.description}}.</p></td>
-</tr>
-
-</tbody>
-</table>
+                  <tbody>
+                    <tr *ngFor="let ico of icoData | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index ;">
+                            <td  class="colorIco colorText tableSize text-center tableMobileSpeace noWrapp">
+                                <a href="{{ico.website}}" target="_blank"><img style="width:200px;" title="{{ico.name}} website" src="{{ico.image}}"/></a></td>
+                              <td [class.forLikes]='getIcoLikeStyle(ico)' style="width:20%"  class="colorText text-center tableMobileSpeace noWrapp"><p class="centerWal text-center">
+                                  {{ico.start_time | datePipes }}</p></td>
+                              <td [class.forLikes]='getIcoLikeStyle(ico)' style="width:20%" class="colorText text-center tableMobileSpeace noWrapp">
+                                  <p class="centerWal text-center">{{ico.end_time  | datePipes }}</p></td>
+                                <td [ngbTooltip]="tipContent" [class.forLikes]='getIcoLikeStyle(ico)' style="width:30%" 
+                                class="colorText tableMobileSpeaceDes cursor"
+                                (click)='addToLikeIco(ico)' on-mouseover='text(ico)'> 
+                                    <p class="centerWal widthMobile">{{ico.description}}.</p></td>
+                    </tr>
+            
+            </tbody>
+      </table>
 
 <pagination-template class="buttonTabs padding-right" #p="paginationApi" (pageChange)="onPageChange($event, 150)">
 
@@ -94,7 +107,7 @@
         </div>
       </div>
 
-
+</div>
 </div>
 </div>
 </div>

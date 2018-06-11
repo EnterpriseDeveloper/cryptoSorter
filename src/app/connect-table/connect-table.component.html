@@ -14,65 +14,46 @@
 
 <ng-template #authenticated> 
 
-  <ul class="hr text-center paddingNone mobileDisplay">
-    <li *ngIf='!walletEmpty' id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolio</li>
+  <ul class="hr text-center paddingNone mobileDisplay textHeader2">
+    <li *ngIf='!walletEmpty' id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolios</li>
     <li id="everything" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="everything" >Everything</li>
-    <li id="toFavorite" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorite</li>
+    <li id="toFavorite" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorites</li>
     <li id="toDeleted" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
-    <li *ngIf='walletEmpty' id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolio</li>
+    <li *ngIf='walletEmpty' id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolios</li>
     <li>
         <div ngbDropdown class="d-inline-block">
-            <button routerLinkActive="toIco" class="icoActive" id="dropdownBasic1" ngbDropdownToggle><span class="colorText">ICO</span></button>
+            <button [class.toIco]="route.isActive('/ico')" class="icoActive textHeader2" id="dropdownBasic1" ngbDropdownToggle><span class="colorText">ICO</span></button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
               <button class="dropdown-item dropdown-ico"  [routerLink]="['/ico/active']">Active</button>
               <button class="dropdown-item dropdown-ico"  [routerLink]="['/ico/upcoming']">Upcoming</button>
+              <button class="dropdown-item dropdown-ico"  [routerLink]="['/ico/saved']">Saved</button>
             </div>
          </div>  
           
     </li>
   </ul>
 
-<p class='screenDisplay colorText styleMenu' (click)="toggle()" >Menu <i style="float: right; padding-right: 20px;" class="fa fa-bars fa-2x" aria-hidden="true"></i></p>
-
-<ul *ngIf='showMenu' class="textDecorationUl text-center paddingNone screenDisplay">
-  <li *ngIf='!walletEmpty' (click)="showMenu = false" id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolio</li>
-  <li id="everything" (click)="showMenu = false" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="everything" >Everything</li>
-  <li id="toFavorite" (click)="showMenu = false" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorite</li>
-  <li id="toDeleted" (click)="showMenu = false" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
-  <li *ngIf='walletEmpty' (click)="showMenu = false" id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolio</li>
-  <li id="icoUpComing" (click)="showMenu = false" [routerLink]="['/ico/active']" routerLinkActive="toIco">ICO Active</li>
-  <li id='icoUpComing' (click)="showMenu = false" [routerLink]="['/ico/upcoming']" routerLinkActive="toIco">ICO Upcoming</li> 
-</ul>
 </ng-template>
 
 <ng-template #guest>
-    <ul class="hr text-center paddingNone mobileDisplay">
+    <ul class="hr text-center paddingNone mobileDisplay textHeader2">
         <li id="everything" [routerLink]="['/']" routerLinkActive="everything" [routerLinkActiveOptions]="{ exact: true }">Everything</li>
-        <li id="toFavorite" [routerLink]="['/favorite']" routerLinkActive="toFavorite" >Favorite</li>
+        <li id="toFavorite" [routerLink]="['/favorite']" routerLinkActive="toFavorite" >Favorites</li>
         <li id="toDeleted" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
-        <li id="toWallet" [routerLink]="['/portfolio/:id']" routerLinkActive="toWallet">Portfolio</li>
+        <li id="toWallet" (click)='shareLink()' [class.toWallet]="route.isActive('/portfolio')">Portfolios</li>
         <li>
             <div ngbDropdown class="d-inline-block">
-                <button routerLinkActive="toIco" class="icoActive" id="dropdownBasic1" ngbDropdownToggle><span class="colorText">ICO</span></button>
+                <button [class.toIco]="route.isActive('/ico')" class="icoActive textHeader2" id="dropdownBasic1" ngbDropdownToggle><span class="colorText">ICO</span></button>
                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                  <button class="dropdown-item" [routerLink]="['/ico/active']">Active</button>
-                  <button class="dropdown-item" [routerLink]="['/ico/upcoming']">Upcoming</button>
+                  <button class="dropdown-item dropdown-ico" [routerLink]="['/ico/active']">Active</button>
+                  <button class="dropdown-item dropdown-ico" [routerLink]="['/ico/upcoming']">Upcoming</button>
+                  <button class="dropdown-item dropdown-ico"  [routerLink]="['/ico/saved']">Saved</button>
                 </div>
              </div>  
               
         </li>
       </ul>
 
-<p class='screenDisplay colorText styleMenu' (click)="toggle()" >Menu <i style="float: right; padding-right: 20px;" class="fa fa-bars fa-2x" aria-hidden="true"></i></p>
-
-<ul *ngIf='showMenu' class="textDecorationUl text-center paddingNone screenDisplay">
-  <li id="everything" (click)="showMenu = false" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="everything" >Everything</li>
-  <li id="toFavorite" (click)="showMenu = false" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorite</li>
-  <li id="toDeleted" (click)="showMenu = false" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
-  <li id="toWallet" (click)="showMenu = false"  [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolio</li>
-  <li id="icoUpComing" (click)="showMenu = false" [routerLink]="['/ico/active']" routerLinkActive="toIco">ICO Active</li>
-  <li id='icoUpComing' (click)="showMenu = false" [routerLink]="['/ico/upcoming']" routerLinkActive="toIco">ICO Upcoming</li> 
-</ul>
 
 </ng-template>
  

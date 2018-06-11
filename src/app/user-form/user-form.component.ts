@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { AuthService } from '../aservices/auth.service';
 import {CurrencyComponent} from '../currency/currency.component';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NotifyService} from '../aservices/notify.service';
 
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
@@ -15,7 +16,7 @@ type FormErrors = { [u in UserFields]: string };
 export class UserFormComponent implements OnInit {
   
   userForm: FormGroup;
-  newUser = true; // to toggle login or signup form
+  newUser = false; // to toggle login or signup form
   passReset = false; // set to true when password reset is triggered
   formErrors: FormErrors = {
     'email': '',
@@ -23,14 +24,14 @@ export class UserFormComponent implements OnInit {
   };
   validationMessages = { 
     'email': {
-      'required': 'Email is required.',
-      'email': 'Email must be a valid email',
+      'required': 'Email must be a valid email.',
+      'email': 'Email must be a valid email.',
     },
     'password': {
-      'required': 'Password is required.',
-      'pattern': 'Password must include at least one letter and one number.',
-      'minlength': 'Password must be at least 4 characters long.',
-      'maxlength': 'Password cannot be more than 40 characters long.',
+      'required': 'Please make it at least 4 symbols long.',
+      'pattern': 'Please include one letter and one number.',
+      'minlength': 'Please make it at least 4 symbols long.',
+      'maxlength': "Can't more than 40 symbols long.",
     },
   };
 
@@ -38,7 +39,8 @@ export class UserFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder, 
     private auth: AuthService,
-    public activeModal: NgbActiveModal) { }
+    public activeModal: NgbActiveModal,
+    public notifyService: NotifyService) { }
 
   ngOnInit() {
     this.buildForm();
@@ -46,16 +48,30 @@ export class UserFormComponent implements OnInit {
 
   toggleForm() {
     this.newUser = !this.newUser;
-  }
+  } 
 
   signup() {
     this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password'])
-    .then(() => this.activeModal.close());
+    .then(() => {
+      if(this.notifyService.style == 'error'){
+        return false
+      }else{
+        this.activeModal.close()
+      }
+    }
+    );
   }
 
   login() {
     this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
-    .then(() => this.activeModal.close());
+    .then(() => {
+      if(this.notifyService.style == 'error'){
+        return false
+      }else{
+        this.activeModal.close()
+      }
+    }
+    );
   }
 
   resetPassword() {

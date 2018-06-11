@@ -1,12 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IcoActiveService } from '../../aservices/ico-active.service';
-import { HeaderComponent } from '../../header/header.component';
+import { IcoActiveService } from '../service/ico-active.service';
+import {SpinnerLoadService } from '../../spinner/spinner-load.service';
+import {IsEmptyWalletService} from '../../wallet/service/is-empty-wallet.service';
+import {IcoDbService} from '../service/ico-db.service';
+import {ICO} from '../service/ICO';
+import {AuthService} from '../../aservices/auth.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {LoginUserComponent} from '../../login-user/login-user.component';
+import {NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'icoactive',
   templateUrl: './ico-active.component.html',
   styleUrls: ['./ico-active.component.css'],
-  providers: [IcoActiveService, HeaderComponent]
+  providers: [IcoActiveService]
 })
 export class IcoActiveComponent implements OnInit, OnDestroy {
 
@@ -17,17 +24,51 @@ export class IcoActiveComponent implements OnInit, OnDestroy {
   public dataLenght:any;
   public loading: boolean = false;
   public loadingTable: boolean = false;
-  public isEmptyWallet: boolean = true;
+  public isEmptyWallet: boolean;
+  private icoLike : ICO = new ICO;
+  public icoLikeData : any;
+  public icoLikes: any;
+  public icoDataLike = [];
+  public contetnToCopy: string;
+  public registUser: boolean;
+
 
   constructor(
     private icoActiveService: IcoActiveService,
-    private headerComponent: HeaderComponent,
-  ) { 
-    this.isEmptyWallet = this.headerComponent.isEmpty();
+    private spinnerService: SpinnerLoadService,
+    private isEmptyService: IsEmptyWalletService,
+    private icoDbService: IcoDbService,
+    private authService: AuthService,
+    private modalService: NgbModal,
+    private config: NgbTooltipConfig
+
+  ) {
+    if(window.matchMedia('screen and (max-width: 700px)').matches){
+      this.config.triggers='false';
+   }else{
+    this.config.triggers='hover';
+   } 
+
+    this.isEmptyService.isEmptyValue.subscribe((value)=>{
+      this.isEmptyWallet = value;
+    })
+  this.spinnerService.changeMessage(false);
     this.page = 1;
     this.loading = true;
     this.loadingTable = true;
+    this.authService.user.subscribe(
+      (auth)=>{
+        if(auth != null){
+         this.icoLikeData = this.icoDbService.getListIcoLikes();
+         this.icoLikeDataBase();
+         this.registUser = true;
+       }else{
+         this.registUser = false;
+         this.icoDataLike = [];
+       }
+    })
   }
+
 
   ngOnInit() {
     this.icoSub = this.icoActiveService.getIcoActive()
@@ -38,6 +79,64 @@ export class IcoActiveComponent implements OnInit, OnDestroy {
        this.loadingTable = false;
     })
   }
+
+  icoLikeDataBase(){
+    this.icoLikeData.subscribe((data)=>{
+      this.icoLikes = data;
+      this.icoLikes.forEach(dataDb =>{
+        return this.icoDataLike.push(dataDb.name);
+      })
+    })
+  }
+
+  text(ico){
+      if(this.registUser == false){
+        this.contetnToCopy ='Register to Click&Save';
+      }else{
+        let search = this.icoDataLike.find(x => x === ico.name)
+        if(search == ico.name){
+          this.contetnToCopy ='Unsave this ICO';
+        }else{
+          this.contetnToCopy = 'Save this ICO';
+        }
+      }
+  }
+
+  getIcoLikeStyle(ico){
+    return this.icoDataLike.indexOf(ico.name) != -1;
+  };
+
+  addToLikeIco(data: any){
+    if(this.registUser == false){
+      const modalRef = this.modalService.open(LoginUserComponent);
+      $('.modal-content').animate({ opacity: 1 });
+      $('.modal-backdrop').animate({ opacity: 0.9 });
+    }else{
+      let search = this.icoDataLike.find(x => x === data.name)
+      if(search == data.name){
+        let likesDelete = data.name;
+        let deleteIco = this.icoLikes.find((i) => {
+          return likesDelete.indexOf(i.name) != -1;
+        });
+        this.icoDbService.deleteIcoLikes(deleteIco.$key);
+  
+        this.icoDataLike = this.icoDataLike.filter(x => x !== data.name);
+        this.contetnToCopy ='Save this ICO';
+      } else {
+        this.icoLike.name = data.name,
+        this.icoLike.image = data.image,
+        this.icoLike.website = data.website,
+        this.icoLike.start_time = data.start_time,
+        this.icoLike.end_time = data.end_time,
+        this.icoLike.description = data.description
+        this.icoDbService.createIcoLikes(this.icoLike);
+        this.contetnToCopy ='Unsave this ICO';
+      }
+    }
+    
+  };
+
+
 
   onPageChange(e, scrollDuration){
     var scrollStep = -window.scrollY / (scrollDuration / 15),

@@ -1,0 +1,14 @@
+.userFormAnimation{
+    animation-duration: 2s;
+    animation-name: slidein;
+}
+  
+  @keyframes slidein {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+        opacity: 1;
+    }
+  }

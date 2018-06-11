@@ -14,17 +14,17 @@ import { User } from './User';
 @Injectable()
 export class AuthService {
 
-   user: Observable<User | null>;
+  user: Observable<User | null>;
 
   constructor(private afAuth: AngularFireAuth,
-              private afs: AngularFireDatabase,
-              private router: Router,
-              private notify: NotifyService) {
+    private afs: AngularFireDatabase,
+    private router: Router,
+    private notify: NotifyService) {
 
-    this.user = this.afAuth.authState 
+    this.user = this.afAuth.authState
       .switchMap((user) => {
-        if (user) {          
-          return  this.afs.object(`/users/${user.uid}`);
+        if (user) {
+          return this.afs.object(`/users/${user.uid}`);
         } else {
           return Observable.of(null);
         }
@@ -50,7 +50,7 @@ export class AuthService {
         this.notify.update('Welcome to Cryptosorter !!!', 'success');
         return this.updateUserData(credential.user);
       })
-      .catch((error) => this.handleError(error) );
+      .catch((error) => this.handleError(error));
   }
 
 
@@ -61,7 +61,7 @@ export class AuthService {
         this.notify.update('Welcome to Cryptosorter!!!', 'success');
         return this.updateUserData(user); // if using firestore
       })
-      .catch((error) => this.handleError(error) );
+      .catch((error) => this.handleError(error));
   }
 
   emailLogin(email: string, password: string) {
@@ -70,7 +70,7 @@ export class AuthService {
         this.notify.update('Welcome to Cryptosorter!!!', 'success')
         return this.updateUserData(user); // if using firestore
       })
-      .catch((error) => this.handleError(error) );
+      .catch((error) => this.handleError(error));
   }
 
   // Sends email allowing user to reset password
@@ -84,7 +84,7 @@ export class AuthService {
 
   signOut() {
     this.afAuth.auth.signOut().then(() => {
-        this.router.navigate(['/']);
+      this.router.navigate(['/']);
     });
   }
 
@@ -105,6 +105,13 @@ export class AuthService {
     };
     return userRef.set(data);
   }
+
+
+  findEmailUsers(data) {
+      var query: any = this.afs.database.ref('/users').orderByChild('email').equalTo(data)
+      return query;
+  }
+
 }
 
 

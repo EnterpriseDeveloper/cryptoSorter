@@ -4,8 +4,20 @@
 
 body{
     font-family: 'Lato', sans-serif;
+}   
+
+.page-wrap{
+    background-color: #333333;
 }
 
+.stylingForInputMobileWallet{
+    width:200px; 
+    float:left; 
+}
+
+.visible{
+    visibility: visible;
+}
 
 .navbarBut{
    margin-right: 10%;
@@ -59,6 +71,11 @@ ul.hr li {
   transition: .4s;
 }
 
+.disableLinks{
+    pointer-events: none;
+    cursor: default
+  }
+
 .slider:before {
   position: absolute;
   content: "";
@@ -100,12 +117,18 @@ input:checked + .slider:before {
     height:auto;
 }
 
+.headerMobile{
+    padding-left: 130px; padding-right: 130px
+}
+
 
 
 .colorText1 {
     color: #2c1fdf;
     cursor: pointer;
 }
+
+
 
 .colorText2 {
     color: #007BFF;
@@ -143,6 +166,11 @@ input:checked + .slider:before {
 .textHeader {
     font-size: 20px;
     font-weight: 100px;
+}
+
+.textHeader2 {
+    font-size: 20px;
+    font-weight: 200;
 }
 
 .paddingText{
@@ -230,11 +258,13 @@ html, body {
 
 .push{
     height: 150px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 
 .fullPadding{
-    padding: 12%;
+    padding-top: 12%;
 }
 
 
@@ -279,7 +309,7 @@ html, body {
 }
 
 .textCenterIndex{
-    padding-left:40%;
+    padding-left:50%;
 }
 
 .textCenterVolume{
@@ -292,6 +322,8 @@ html, body {
  .textCenterPercent{
     padding-left:22%;
  }
+
+
  
 
 .btn-info {
@@ -303,6 +335,21 @@ html, body {
 
 .btn-info:hover {
     background-color: #17A2B8 !important;
+    border-color: #17A2B8 !important;
+    outline:0 !important;
+}
+
+.btn-infos {
+    background-color: #17A2B8 !important;
+    border-color: #17A2B8 !important; 
+    color: white !important;
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-infos:hover {
+    background-color: #17A2B8 !important;
+    color: white !important;
     border-color: #17A2B8 !important;
     outline:0 !important;
 }
@@ -333,6 +380,21 @@ html, body {
     outline:0 !important;
 }
 
+.btn-dangers {
+    background-color: rgb(187, 46, 60) !important;
+    border-color: rgb(187, 46, 60) !important;
+    color: white !important;
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-dangers:hover {
+    background-color: rgb(187, 46, 60) !important;
+    border-color: rgb(187, 46, 60) !important;
+    color: white !important;
+    outline:0 !important;
+}
+
 .btn-warning {
     background-color: #646363 !important;
     border-color: #646363 !important;
@@ -343,6 +405,23 @@ html, body {
 }
 
 .btn-warning:hover {
+    background-color: #FFC107 !important;
+    border-color: #FFC107 !important; 
+    outline:0 !important;
+}
+
+.btn-warnings {
+    background-color: #FFC107 !important;
+    border-color: #FFC107 !important;
+    color: white !important;
+    outline:0 !important;
+    outline:0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.btn-warnings:hover {
+    color: white !important;
     background-color: #FFC107 !important;
     border-color: #FFC107 !important; 
     outline:0 !important;
@@ -361,6 +440,21 @@ html, body {
     border-color: rgb(187, 46, 60) !important; 
     outline:0 !important;
 }
+
+.dropdown-toggle::after {
+    float: right;
+    position: relative;
+    margin-top: 0px !important;
+    padding-bottom: 0px !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+    top: 10px;
+  }
+  
+  i.dropdown-toggle {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  }
 
 
 
@@ -390,9 +484,38 @@ html, body {
     outline:0 !important;
 }  
 
+.btn-shareLink {
+    background-color: #FFC107 !important;
+    border-color: #FFC107 !important;
+    color: white !important;
+    outline:0 !important;
+}   
+
+.btn-shareLink:hover {
+    background-color: #FFC107 !important;
+    border-color: #FFC107!important;
+    color: white !important;
+    outline:0 !important;
+}  
+
+.btn-sharedLink {
+    background-color: #009130 !important;
+    border-color: #009130 !important;
+    color: white !important;
+    outline:0 !important;
+}   
+
+.btn-sharedLink:hover {
+    background-color: #009130 !important;
+    border-color: #009130 !important;
+    color: white !important;
+    outline:0 !important;
+}  
+
 .centerInput{
     margin-left: 10%;
 }
+
 
 .paddingInput{
     margin-right: 3%;
@@ -408,11 +531,17 @@ html, body {
 
 .footerColor{
     color: rgb(161, 161, 161);
-    padding-top: 50px;
 }
 
 .footerStyle{
-    margin-bottom: auto;
+    padding-bottom: 50px;
+    margin-bottom: 0px;
+}
+
+.footerStyle2{
+    padding-top: 50px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 #datatables_info{
@@ -507,12 +636,12 @@ html, body {
 }
 
 .posTextLog {
-    padding-bottom: 20px;
+    padding-bottom: 30px;
 }
 
 
 
-.paddingTop {
+.paddingTopForInput {
     padding-top: 20px;
 }
 
@@ -527,6 +656,17 @@ html, body {
 .padding-right {
     padding-right: 10px;
 }
+
+.pagination-right {
+    padding-right: 10px;
+}
+
+
+.paginationTab{
+    float: right;
+    padding-right: 10px;
+}
+
 
 .buttonAdd{
     margin-top: 15px;
@@ -564,9 +704,17 @@ html, body {
     width: 31px;
     height: 31px;
     background-color: white;
-    position: absolute;
     border-radius: 5px;
     margin-left: 3px;
+}
+
+
+
+.sizeImg3{
+    width: 31px;
+    height: 31px;
+    background-color: white;
+    border-radius: 5px;
 }
 
 .sizeImg2{
@@ -592,6 +740,13 @@ html, body {
     float: left;
     margin-top: 13px;
     margin-bottom: 13px;
+}
+
+.stylingForInputMobile{
+    width:200px; 
+    float:left; 
+    margin-right:10px; 
+    margin-bottom:10px
 }
 
 
@@ -642,19 +797,23 @@ html, body {
       padding-top: 10px;
   }
 
+  .tabStyle3{
+    padding-top: 30px;
+}
+
 
   .lenght{
       color: #868E96;
-      font-size: 14px;
+      font-size: 16px;
       padding-bottom: 5px;
-      font-weight: 400;
+      font-weight: 500;
   }
 
   .lenght1{
     color: #868E96;
     padding-top: 22px;
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: 500;
   }
 
   .colorPaging{
@@ -702,7 +861,7 @@ html, body {
   }
 
   .facheckW {
-      color: rgb(0, 255, 255);
+      color: #009130;
       cursor: default;
   }
 
@@ -717,10 +876,20 @@ html, body {
   .persentUsdSize{
       font-size: 20px;
       padding-top: 0px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
   }
+
+  .persentUsdSize24{
+    font-size: 14px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
 
 
   .textRegist{
+      font-size: 20px;
       padding-top: 30px;
       padding-bottom: 20px;
   }
@@ -761,6 +930,7 @@ html, body {
 }
 
 
+
 .dataTables_filter{
     float: right;
     color: #8AA1A1;
@@ -799,6 +969,10 @@ html, body {
 }
 
 .buttonTabs{
+    float: right;
+}
+
+.floatPagination{
     float: right;
 }
 
@@ -889,6 +1063,15 @@ html, body {
     width: 100px !important;
 }
 
+
+.widthMobile{
+    width:100%;
+}
+
+.widthMobileB{
+    width:370px;
+}
+
 .marginWallet{
     padding-left: 35px;
     padding-bottom: 30px;
@@ -975,18 +1158,16 @@ html, body {
     margin-right: 20%;
 }
 
-.textDecorationUl{
-    padding-left: 0px !important; 
-    margin-left: 0px !important;
-    list-style-type: none;
-}
+
+
 
 .emptyPadding{
-    padding: 4.7% ; 
+    padding-top: 4.7% ;
+    padding-bottom: 4.7%; 
 }
 
 .fullPadding{
-    padding: 10%;
+    padding-top: 10%;
 }
 
 .emptyPaddingTab{
@@ -1020,13 +1201,39 @@ html, body {
     display: none;
 }
 
+.tableHeaderDisplayNone{
+    display: none;
+}
+
+.description{
+    padding-left: 20px;
+    padding-top: 3px;
+    word-wrap: break-word;
+    display: inline;
+}
+
+.descriptionInput{
+    padding-top: 2px;
+    margin-left: 20px;
+    width: 600px;
+}
+
+.headerWallet{
+    padding-top: 20px; 
+
+   }
+
+   .mobileStyleForListOfPortf{
+    float: none;
+  }
+
 @media screen and (min-width: 1370px) {
     .emptyPadding{
-        padding: 6.9%;
+        padding-top: 6.9%;
     }
     
     .fullPadding{
-        padding: 12%;
+        padding-top: 12%;
     }
   }
 
@@ -1036,22 +1243,22 @@ html, body {
   and (-webkit-min-device-pixel-ratio: 2)
   and (min-resolution: 192dpi) { 
     .emptyPadding{
-        padding: 7.9%;
+        padding-top: 7.9%;
     }
     
     .fullPadding{
-        padding: 13%;
+        padding-top: 13%;
     }
 }
 
   @media screen and (min-width: 1025px) and (max-width: 1280px) {
 
     .emptyPadding{
-        padding: 5.9% ; 
+        padding-top: 5.9% ; 
     }
     
     .fullPadding{
-        padding: 14.5% ;
+        padding-top: 14.5% ;
     }
 
     .emptyPaddingTab{
@@ -1067,11 +1274,11 @@ html, body {
 
   @media screen and (min-width: 1870px) {
     .emptyPadding{
-        padding: 11.9% ; 
+        padding-top: 11.9% ; 
     }
     
     .fullPadding{
-        padding: 15.5% ;
+        padding-top: 15.5% ;
     }
 
     .emptyPaddingTab{
@@ -1086,11 +1293,11 @@ html, body {
 
   @media screen and (min-width: 2100px) {
     .emptyPadding{
-        padding: 15%; 
+        padding-top: 15%; 
     }
     
     .fullPadding{
-        padding: 17.8%;
+        padding-top: 17.8%;
     }
 
     .emptyPaddingTab{
@@ -1106,11 +1313,11 @@ html, body {
 
   @media screen and (min-width: 2900px) {
     .emptyPadding{
-        padding: 19%; 
+        padding-top: 19%; 
     }
     
     .fullPadding{
-        padding: 21%;
+        padding-top: 21%;
     }
 
     .emptyPaddingTab{
@@ -1130,13 +1337,19 @@ html, body {
   */
   
   @media (min-width: 768px) and (max-width: 1024px) {
+
+    .paddingCenter{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
     
     .tableStyle {
         width:100%;
     }
 
     .emptyPadding{
-        padding: 35% ; 
+        padding-top: 35%;
+        padding-bottom: 35%; 
     }
 
     .paddingDate{
@@ -1144,7 +1357,8 @@ html, body {
     }
     
     .fullPadding{
-        padding: 45%;
+        padding-top: 45%;
+
     }
 
     .emptyPaddingTab{
@@ -1175,11 +1389,12 @@ html, body {
     }
 
     .emptyPadding{
-        padding: 19%; 
+        padding-top: 19%;
+        padding-bottom: 19%; 
     }
     
     .fullPadding{
-        padding: 21%;
+        padding-top: 21%;
     }
 
     .emptyPaddingTab{
@@ -1189,6 +1404,8 @@ html, body {
     .fullPaddingTab{
         min-height: 85vh;
     }
+
+
     
   }
   
@@ -1199,14 +1416,34 @@ html, body {
   
   @media (min-width: 481px) and (max-width: 812px) {
 
+    .styleMobileWidth{
+        word-wrap: break-word;
+        width: 190px;
+        white-space: normal;
+      }
+
+    .floatPagination{
+        text-align: center;
+    }
+
+    .pagination-right {
+        float: center;
+    }
+
+    .pagination{
+     padding-top: 5px;
+
+    }
+
+    .paddingCenter{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
 
     .mobilePadding{
         margin-right: 5px; 
     }
 
-    .padding-right {
-        padding-right: none;
-    }
 
     .textLogo {
         font-size: 50px;
@@ -1215,12 +1452,6 @@ html, body {
     .textHeader {
         font-size: 18px;
         font-weight: 100px;
-    }
-
-    .footerColor{
-        color: rgb(161, 161, 161);
-        padding-top: 25px;
-        padding-bottom: 25px;
     }
 
     .fedorStyle{
@@ -1235,6 +1466,15 @@ html, body {
         overflow-x: auto;
         white-space: nowrap;
       }
+
+      .mobiletableL{
+        display: block;
+        overflow-x: auto;
+      }
+
+    .mobiletableM{
+        white-space: nowrap;
+    }
 
       .mobileDisplay {
           display: none;
@@ -1270,11 +1510,21 @@ html, body {
     }
 
     .emptyPadding{
-        padding: 10%; 
+        /*
+        padding-top: 20%;
+        padding-bottom: 20%; 
+        */
+
+        margin-top: 20%;
+        padding-bottom: 20%
     }
     
     .fullPadding{
-        padding: 25%;
+     /*   padding-top: 45%;
+        padding-bottom: 45%;
+        */
+        margin-bottom: auto;
+        margin-top: auto;
     }
 
     .emptyPaddingTab{
@@ -1282,7 +1532,7 @@ html, body {
     
     }
     .fullPaddingTab{
-        min-height: 0vh;
+        min-height: 70vh;
     }
 
     .paddingmobile{
@@ -1307,6 +1557,70 @@ html, body {
         margin-bottom: 12px;
     }
 
+    .footerStyle{
+        padding-bottom: 25px;
+        margin-bottom: 0px;
+        background-color: black;
+    }
+    
+    .footerStyle2{
+        padding-top: 50px;
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+        background-color: black;
+    }
+
+
+    .widthMobile{
+        width: 350px;
+        white-space:normal;
+    }
+
+    .posTextLog {
+        padding-bottom: 0px;
+    }
+
+    .mobileStyleDate{
+        margin-top: 25px;
+    }
+
+    .tableHeaderDisplayNone {
+        display: table-header-group;
+    }
+
+    .mobileDisplayLogo{
+        margin-top: 7px;
+    }
+
+    .DesCurName {
+        padding-top: 5px;
+    }
+
+    
+ .headerWallet{
+    float: none; 
+    padding-top: 13px; 
+    height: auto
+   }
+
+   .mobileStyleForListOfPortf{
+    position: relative;
+    left: 10px;
+  }
+
+  
+  .description{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    word-wrap: break-word;
+    display: inherit;
+}
+
+.visible{
+    visibility: hidden;
+}
+
   }
   
   /* 
@@ -1316,6 +1630,153 @@ html, body {
   
   @media (min-width: 320px) and (max-width: 480px) {
 
+    .visible{
+        visibility: hidden;
+    }
+
+    .description{
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 3px;
+        word-wrap: break-word;
+        display: inherit;
+    }
+    
+    .mobileStyleForListOfPortf{
+       position: relative;
+       left: 10px;
+      }
+
+ .headerWallet{
+    float: none; 
+    padding-top: 13px; 
+    height: auto
+   }
+
+    .DesCurName {
+        padding-top: 5px;
+    }
+
+    .mobileDisplayLogo{
+        margin-top: 7px;
+    }
+
+    .search{
+        margin-top: 0px;
+    }
+
+    .navbarBut{
+        margin-right: 5%;
+        cursor: pointer;
+     }
+
+    .tabStyle3{
+        padding-top: 0px;
+    }
+
+    .stylingForInputMobile{
+        width:200px; 
+        float:right; 
+        margin-right:10px; 
+        margin-bottom:10px
+    }
+
+    .stylingForInputMobileWallet{
+        width:200px; 
+        float:right;
+        margin-right: 10px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .headerMobile{
+        padding-left: 0px; padding-right: 0px
+    }
+
+    .tableHeaderDisplayNone {
+        display: table-header-group;
+    }
+
+
+    .mobileStyleDate{
+        margin-top: 25px;
+    }
+
+    .noWrapp{
+    white-space: nowrap;
+    }
+
+    .floatPagination{
+        text-align: center;
+    }
+
+    .pagination-right {
+        float: right;
+    }
+
+
+    .center-pagin{
+        text-align: center;
+    }
+
+    .navbarTextPos{
+        padding-top: 20px;
+        padding-bottom: 0px;
+        padding-left: 5%;
+    }
+
+    .logoSize {
+        font-size: 24px;
+    }
+
+    .posTextLog {
+        padding-bottom: 0px;
+    }
+
+    .widthMobile{
+        width: 350px;
+        white-space:normal;
+    }
+      
+    .mobiletableL{
+        display: block;
+        overflow-x: auto;
+      }
+
+    .mobiletableM{
+        white-space: nowrap;
+    }
+
+    .pagination{
+        padding-top: 5px;
+
+       }
+
+    .footerStyle{
+        padding-bottom: 25px;
+        margin-bottom: 0px;
+        background-color: black;
+    }
+    
+    .footerStyle2{
+        padding-top: 25px;
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+        background-color: black;
+    }
+
+    .col-xs-5{
+        margin-left: 15px !important;
+        margin-right: 15px !important;
+    }
+
+    .facebook {
+        margin-right: 0px;
+    }
+
+    .paddingCenter{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
 
     .centerWalName {
         margin-top: 12px;
@@ -1351,11 +1812,6 @@ html, body {
         font-size: 50px;
     }
 
-    .footerColor{
-        color: rgb(161, 161, 161);
-        padding-top: 25px;
-        padding-bottom: 25px;
-    }
 
     .textHeader {
         font-size: 18px;
@@ -1373,6 +1829,17 @@ html, body {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
+      }
+
+      .styleMobileWidth{
+        word-wrap: break-word;
+        width: 180px;
+        white-space: normal;
+      }
+
+      .modileTableIco{
+        display: block;
+        overflow-x: auto;
       }
 
       .mobileDisplay {
@@ -1410,11 +1877,20 @@ html, body {
 
 
     .emptyPadding{
-        padding: 10%; 
+     /*   padding-top: 10%;
+        padding-bottom: 10%; 
+        */
+        margin-bottom: 10%;
+        margin-top: auto;
     }
     
     .fullPadding{
-        padding: 25%;
+      /*  padding-top: 45%;
+        padding-bottom: 45%;
+        */
+
+        margin-bottom: auto;
+        margin-top: auto;
     }
 
     .emptyPaddingTab{
@@ -1422,7 +1898,7 @@ html, body {
     
     }
     .fullPaddingTab{
-        min-height: 0vh;
+        min-height: 50vh;
     }
     
   }

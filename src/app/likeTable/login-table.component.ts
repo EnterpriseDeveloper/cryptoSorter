@@ -1,18 +1,19 @@
-import { Component, OnDestroy,  Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, AfterViewInit, OnDestroy,  Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject'
 import {Likes} from '../aservices/Likes'
-import { HeaderComponent } from '../header/header.component';
 
 import { ItemService } from '../aservices/item.service';
 import { ApiService } from '../aservices/api-service.service';
 import { AuthService } from '../aservices/auth.service';
 import { Resolve } from '@angular/router';
 import { reject } from 'q';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {LoginUserComponent} from '../login-user/login-user.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LoginUserComponent } from '../login-user/login-user.component';
 import { ListcryptocompareService } from '../aservices/listcryptocompare.service';
+import { SpinnerLoadService } from '../spinner/spinner-load.service';
+import { IsEmptyWalletService } from '../wallet/service/is-empty-wallet.service';
 declare var jquery:any;
 declare var $ :any;
 
@@ -22,9 +23,9 @@ declare var $ :any;
   selector: 'login-table',
   templateUrl: './login-table.component.html',
   styleUrls: ['./login-table.component.css'],
-  providers: [ApiService, HeaderComponent]
+  providers: [ApiService]
 })
-export class LoginTableComponent implements OnDestroy{
+export class LoginTableComponent implements  AfterViewInit, OnDestroy{
 
 @Input() id: string;
 @Input() page;
@@ -32,6 +33,23 @@ export class LoginTableComponent implements OnDestroy{
 
 @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 @ViewChild('autofocus') autofocus;
+
+private USD = { id: "usd",
+name: "US Dollar",
+symbol: "usd",
+rank: "",
+price_usd: "1",
+price_btc: "0",
+['24h_volume_usd']: "0",
+market_cap_usd: "0",
+available_supply: "0",
+total_supply: "0",
+max_supply: "0",
+percent_change_1h: "0",
+percent_change_24h: "0",
+percent_change_7d: "0",
+last_updated: "0" 
+}
 
   private likes: Observable<Likes[]>;
   public isLoggedIn: boolean;
@@ -45,7 +63,7 @@ export class LoginTableComponent implements OnDestroy{
   public apiSub:any;
   public userSub:any;
   public promise:any;
-  public isEmptyWallet: boolean = true;
+  public isEmptyWallet: boolean;
   public table:any;
   public likeCurrency:any = [];
   public likeLenght:any;
@@ -54,28 +72,56 @@ export class LoginTableComponent implements OnDestroy{
   public selectedRow: number;
   public listCompareSub: any;
   public listComapreItem: any;
+  private items:Array<any> = [];
+  private historicalDate: string;
+  private historicalDateName: string;
+  private defaultChars: string;
 
   constructor(
     private likeService: ItemService,
     private apiService: ApiService,
     private authService: AuthService,
-    private headerComponent: HeaderComponent,
     private modalService: NgbModal,
     private listCompare: ListcryptocompareService,
-    private http: Http
+    private http: Http,
+    private spinnerService: SpinnerLoadService,
+    private isEmptyService: IsEmptyWalletService,
+    private cdr: ChangeDetectorRef,
   )  {
+   this.isEmptyService.isEmptyValue.subscribe((value)=>{
+       this.isEmptyWallet = value;
+   });
    this.userSub = this.authService.user.subscribe(
       (auth) => {
         if (auth == null) {
           this.isLoggedIn = false;
+          this.spinnerService.changeMessage(false);
         } else {
           this.loading = true;
+          this.spinnerService.changeMessage(true);
           this.isLoggedIn = true;
           this.likes = this.likeService.getListLike();
           this.getLikesData();
           this.page = 1;
+
         }
       });
+      this.historicalDate = localStorage.getItem('day');
+      if(this.historicalDate == null){
+        this.historicalDate = '7d'
+      }
+      this.historicalDateName = localStorage.getItem('dayName') 
+      if(this.historicalDateName == null){
+        this.historicalDateName ='7 days'
+      }
+      this.defaultChars = localStorage.getItem('symbolGraphic')
+      if(this.defaultChars == null){
+        this.defaultChars = 'usd'
+      }
+  }
+
+  ngAfterViewInit(){
+    this.cdr.detectChanges();
   }
 
     // get likes from ItemService 
@@ -102,10 +148,11 @@ export class LoginTableComponent implements OnDestroy{
       this.apiSub = this.apiService.get()  
       .subscribe((dataItem) => {
          this.dataTables = dataItem;
+         this.items = dataItem;
+         this.items.push(this.USD);
          this.filterLikes = this.dataTables.filter((i) => {
       return this.likeValue.indexOf(i.id) != -1;
     });
-      this.isEmptyWallet = this.headerComponent.isEmpty();
       this.createTable();   
      });
     })
@@ -148,7 +195,7 @@ export class LoginTableComponent implements OnDestroy{
       this.likeCurrency = this.newArray;
       this.likeLenght = this.likeCurrency.length;
       this.loading = false; 
-
+      this.spinnerService.changeMessage(false);
       if(this.isLoggedIn == true){
         if(this.likeLenght != 0){
           setTimeout(()=>{
@@ -162,6 +209,7 @@ export class LoginTableComponent implements OnDestroy{
       symbol = (symbol === "MIOTA" ? "IOT" : symbol);
       symbol = (symbol === "VERI" ? "VRM" : symbol);
       symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      symbol = (symbol === "NANO" ? "XRB" : symbol);
       
       if( this.listComapreItem.Data[symbol] === undefined){
         return false
@@ -174,6 +222,11 @@ export class LoginTableComponent implements OnDestroy{
       symbol = (symbol === "MIOTA" ? "IOT" : symbol);
       symbol = (symbol === "VERI" ? "VRM" : symbol);
       symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      symbol = (symbol === "NANO" ? "XRB" : symbol);
+
+      if (symbol == "usd"){
+        return "assets/dollar.png";
+      };
       
       if( this.listComapreItem.Data[symbol] === undefined){
         return "assets/icon.png";
@@ -182,14 +235,48 @@ export class LoginTableComponent implements OnDestroy{
       }
     } 
 
-    getWebPage(symbol){
+    doSelect(value){
+       this.defaultChars = value;
+       localStorage.setItem('symbolGraphic', value);
+    }
 
-      let webPage 
-
+    getChart(symbol){
       symbol = (symbol === "MIOTA" ? "IOT" : symbol);
       symbol = (symbol === "VERI" ? "VRM" : symbol);
       symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      symbol = (symbol === "NANO" ? "XRB" : symbol);
+      if(this.listComapreItem.Data[symbol] === undefined){
+        return "assets/noData.png";
+      }else{
+          if(this.defaultChars === 'usd' ){
+            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-'+ this.defaultChars +'/'+ this.historicalDate +'/svg?lineColor=white';
+          }else if(this.listComapreItem.Data[this.defaultChars] === undefined){
+            return "assets/noData.png";
+          }  else if(symbol === this.defaultChars) {
+            return "assets/line_data.png";
+           } else {
+             return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-'+ this.defaultChars +'/'+ this.historicalDate +'/svg?lineColor=white';
+            }
+      }
+    }
 
+    disableLinks(data){
+      if (data == 'usd'){
+        return true
+      }else{
+        return false
+      }
+    }
+
+    getWebPage(symbol){
+      let webPage 
+      symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+      symbol = (symbol === "VERI" ? "VRM" : symbol);
+      symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      symbol = (symbol === "NANO" ? "XRB" : symbol);
+      if (window.matchMedia('screen and (max-width: 700px)').matches) {
+        return
+      }else{
       if( this.listComapreItem.Data[symbol] === undefined){
         return
       }else{
@@ -202,6 +289,7 @@ export class LoginTableComponent implements OnDestroy{
          return  window.open(webPage.Data.General.WebsiteUrl , '_blank');
        });
       }
+    }
     }
 
 
@@ -242,6 +330,35 @@ export class LoginTableComponent implements OnDestroy{
           break;    
       default: 
           this.perPage = 25;
+     }
+  }
+
+  switchDate(value){
+    switch (value) {
+      case '1y':
+          this.historicalDate = '1y'
+          this.historicalDateName = '1 year'
+          localStorage.setItem('day', '1y');
+          localStorage.setItem('dayName', '1 year');
+          break; 
+      case '30d':
+          this.historicalDate = '30d'
+          this.historicalDateName = '30 days'
+          localStorage.setItem('day', '30d');
+          localStorage.setItem('dayName', '30 days');
+          break; 
+      case '7d':
+          this.historicalDate = '7d'
+          this.historicalDateName = '7 days'
+          localStorage.setItem('day', '7d');
+          localStorage.setItem('dayName', '7 days');
+          break; 
+     case '24h':
+           this.historicalDate = '24h'
+           this.historicalDateName = '24 hours'
+           localStorage.setItem('day', '24h');
+           localStorage.setItem('dayName', '24 hours');
+          break;    
      }
   }
 

@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../aservices/auth.service';
-import { WalletService } from '../aservices/wallet.service';
-import { ApiService} from '../aservices/api-service.service';
-import * as _ from "lodash";
-import { Wallet } from '../aservices/Wallet';
+import {SpinnerLoadService } from '../spinner/spinner-load.service';
+import {TotalService} from './services/total.service';
+import {Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 
 @Component({
@@ -13,54 +12,100 @@ import { Wallet } from '../aservices/Wallet';
   styleUrls: ['./header.component.css'],
 
 })
-export class HeaderComponent implements OnInit, OnDestroy{
+export class HeaderComponent implements OnInit ,OnDestroy{
  
-  public walletValue: any = [];
-   public walletSub: any;
-   public walletData: any;
-   public wallets: Observable<Wallet[]>;
-   public apiSub: any;
-   public dataTables: any;
-   public filterWallet: any;
-   public connection: any;
-   public summ: any = [];
-   public persent: any = [];
-   public totalSum: any = 0;
+  public totalSum: any = 0 ;
    public persentTotal: any = 0;
    public loading: boolean = false;
    private userSub:any;
-   private persentUSD: any = 0;
-   private isEmptyValue: boolean = true;
+   public persentUSD: any = 0;
+   public isEmptyValue: boolean;
+   public isLoggedIn: boolean;
+   private linkIsempty: boolean = true;
 
-  constructor(private apiService: ApiService,
+ public myStyle: object = {};
+ public	myParams: object = {};
+ public width: number = 100;
+ public height: number = 100;
+ public loadSpiner: boolean;
+ public idLink: any;
+
+ public walletEmpty: boolean = true;
+
+
+  constructor(
     public auth: AuthService,
-    public walletService: WalletService,
+    public spinnerService: SpinnerLoadService,
+    public totalService: TotalService,
+    public route: ActivatedRoute,
+    public router: Router,
 ) {
   this.loading = true;
    this.userSub = this.auth.user.subscribe(
       (auth) => {
-        if (auth == null) {
-          this.walletValue = [];
+        if (auth != null) {
+          this.isLoggedIn = true;
         } else {
-          let userId = auth.uid;
-          this.wallets = this.walletService.getListWallet(userId);
-          this.getWalletList();
+           this.isLoggedIn = false;
         }
-      }
-    );
+      });
   } 
-  
-  myStyle: object = {};
-	myParams: object = {};
-	width: number = 100;
-	height: number = 100;
-  
+
+ public totalModule: number; 
+ public showTotalModuleL: boolean = false;
+ public spinnerSub: any;
+ public totalSub: any;
+ public totalSubModal: any;
+ public totalSubPersent: any;
   ngOnInit() {
+    this.spinnerSub = this.spinnerService.currentStatus
+    .subscribe((status)=>{
+      this.loadSpiner = status;
+    });
+   this.totalSub = this.totalService.totalSum.subscribe((total)=>{
+      var totals = total;
+      if(totals > 0 || total < 0){
+        this.isLoggedIn = true;
+        this.isEmptyValue = true;
+      };
+      if(totals == 'empty'){
+        this.isEmptyValue = false;
+      };
+      if(totals == 0){
+        this.isEmptyValue = false;
+      };
+      if(totals == null){
+        this.isEmptyValue = false;
+      }
+      this.totalSum = Number(totals).toFixed(0);
+      this.loading = false;
+    });
+
+   this.totalSubModal = this.totalService.totalModule.subscribe((totalM)=>{
+       let totalMod = totalM;
+       let summ = ((this.totalSum - totalMod)/2).toFixed(0);
+       this.totalModule = Number(summ)
+       if(this.totalModule <= -1){
+          this.showTotalModuleL = true;
+       }else{
+         this.showTotalModuleL = false;
+       }
+    })    
+
+   this.totalSubPersent = this.totalService.persentSum.subscribe((persent)=>{
+       let persentValue = persent;
+       this.persentTotal = Number(persentValue).toFixed(2);
+
+
+     let perUSD = (persentValue*this.totalSum)/100;
+       this.persentUSD = Number(perUSD).toFixed(2);
+     
+    });
     this.myStyle = {
             'position': 'absolute',
             'width': '100%',
             'z-index': 'auto',
-            'height': '520px',
+            'height': '450px',
             'top': 0,
             'left': 0,
             'right': 0,
@@ -180,111 +225,13 @@ size: {
   }
 
 
-  getWalletList(){
-  this.walletSub = this.wallets.subscribe((walletData)=>{
-    this.walletData = walletData;
-    this.walletValue = [];
-      this.walletData.forEach(walletData =>{
-      return this.walletValue.push(walletData.id);
-    })
-    this.apiSub = this.apiService.get()  
-    .subscribe((dataItem) => {
-      this.dataTables = dataItem;   
-     this.filterWallet =  this.dataTables.filter((i) => {
-        return this.walletValue.indexOf(i.id) != -1;
-     });  
-
-     this.connection = _.map(this.filterWallet, (item) => {
-      return _.assign(item, _.find(this.walletData, ['id', item["id"] ]));
-    });
-    this.isEmpty();
-    this.isEmptyCheck();
-   });
-  })
-  }
-
-  isEmpty(){
-    if (this.walletValue.length > 0) {
-    return false
-    } else {
-     return true;
-    };
-  }
-
-
-  isEmptyCheck(){
-    if (this.walletValue.length > 0) {
-      this.formula()
-    return this.isEmptyValue = false
-    } else {
-     this.loading = false;
-     this.isEmptyValue = true;
-     return true;
-    };
-  }
-
- 
-formula(){
-  this.connection.forEach(connection=>{
-    var total;
-    var total24_h;
-    var that = this;
-     function getTotalValue(connection){
-
-      total = connection.price_usd * connection.coins;
-
-      return (total)
-     };
-
-     function getTotal24_hValue(connection){
-
-      total24_h = total * connection.percent_change_24h;
-
-      return (total24_h);
-     };
-
-     var tableBodyHtml = this.connection.map(function(connection) {
-      return Object.assign(connection, {total: getTotalValue(connection)}, {total24_h: getTotal24_hValue(connection)});
-      })
-     
-  });
-
-  this.getSumma();
-};
-
-
-
-  getSumma(){
-    this.summ = [];
-    this.connection.forEach(connect =>{
-      return this.summ.push(connect.total);
-  });  
-
- let total = _.sum(this.summ);
-
-     this.totalSum = total.toFixed(0);
-     this.loading = false;
-
-     this.getPersantChange(total);
-  }
-
-  getPersantChange(total){
-    this.persent = [];
-    this.connection.forEach(persent =>{
-      return this.persent.push(persent.total24_h)
-    })
-
-    let persentSum = _.sum(this.persent);
-
-    let per = persentSum/total;
-    this.persentTotal = per.toFixed(2);
-    let perUSD = (this.persentTotal*total)/100;
-    this.persentUSD = perUSD.toFixed(2);
-  }
-
   ngOnDestroy(){
-this.userSub.unsubscribe();
-  }
+    this.userSub.unsubscribe();
+    this.spinnerSub.unsubscribe();
+    this.totalSub.unsubscribe();
+    this.totalSubModal.unsubscribe();
+    this.totalSubPersent.unsubscribe();
+     }
 
 
 }

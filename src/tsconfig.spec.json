@@ -2,15 +2,20 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
-    "allowJs": true,  
     "baseUrl": "./",
     "module": "commonjs",
     "target": "es5",
     "types": [
       "jasmine",
       "node"
-    ]
+    ],
+   "typeRoots": [ "../node_modules/@types" ]
   },
+  "lib": [
+    "es6", 
+    "dom", 
+    "es2015.iterable"
+  ],
   "files": [
     "test.ts"
   ],

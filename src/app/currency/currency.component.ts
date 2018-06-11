@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, OnInit, OnDestroy, Input, Output } from '@angular/core';
+import { Component, ChangeDetectorRef, AfterViewInit, ViewChild, OnInit, OnDestroy, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators,} from '@angular/forms';
 import { Http, Response } from '@angular/http';
@@ -6,11 +6,14 @@ import { Subject } from 'rxjs/Subject';
 import { IPosts } from "../aservices/IPosts";
 import { ItemService } from '../aservices/item.service';
 import { Likes } from '../aservices/Likes';
-import { HeaderComponent } from '../header/header.component';
 import { Currency } from '../shared/currency';
 import { ListcryptocompareService} from '../aservices/listcryptocompare.service';
 import "rxjs/Rx";
 import { Router } from '@angular/router';
+import { SpinnerLoadService } from '../spinner/spinner-load.service';
+import { IsEmptyWalletService } from '../wallet/service/is-empty-wallet.service';
+import { ListWalletService } from '../wallet/service/list-wallet.service'; 
+import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 
 import { ApiService } from '../aservices/api-service.service';
 import { AuthService } from '../aservices/auth.service';
@@ -20,6 +23,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginUserComponent} from '../login-user/login-user.component';
 import { WalletService } from '../aservices/wallet.service';
 import { Wallet } from '../aservices/Wallet';
+import { WalletComponent } from '../wallet/wallet.component'
 import { reject } from 'q';
 import { resolve } from 'url';
 import * as _ from "lodash";
@@ -36,10 +40,9 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./currency.component.css'],
   providers: [ApiService,
      WalletService, 
-     HeaderComponent,
-    ListcryptocompareService]
+     ListcryptocompareService]
 })
-export class CurrencyComponent implements OnDestroy{
+export class CurrencyComponent implements OnDestroy, AfterViewInit{
 
   @ViewChild('autofocus') autofocus;
 
@@ -54,10 +57,10 @@ export class CurrencyComponent implements OnDestroy{
   };
   validationMessages = { 
     'number': {
-      'required': 'Coins is required.',
-      'minlength': 'Coins must be at least 1 characters long.',
-      'maxlength': 'Coins cannot be more than 30 characters long.',
-      'pattern': 'Cannot contain more than 10 characters after the point',
+      'required': 'Enter a valid number greater than 0.',
+      'minlength': 'Enter a valid number greater than 0.',
+      'maxlength': 'Enter a valid number greater than 0.',
+      'pattern': 'Enter a valid number greater than 0.',
     }
   };
 
@@ -89,7 +92,7 @@ export class CurrencyComponent implements OnDestroy{
   public newArray: any;
   public userSub: any;
   public formSub: any;
-  public isEmptyWallet: any;
+  public isEmptyWallet: boolean;
   public data: Currency[] = [];
   public dataLenght:any;
   public perPage = 25;
@@ -100,6 +103,29 @@ export class CurrencyComponent implements OnDestroy{
   public minIndex: any;
   public listCompareSub: any;
   public listComapreItem: any;
+  public historicalDate: string;
+  public historicalDateName: string;
+  public itemsGraphic:Array<any> = [];
+  public defaultChars: string = 'usd';
+  public ngxValue;
+  public walletList;
+  public userId: any;
+
+  private USD = { id: "usd",
+                  name: "US Dollar",
+                  symbol: "usd",
+                  rank: "",
+                  price_usd: "1",
+                  price_btc: "0",
+                  ['24h_volume_usd']: "0",
+                  market_cap_usd: "0",
+                  available_supply: "0",
+                  total_supply: "0",
+                  max_supply: "0",
+                  percent_change_1h: "0",
+                  percent_change_24h: "0",
+                  percent_change_7d: "0",
+                  last_updated: "0" }
  
 
   constructor(
@@ -111,11 +137,22 @@ export class CurrencyComponent implements OnDestroy{
     public loginUser: LoginUserComponent,
     public walletService: WalletService,
     public fb: FormBuilder,
-    public headerComponent: HeaderComponent,
     public listCompare: ListcryptocompareService,
     public router: Router,
-    public http: Http) {
+    public http: Http,
+    private cdr: ChangeDetectorRef,
+    public spinnerService: SpinnerLoadService,
+    public ListWalletService: ListWalletService,
+    private isEmptyService: IsEmptyWalletService,
+    private ngbDropDownConfig: NgbDropdownConfig,
+    private walletComponent: WalletComponent
+  ) {
+    this.ngbDropDownConfig.placement='bottom-left';
     this.loadingTable = true;  
+    this.spinnerService.changeMessage(false);
+    this.isEmptyService.isEmptyValue.subscribe((value)=>{
+      this.isEmptyWallet = value;
+    })
    this.userSub = this.authService.user.subscribe(
       (auth) => {
         if (auth == null) {
@@ -131,9 +168,10 @@ export class CurrencyComponent implements OnDestroy{
         } else {
           this.loading = true;  
           this.isLoggedIn = true;
-          let userId = auth.uid;
+          this.userId = auth.uid;
           this.likes = this.likeService.getListLike();
-          this.wallets = this.walletService.getListWallet(userId);
+          this.wallets = this.walletService.getListWalletFull(this.userId);
+          this.walletList = this.ListWalletService.getListWallet();
           this.dislikes = this.dislikeService.getListDislike();
           this.getLikeList();
           this.getWalletList();
@@ -166,6 +204,23 @@ export class CurrencyComponent implements OnDestroy{
       if(this.filter['24h_volume_usd'] == 0){
         this.filter['24h_volume_usd'] = NaN;
      }
+     this.historicalDate = localStorage.getItem('day');
+     if(this.historicalDate == null){
+       this.historicalDate = '7d'
+     }
+     this.historicalDateName = localStorage.getItem('dayName') 
+     if(this.historicalDateName == null){
+       this.historicalDateName ='7 days'
+     }
+     this.defaultChars = localStorage.getItem('symbolGraphic')
+     if(this.defaultChars == null){
+        this.defaultChars = 'usd'
+     }
+
+  }
+
+  ngAfterViewInit(){
+    this.cdr.detectChanges();
   }
 
   minIndexChange(value){
@@ -202,16 +257,27 @@ export class CurrencyComponent implements OnDestroy{
     })
   };
 
+  public listWalletSub: any;
+  public listWalleData: any;
+  public connection: any;
   getWalletList(){
-    this.walletSub = this.wallets.subscribe((walletData)=>{
-      this.isEmptyWallet = this.headerComponent.isEmpty();
-      this.walletData = walletData;
-        this.walletData.forEach(walletData =>{
-        return this.walletValue.push(walletData.id);
-      })
+    let promise = new Promise((resolve, reject) =>{
+    this.listWalletSub = this.walletList.subscribe((data)=>{
+    this.listWalleData = data;
+    resolve(this.listWalleData);
     })
-    
+  });
+
+  promise.then(()=>{
+    this.walletSub = this.wallets.subscribe((walletData)=>{
+      this.walletData = walletData;
+      this.connection = _.map(this.listWalleData, (item) => {
+        return _.assign(item, _.find(this.walletData, ['$key', item['id'] ]));
+      });
+    })
+  })
   };
+
 
     // get dislike from DislikeService
     getDislikeList(){
@@ -232,24 +298,34 @@ export class CurrencyComponent implements OnDestroy{
     };
 
     getData(){
+      let promise = new Promise((resolve, reject) =>{
       this.listCompareSub = this.listCompare.get()
       .subscribe((listItem) => {
         this.listComapreItem = listItem;
-        this.apiSub = this.apiService.get()  
-        .subscribe((dataItem) => {
-          this.dataTables = dataItem;  
-          this.filterDislike = this.dataTables.filter((i) => {
-            return this.dislikeValue.indexOf(i.id) === -1;
-         });  
-         this.index(); 
-        });
+        resolve(this.listComapreItem);
       })
+    });
+
+     promise.then(()=>{
+      this.apiSub = this.apiService.get()  
+      .subscribe((dataItem) => { 
+        this.dataTables = dataItem; 
+        this.itemsGraphic = this.dataTables
+        this.itemsGraphic.push(this.USD)
+        this.filterDislike = this.dataTables.filter((i) => {
+          return this.dislikeValue.indexOf(i.id) === -1;
+       });  
+       this.index(); 
+      });
+     })
+
     }
 
     symbolNoFit(symbol){
       symbol = (symbol === "MIOTA" ? "IOT" : symbol);
       symbol = (symbol === "VERI" ? "VRM" : symbol);
       symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      symbol = (symbol === "NANO" ? "XRB" : symbol);
       
       if( this.listComapreItem.Data[symbol] === undefined){
         return false
@@ -262,6 +338,11 @@ export class CurrencyComponent implements OnDestroy{
       symbol = (symbol === "MIOTA" ? "IOT" : symbol);
       symbol = (symbol === "VERI" ? "VRM" : symbol);
       symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      symbol = (symbol === "NANO" ? "XRB" : symbol);
+
+      if (symbol == "usd"){
+        return "assets/dollar.png";
+      };
       
       if( this.listComapreItem.Data[symbol] === undefined){
         return "assets/icon.png";
@@ -277,6 +358,7 @@ export class CurrencyComponent implements OnDestroy{
       symbol = (symbol === "MIOTA" ? "IOT" : symbol);
       symbol = (symbol === "VERI" ? "VRM" : symbol);
       symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      symbol = (symbol === "NANO" ? "XRB" : symbol);
 
       if( this.listComapreItem.Data[symbol] === undefined){
         return
@@ -290,6 +372,78 @@ export class CurrencyComponent implements OnDestroy{
          return  window.open(webPage.Data.General.WebsiteUrl , '_blank');
        });
       }
+    }
+    
+
+
+    doSelectGraphic(value){
+       this.defaultChars = value
+       localStorage.setItem('symbolGraphic', value);
+    }
+  
+
+    getChart(symbol){
+
+      symbol = (symbol === "MIOTA" ? "IOT" : symbol);
+      symbol = (symbol === "VERI" ? "VRM" : symbol);
+      symbol = (symbol === "ETHOS" ? "BQX" : symbol);
+      symbol = (symbol === "NANO" ? "XRB" : symbol);
+      
+      let dataImage = 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-'+ this.defaultChars +'/'+ this.historicalDate +'/svg?lineColor=white';
+
+      if(this.listComapreItem.Data[symbol] === undefined){
+        return "assets/noData.png";
+      }else{
+          if(this.defaultChars === 'usd' ){
+            return dataImage
+          }else if(this.listComapreItem.Data[this.defaultChars] === undefined){
+            return "assets/noData.png";
+          } else if(symbol === this.defaultChars) {
+           return "assets/line_data.png";
+          } else if(dataImage === 'Not Found') {
+            return "assets/noData.png";
+          } else {
+            return dataImage
+          }
+      }
+    }
+
+    disableLinks(data){
+      if (data == 'usd'){
+        return true
+      }else{
+        return false
+      }
+    }
+
+
+    switchDate(value){
+      switch (value) {
+        case '1y':
+            this.historicalDate = '1y'
+            this.historicalDateName = '1 year'
+            localStorage.setItem('day', '1y');
+            localStorage.setItem('dayName', '1 year');
+            break; 
+        case '30d':
+            this.historicalDate = '30d'
+            this.historicalDateName = '30 days'
+            localStorage.setItem('day', '30d');
+            localStorage.setItem('dayName', '30 days');
+            break; 
+        case '7d':
+            this.historicalDate = '7d'
+            this.historicalDateName = '7 days'
+            localStorage.setItem('day', '7d');
+            localStorage.setItem('dayName', '7 days');
+            break; 
+       case '24h':
+             this.historicalDate = '24h'
+             this.historicalDateName = '24 hours'
+             localStorage.setItem('day', '24h');
+             localStorage.setItem('dayName', '24 hours');
+            break;    
+       }
     }
 
 
@@ -339,9 +493,14 @@ export class CurrencyComponent implements OnDestroy{
   };
 
         //sorting
-        key: any = 'market_cap_usd'; //set default
-        reverse: boolean = true;
+        localKey: any = localStorage.getItem('sortKey');
+        key: any = this.localKey == undefined ? 'market_cap_usd' : this.localKey;
+         //set default
+        localReverse = localStorage.getItem('sortReverse')
+        reverse: any = this.localReverse == 'true' ? false : true;
         sort(key){
+          localStorage.setItem("sortKey", key);
+          localStorage.setItem("sortReverse", this.reverse);
           this.key = key;
           this.reverse = !this.reverse;
         }
@@ -397,7 +556,7 @@ getValueLike(row, i){
     this.likedRow = i;
     setTimeout(()=>{
       this.likedRow = NaN;
-    },500);
+    },800);
   }
 
 };
@@ -413,18 +572,20 @@ getValueDislike(row, i){
    let index = this.newArray.indexOf(row);
    setTimeout(()=>{
     this.data.splice(index, 1);
-   },750)
+   },950)
   }
 };
 
 
-getValueWallet(row, tabWallet, i){
+private path: any;
+getValueWallet(row, tabWallet, i, path){
   if(this.isLoggedIn === false){
     this.modalService.open(LoginUserComponent);
     $('.modal-content').animate({ opacity: 1 });
     $('.modal-backdrop').animate({ opacity: 0.9 });
   }else{
-    this.coins = '';
+    this.coins = '0';
+    this.path = path;
    this.currensy = this.newArray.find(myObj => myObj.id === row.id);
    this.coinsName = row.id
    this.modalWallet = this.modalService.open(tabWallet, { windowClass: 'dark-modal' })
@@ -437,12 +598,13 @@ getValueWallet(row, tabWallet, i){
 createWallet(coins){
   this.wallet.id = this.coinsName;
   this.wallet.coins = coins;
-this.walletService.createWallet(this.wallet);
+this.walletService.createWalletFromCurrency(this.path, this.wallet);
 this.addedCoin = this.indexWallet;
 this.router.navigate(['']);
     setTimeout(()=>{
       this.addedCoin = NaN;
-    },500);
+    },800);
+this.walletComponent.getWalletList();    
 this.modalWallet.close();
 }
 
@@ -453,7 +615,7 @@ buildForm(){
       Validators.required,
       Validators.minLength(1),
       Validators.maxLength(30), 
-      Validators.pattern("^[0-9]+(.[0-9]{0,10})?$"),
+      Validators.pattern("^-?[0-9]+(.[0-9]{0,10})?$"),
     ]]
   })
   this.formSub = this.numberForm.valueChanges.subscribe((data) => this.onValueChanged(data));
@@ -484,9 +646,9 @@ buildForm(){
   }
 
 
-walletColor(row){
-  return this.walletValue.indexOf(row.id) != -1;
-}
+//walletColor(row){
+//  return this.walletValue.indexOf(row.id) != -1;
+//}
 
 gotoDetail(id): void {
   id = (id === "MIOTA" ? "IOT" : id);
@@ -500,21 +662,40 @@ gotoDetail(id): void {
   }
 }
 
+findDataWallet(row, i){
+   let path = this.connection[i].coin;
+  let d = _.findKey(path, function(o) { return o.id === row.id; });
+  if(d === undefined){
+    return false
+  }else{
+    return true
+  }
+}
+
+openRegistModule(){
+  if(this.isLoggedIn === false){
+    this.modalService.open(LoginUserComponent);
+    $('.modal-content').animate({ opacity: 1 });
+    $('.modal-backdrop').animate({ opacity: 0.9 });
+  }
+}
 
 
 ngOnDestroy(){
-this.userSub = this.authService.user.subscribe(
-  (auth) => {
-    if (auth == null) {
+  this.userSub.unsubscribe();
+    if (this.userId == null) {
       this.formSub.unsubscribe();
+      this.listCompareSub.unsubscribe();
+      this.apiSub.unsubscribe();
     } else {
       this.dislikeSub.unsubscribe();
       this.likeSub.unsubscribe();
       this.walletSub.unsubscribe();
+      this.listWalletSub.unsubscribe();
       this.formSub.unsubscribe();
+    //  this.listCompareSub.unsubscribe();
+    //  this.apiSub.unsubscribe();
     }
-  }
-);
 }
 
 

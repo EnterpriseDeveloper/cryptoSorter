@@ -1,6 +1,6 @@
 <div class="navbarStyle">
     <ul class="navbarTextStyle navbarTextPos float-left hr">
-        <li class="links colorText particle" [routerLink]="['/']">CryptoSorter</li>
+        <li class="links colorText particle logoSize" [routerLink]="['/']">CryptoSorter</li>
        <!-- <li class="particle">
                         <label class="switch">
                                         <input type="checkbox" (click)="changeStyle()">
@@ -18,9 +18,22 @@
     
     
       <ng-template #guest>
-          <ul class="navbarTextPos2 hr">
+          <ul class="navbarTextPos2 hr mobileDisplay">
                 <li><button class="btn btn-primary float-right navbarBut particle" (click)="openRegistModal()">Login / Sign Up</button></li>
           </ul>
+
+          <p #menu class='screenDisplay colorText text-right styleMenu' (click)='rotate()' (click)="toggle()" ><i class="fa fa-2x styleIcon" [@rotatedState]='state' [class.fa-bars]='!showMenu' [class.fa-times]='showMenu' aria-hidden="true"></i></p>
+
+        <ul *ngIf='showMenu' #menu [@Menu] class="textDecorationUl text-center paddingNone screenDisplay" style="font-weight:700">
+          <li id="everything" (click)="showMenu = false" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="everything" >Everything</li>
+          <li id="toFavorite" (click)="showMenu = false" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorites</li>
+          <li id="toDeleted" (click)="showMenu = false" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
+          <li id="toWallet" (click)="showMenu = false"  [routerLink]="['/portfolio/:id']" [class.toWallet]="route.isActive('/portfolio')" >Portfolios</li>
+          <li id="icoUpComing" (click)="showMenu = false" [routerLink]="['/ico/active']" routerLinkActive="toIco">ICO Active</li>
+          <li id='icoUpComing' (click)="showMenu = false" [routerLink]="['/ico/upcoming']" routerLinkActive="toIco">ICO Upcoming</li> 
+          <li id='icoUpComing' (click)="showMenu = false" [routerLink]="['/ico/saved']" routerLinkActive="toIco">ICO Saved</li> 
+          <li class='colorText' (click)="showMenu = false" style="padding-bottom: 15px; padding-top: 10px" (click)="openRegistModal()">Sign Up</li>
+        </ul>
       </ng-template>
     
       <ng-template #authenticated>
@@ -29,9 +42,20 @@
                 <li class="colorText float-right navbarBut2">Hello,&ensp;{{ user.email }}.</li>
         </ul>
 
-        <ul class="navbarTextPos2 hr screenDisplay" *ngIf="auth.user | async as user">
-                <li><button class="btn btn-primary float-right navbarBut" (click)="logout()">Sign Out </button></li>
-        </ul>
+       <p #menu class='screenDisplay colorText styleMenu text-right' (click)='rotate()' (click)="toggle()" ><i class="fa fa-2x styleIcon" [@rotatedState]='state' [class.fa-bars]='!showMenu' [class.fa-times]='showMenu' aria-hidden="true"></i></p>
+       
+       <ul  *ngIf='showMenu' #menu [@Menu] class="textDecorationUl text-center paddingNone screenDisplay" style="font-weight:700">
+         <li *ngIf='!walletEmpty' (click)="showMenu = false" id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolios</li>
+         <li id="everything" (click)="showMenu = false" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="everything" >Everything</li>
+         <li id="toFavorite" (click)="showMenu = false" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorites</li>
+         <li id="toDeleted" (click)="showMenu = false" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
+         <li *ngIf='walletEmpty' (click)="showMenu = false" id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolios</li>
+         <li id="icoUpComing" (click)="showMenu = false" [routerLink]="['/ico/active']" routerLinkActive="toIco">ICO Active</li>
+         <li id='icoUpComing' (click)="showMenu = false" [routerLink]="['/ico/upcoming']" routerLinkActive="toIco">ICO Upcoming</li> 
+         <li id='icoUpComing' (click)="showMenu = false" [routerLink]="['/ico/saved']" routerLinkActive="toIco">ICO Saved</li> 
+         <li class='colorText' (click)="showMenu = false" style="padding-bottom: 15px; padding-top: 10px" (click)="logout()">Sign Out</li>
+       </ul>
+
       </ng-template>
 
 
