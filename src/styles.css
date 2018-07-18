@@ -6,13 +6,44 @@ body{
     font-family: 'Lato', sans-serif;
 }   
 
-.page-wrap{
-    background-color: #333333;
+.spinnerCenter{
+    margin-left: 35%;
+    margin-top: 35%;
 }
+
 
 .stylingForInputMobileWallet{
     width:200px; 
     float:left; 
+}
+
+.navbarStyle{
+    height: 80px;
+}
+
+.navbarTextStyle{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.paddingNone{
+    padding-bottom: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+.site-footer{
+    height: 100px;
+    padding-bottom: 0px;
+    width: 100%;
+}
+
+.spynerBasic{
+    height: 100%;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+    position: fixed;
+    z-index: 998;
 }
 
 .visible{
@@ -43,6 +74,13 @@ body{
 ul.hr li {
     display: inline;
 }
+
+
+.nav-link:hover{
+    border-radius: 0px !important;
+ }
+
+
 
 /* The switch - the box around the slider */
 .switch {
@@ -86,6 +124,10 @@ ul.hr li {
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
+}
+
+.widthButton{
+    width: 130px
 }
 
 input:checked + .slider {
@@ -202,29 +244,6 @@ input:checked + .slider:before {
 }
 
 
-.linksTable:link  {
-    text-decoration: none;
-    color:#FFC107;
-    font-size: 20px;
-}
-
-.linksTable:active{
-    text-decoration: none;
-    cursor: pointer;
-    color: #FFC107;
-}
-
-.linksTable:visited{
-    text-decoration: none;
-    cursor: pointer;
-    color:#FFC107;
-}
-
-.linksTable:hover{
-    text-decoration: none;
-    cursor: pointer;
-    color: #FFC107;
-}
 
 .fa-edit {
     color: white;
@@ -249,23 +268,33 @@ html, body {
 }
 
 
+
 .page-wrap {
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    margin: 0 auto -150px;
+    margin: 0 auto -100px;
 }
 
 .push{
-    height: 150px;
+    height: 100px;
     padding-bottom: 0px;
     margin-bottom: 0px;
 }
 
-
-.fullPadding{
-    padding-top: 12%;
+.loadingChart {
+    position: relative;
+    top: 150px;
+    left: 40%;
+    width: 200px
 }
+
+loadingChartSpyner{
+    position: relative;
+    top: 150px;
+    left: 40%;
+}
+
 
 
 .borderless td, .borderless th {
@@ -323,123 +352,6 @@ html, body {
     padding-left:22%;
  }
 
-
- 
-
-.btn-info {
-    background-color: #646363 !important;
-    border-color: #646363 !important; 
-    outline:0 !important;
-    box-shadow: none !important;
-}
-
-.btn-info:hover {
-    background-color: #17A2B8 !important;
-    border-color: #17A2B8 !important;
-    outline:0 !important;
-}
-
-.btn-infos {
-    background-color: #17A2B8 !important;
-    border-color: #17A2B8 !important; 
-    color: white !important;
-    outline:0 !important;
-    box-shadow: none !important;
-}
-
-.btn-infos:hover {
-    background-color: #17A2B8 !important;
-    color: white !important;
-    border-color: #17A2B8 !important;
-    outline:0 !important;
-}
-
-.btn-success {
-    background-color: #646363 !important;
-    border-color: #646363 !important; 
-    outline:0 !important;
-    box-shadow: none !important;
-}
-
-.btn-success:hover {
-    background-color: #009130 !important;
-    border-color: #009130 !important;
-    outline:0 !important;
-}
-
-.btn-danger {
-    background-color: #646363 !important;
-    border-color: #646363 !important;
-    outline:0 !important;
-    box-shadow: none !important;
-}
-
-.btn-danger:hover {
-    background-color: rgb(187, 46, 60) !important;
-    border-color: rgb(187, 46, 60) !important;
-    outline:0 !important;
-}
-
-.btn-dangers {
-    background-color: rgb(187, 46, 60) !important;
-    border-color: rgb(187, 46, 60) !important;
-    color: white !important;
-    outline:0 !important;
-    box-shadow: none !important;
-}
-
-.btn-dangers:hover {
-    background-color: rgb(187, 46, 60) !important;
-    border-color: rgb(187, 46, 60) !important;
-    color: white !important;
-    outline:0 !important;
-}
-
-.btn-warning {
-    background-color: #646363 !important;
-    border-color: #646363 !important;
-    outline:0 !important;
-    outline:0 !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-.btn-warning:hover {
-    background-color: #FFC107 !important;
-    border-color: #FFC107 !important; 
-    outline:0 !important;
-}
-
-.btn-warnings {
-    background-color: #FFC107 !important;
-    border-color: #FFC107 !important;
-    color: white !important;
-    outline:0 !important;
-    outline:0 !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-.btn-warnings:hover {
-    color: white !important;
-    background-color: #FFC107 !important;
-    border-color: #FFC107 !important; 
-    outline:0 !important;
-}
-
-
-.btn-secondary {
-    background-color: #646363 !important;
-    border-color: #646363 !important; 
-    outline:0 !important;
-    box-shadow: none !important;
-}
-
-.btn-secondary:hover {
-    background-color: rgb(187, 46, 60) !important;
-    border-color: rgb(187, 46, 60) !important; 
-    outline:0 !important;
-}
 
 .dropdown-toggle::after {
     float: right;
@@ -529,9 +441,6 @@ html, body {
 }
 
 
-.footerColor{
-    color: rgb(161, 161, 161);
-}
 
 .footerStyle{
     padding-bottom: 50px;
@@ -639,6 +548,65 @@ html, body {
     padding-bottom: 30px;
 }
 
+.paddingTop{
+    padding-bottom: 17px !important; 
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+}
+
+.bcColor{
+    padding-bottom: 0px !important; 
+    margin-bottom: 0px !important; 
+}
+
+#everything {
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .everything {
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+  }
+
+  #everything:visited {
+    margin-right: 1px;
+    position: relative;
+    z-index: 100;
+  }
+
+  #everything:focus {
+    outline:0;
+   }
+
+   #everything:active {
+    margin-right: 1px;
+    color: white;
+    position: relative;
+    z-index: 100;
+  }
+
+  #everything:hover {
+    margin-right: 1px;
+    color: white;
+    background-color: #FFC107;
+    position: relative;
+    z-index: 100;
+  }
+
 
 
 .paddingTopForInput {
@@ -665,6 +633,8 @@ html, body {
 .paginationTab{
     float: right;
     padding-right: 10px;
+    padding-bottom :0px;
+    margin-bottom: 0px
 }
 
 
@@ -744,7 +714,7 @@ html, body {
 
 .stylingForInputMobile{
     width:200px; 
-    float:left; 
+    float: right; 
     margin-right:10px; 
     margin-bottom:10px
 }
@@ -826,7 +796,7 @@ html, body {
   
 
   .tableStyle2{
-      padding-bottom: 50px;
+      padding-bottom: 10px;
   }
   
   .paddingHeader{
@@ -855,10 +825,7 @@ html, body {
     background-color: transparent;
   }
 
-  .facheck {
-      color: #8cff52;
-      opacity: 1;
-  }
+
 
   .facheckW {
       color: #009130;
@@ -890,8 +857,6 @@ html, body {
 
   .textRegist{
       font-size: 20px;
-      padding-top: 30px;
-      padding-bottom: 20px;
   }
 
   .textDecor{
@@ -918,16 +883,6 @@ html, body {
   height: 100px;
 }
 
-.spynerBasic{
-    background-color: rgb(91, 93, 94);
-    height: 100%;
-    width: 100%;
-    left: 0px;
-    top: 0px;
-    position: fixed;
-    z-index: 998;
-    opacity: 0.8;
-}
 
 
 
@@ -1167,7 +1122,8 @@ html, body {
 }
 
 .fullPadding{
-    padding-top: 10%;
+   padding-top: 10%;
+    padding-bottom: 10%; 
 }
 
 .emptyPaddingTab{
@@ -1206,7 +1162,6 @@ html, body {
 }
 
 .description{
-    padding-left: 20px;
     padding-top: 3px;
     word-wrap: break-word;
     display: inline;
@@ -1230,10 +1185,12 @@ html, body {
 @media screen and (min-width: 1370px) {
     .emptyPadding{
         padding-top: 6.9%;
+        padding-bottom: 6.9%; 
     }
     
     .fullPadding{
         padding-top: 12%;
+        padding-bottom: 12%; 
     }
   }
 
@@ -1243,22 +1200,29 @@ html, body {
   and (-webkit-min-device-pixel-ratio: 2)
   and (min-resolution: 192dpi) { 
     .emptyPadding{
-        padding-top: 7.9%;
+       padding-top: 7.9%; 
+       padding-bottom: 7.9%
+
     }
     
     .fullPadding{
-        padding-top: 13%;
+       padding-top: 13%;
+        padding-bottom: 13% 
+
     }
 }
 
   @media screen and (min-width: 1025px) and (max-width: 1280px) {
 
     .emptyPadding{
-        padding-top: 5.9% ; 
+       padding-top: 5.9% ; 
+        padding-bottom: 5.9%; 
     }
     
     .fullPadding{
         padding-top: 14.5% ;
+        padding-bottom: 14.5%; 
+
     }
 
     .emptyPaddingTab{
@@ -1275,10 +1239,13 @@ html, body {
   @media screen and (min-width: 1870px) {
     .emptyPadding{
         padding-top: 11.9% ; 
+        padding-bottom: 11.9% 
+
     }
     
     .fullPadding{
-        padding-top: 15.5% ;
+       padding-top: 15.5% ;
+        padding-bottom: 15.5%; 
     }
 
     .emptyPaddingTab{
@@ -1294,10 +1261,12 @@ html, body {
   @media screen and (min-width: 2100px) {
     .emptyPadding{
         padding-top: 15%; 
+        padding-bottom: 15%; 
     }
     
     .fullPadding{
         padding-top: 17.8%;
+        padding-bottom: 17.8%; 
     }
 
     .emptyPaddingTab{
@@ -1314,10 +1283,12 @@ html, body {
   @media screen and (min-width: 2900px) {
     .emptyPadding{
         padding-top: 19%; 
+        padding-bottom: 19%;
     }
     
     .fullPadding{
         padding-top: 21%;
+        padding-bottom: 21%;
     }
 
     .emptyPaddingTab{
@@ -1358,6 +1329,7 @@ html, body {
     
     .fullPadding{
         padding-top: 45%;
+        padding-bottom: 45%
 
     }
 
@@ -1395,6 +1367,7 @@ html, body {
     
     .fullPadding{
         padding-top: 21%;
+        padding-bottom: 21%
     }
 
     .emptyPaddingTab{
@@ -1403,6 +1376,11 @@ html, body {
     }
     .fullPaddingTab{
         min-height: 85vh;
+    }
+
+    .spinnerCenter{
+        margin-left: 40%;
+        margin-top: 20%;
     }
 
 
@@ -1415,6 +1393,28 @@ html, body {
   */
   
   @media (min-width: 481px) and (max-width: 812px) {
+    .stylingForInputMobileWallet{
+        width:200px; 
+        float:right;
+        margin-right: 10px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .widthButton{
+        width: 173px;
+        background-color: #d8d8d8 !important;
+    }
+
+    .footerStyle{
+        padding-bottom: 50px;
+        margin-bottom: 0px;
+    }
+    
+    .footerStyle2{
+        margin-top: 25px;
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+    }
 
     .styleMobileWidth{
         word-wrap: break-word;
@@ -1557,19 +1557,6 @@ html, body {
         margin-bottom: 12px;
     }
 
-    .footerStyle{
-        padding-bottom: 25px;
-        margin-bottom: 0px;
-        background-color: black;
-    }
-    
-    .footerStyle2{
-        padding-top: 50px;
-        padding-bottom: 0px;
-        margin-bottom: 0px;
-        background-color: black;
-    }
-
 
     .widthMobile{
         width: 350px;
@@ -1604,8 +1591,9 @@ html, body {
    }
 
    .mobileStyleForListOfPortf{
-    position: relative;
-    left: 10px;
+    position: absolute;
+    right: -5px;
+    top: 250px;
   }
 
   
@@ -1614,11 +1602,21 @@ html, body {
     padding-right: 10px;
     padding-top: 3px;
     word-wrap: break-word;
-    display: inherit;
+    display: none;
 }
 
 .visible{
     visibility: hidden;
+}
+
+.paddingForListOfPort{
+    padding-left: 55px;
+  }
+
+
+  .spinnerCenter{
+    margin-left: 40%;
+    margin-top: 30%;
 }
 
   }
@@ -1627,8 +1625,35 @@ html, body {
     ##Device = Most of the Smartphones Mobiles (Portrait)
     ##Screen = B/w 320px to 479px
   */
+
+  .paddingForListOfPort{
+    padding-left: 35px;
+  }
   
   @media (min-width: 320px) and (max-width: 480px) {
+
+    .widthButton{
+        width: 173px;
+        background-color: #d8d8d8 !important;
+    }
+
+
+  .spinnerCenter{
+    margin-left: 40%;
+    margin-top: 30%;
+}
+
+
+.loadingChart {
+    position: relative;
+    top: 150px;
+    left: 25%;
+    width: 200px
+}
+
+    .paddingForListOfPort{
+        padding-left: 0px;
+      }
 
     .visible{
         visibility: hidden;
@@ -1639,12 +1664,13 @@ html, body {
         padding-right: 10px;
         padding-top: 3px;
         word-wrap: break-word;
-        display: inherit;
+        display: none;
     }
     
     .mobileStyleForListOfPortf{
-       position: relative;
-       left: 10px;
+       position: absolute;
+       right: -5px;
+       top: 250px;
       }
 
  .headerWallet{
@@ -1684,6 +1710,7 @@ html, body {
     .stylingForInputMobileWallet{
         width:200px; 
         float:right;
+        margin-top: 20px;
         margin-right: 10px !important;
         margin-bottom: 10px !important;
     }
@@ -1752,16 +1779,14 @@ html, body {
        }
 
     .footerStyle{
-        padding-bottom: 25px;
+        padding-bottom: 50px;
         margin-bottom: 0px;
-        background-color: black;
     }
     
     .footerStyle2{
-        padding-top: 25px;
+        margin-top: 50px;
         padding-bottom: 0px;
         margin-bottom: 0px;
-        background-color: black;
     }
 
     .col-xs-5{
@@ -1911,6 +1936,97 @@ html, body {
   .modal-content {
     opacity: 0;
     transition: 0.7s;
+  }
+
+  .sizeImg{
+    width: 150px;
+    height: 150px;
+}
+
+.imgCenter{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+}
+
+  .lds-spinner {
+    color: official;
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+  }
+  .lds-spinner div {
+    transform-origin: 32px 32px;
+    animation: lds-spinner 1.2s linear infinite;
+  }
+  .lds-spinner div:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 3px;
+    left: 29px;
+    width: 5px;
+    height: 14px;
+    border-radius: 20%;
+    background: #FFC107;
+  }
+  .lds-spinner div:nth-child(1) {
+    transform: rotate(0deg);
+    animation-delay: -1.1s;
+  }
+  .lds-spinner div:nth-child(2) {
+    transform: rotate(30deg);
+    animation-delay: -1s;
+  }
+  .lds-spinner div:nth-child(3) {
+    transform: rotate(60deg);
+    animation-delay: -0.9s;
+  }
+  .lds-spinner div:nth-child(4) {
+    transform: rotate(90deg);
+    animation-delay: -0.8s;
+  }
+  .lds-spinner div:nth-child(5) {
+    transform: rotate(120deg);
+    animation-delay: -0.7s;
+  }
+  .lds-spinner div:nth-child(6) {
+    transform: rotate(150deg);
+    animation-delay: -0.6s;
+  }
+  .lds-spinner div:nth-child(7) {
+    transform: rotate(180deg);
+    animation-delay: -0.5s;
+  }
+  .lds-spinner div:nth-child(8) {
+    transform: rotate(210deg);
+    animation-delay: -0.4s;
+  }
+  .lds-spinner div:nth-child(9) {
+    transform: rotate(240deg);
+    animation-delay: -0.3s;
+  }
+  .lds-spinner div:nth-child(10) {
+    transform: rotate(270deg);
+    animation-delay: -0.2s;
+  }
+  .lds-spinner div:nth-child(11) {
+    transform: rotate(300deg);
+    animation-delay: -0.1s;
+  }
+  .lds-spinner div:nth-child(12) {
+    transform: rotate(330deg);
+    animation-delay: 0s;
+  }
+  @keyframes lds-spinner {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 
 

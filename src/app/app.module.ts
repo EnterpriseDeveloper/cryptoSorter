@@ -20,7 +20,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { environment } from './../environments/environment';
-import { ParticlesModule } from 'angular-particle';
+//import { ParticlesModule } from 'angular-particle';
 
 import { CurrencyFilterPipe } from './shared/filter.pipe';
 import { MinFilterPipe } from './shared/minFilter.pipe'; 
@@ -61,7 +61,17 @@ import { ConnectTableComponent } from './connect-table/connect-table.component';
 import { DeleteTableComponent } from './delete-table/delete-table.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { ChartService } from './currency/description/service/chart.service';
+import { ChartDayService } from './currency/description/service/chart-day.service';
 
+import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
+import stock from 'highcharts/modules/stock.src';
+import more from 'highcharts/highcharts-more.src';
+
+export function highchartsModules() {
+  // apply Highcharts Modules to this array
+  return [stock, more];
+}
 
 @NgModule({
   declarations: [
@@ -95,7 +105,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     NgxSelectModule,
     Ng2OrderModule,
     MatTabsModule,
-    ParticlesModule,
+   // ParticlesModule,
+    ChartModule,
     NgxPaginationModule,
     HttpClientModule,
     Ng2SearchPipeModule,
@@ -108,17 +119,17 @@ import { SpinnerComponent } from './spinner/spinner.component';
     AngularFontAwesomeModule,
     HttpModule,
     RouterModule.forRoot([
-      { path: '', component: CurrencyComponent },
-      { path: 'favorite', component: LoginTableComponent },
-      { path: 'disliked', component: DeleteTableComponent },
-      { path: 'portfolio', component:WalletComponent },
-      { path: 'portfolio/:id', component:WalletComponent },
-      { path: 'ico/active', component: IcoActiveComponent },
-      { path: 'ico/upcoming', component: IcoUpcomingComponent },
-      { path: 'login', component: LoginUserComponent },
-      { path: 'currencies/:id', component: DescriptionComponent },
-      { path: 'ico/saved', component: IcoLikeComponent },
-    ])
+        { path: '', component: CurrencyComponent},
+        { path: 'favorite', component: LoginTableComponent},
+        { path: 'disliked', component: DeleteTableComponent},
+        { path: 'portfolio', component:WalletComponent},
+        { path: 'portfolio/:id', component:WalletComponent},
+        { path: 'ico/active', component: IcoActiveComponent},
+        { path: 'ico/upcoming', component: IcoUpcomingComponent },
+        { path: 'login', component: LoginUserComponent},
+        { path: 'cryptocurrency/:id', component: DescriptionComponent},
+        { path: 'ico/saved', component: IcoLikeComponent}
+    ]),
   ],
   providers: [
     AuthService, 
@@ -142,12 +153,15 @@ import { SpinnerComponent } from './spinner/spinner.component';
     IcoUpcomingService,
     ListWalletService,
     EmailShareService,
-    WalletComponent
+    WalletComponent,
+    ChartService,
+    ChartDayService,
+    { provide: HIGHCHARTS_MODULES, useFactory: highchartsModules }
   ],
   bootstrap: [
     AppComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
   ],
   entryComponents: [ LoginUserComponent,
   CurrencyComponent]

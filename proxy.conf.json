@@ -1,0 +1,17 @@
+
+{
+  "/api/data/coinsnapshotfullbyid/*": {
+     "target":  {
+       "host": "www.cryptocompare.com",
+       "protocol": "https:",
+       "port": 443,
+       "pathRewrite": {
+      "^/description/*": "^/api/data/coinsnapshotfullbyid/*",
+      "^": "^/api/data/coinsnapshotfullbyid/*"
+    }
+     },
+     "secure": false,
+     "changeOrigin": true,
+     "logLevel": "debug"
+  }
+}

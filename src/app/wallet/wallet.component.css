@@ -25,40 +25,19 @@
     pointer-events: none;
   }
 
-  .buttonShareOk {
-    background-color: #009130;
-    color: white;
-  }
-
-   .linkShare {
-     cursor: pointer;
-   }
-
-  .linkShare:hover {
-    color: #FFC107;
-    cursor: pointer;
-  }
 
   .check{
     cursor: pointer;
     padding-left: 10px;
   }
 
-  .paddingTop {
-    color: black;
-    padding-bottom: 17px !important; 
-    padding-top: 0px !important;
-    margin-top: 0px !important;
-}
 
 .dropdown-menu {
   padding-top: 0px !important;
   margin-top: 0px !important;
 }
 
-.danger{
-  background-color: rgb(187, 46, 60);
-}
+
 
 .dropdown-item{
     padding-right: 0px !important;
@@ -66,6 +45,7 @@
     padding-left: 10px !important;
     margin-left: 0px !important;
 }
+
 
 
 

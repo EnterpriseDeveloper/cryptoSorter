@@ -1,9 +1,8 @@
-import { Component, ChangeDetectorRef, AfterViewInit, ViewChild, OnInit, OnDestroy, Input, Output } from '@angular/core';
+import { Component,ViewEncapsulation, ChangeDetectorRef, AfterViewInit, ViewChild, OnInit, OnDestroy, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators,} from '@angular/forms';
 import { Http, Response } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
-import { IPosts } from "../aservices/IPosts";
 import { ItemService } from '../aservices/item.service';
 import { Likes } from '../aservices/Likes';
 import { Currency } from '../shared/currency';
@@ -38,11 +37,12 @@ type FormErrors = { [u in UserFields]: string };
   selector: 'currency',
   templateUrl: './currency.component.html',
   styleUrls: ['./currency.component.css'],
+  encapsulation: ViewEncapsulation.None,
   providers: [ApiService,
      WalletService, 
      ListcryptocompareService]
 })
-export class CurrencyComponent implements OnDestroy, AfterViewInit{
+export class CurrencyComponent implements OnInit, OnDestroy, AfterViewInit{
 
   @ViewChild('autofocus') autofocus;
 
@@ -50,6 +50,7 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
 
   filter: Currency = new Currency();
   minfilter: Currency = new Currency();
+  filters: any;
 
   numberForm: FormGroup ;
   formErrors: FormErrors = {
@@ -74,7 +75,6 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
   private likeValue: any = [];
   private walletValue: any = [];
   private walletData: any;
-  private filterDislike: any;
   public isLoggedIn: boolean;
   public apiSub: any;
   public likeSub: any;
@@ -95,7 +95,7 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
   public isEmptyWallet: boolean;
   public data: Currency[] = [];
   public dataLenght:any;
-  public perPage = 25;
+  public perPage: number = 25;
   public page: number;
   public likedRow: any = NaN;
   public addedCoin: any = NaN;
@@ -107,25 +107,9 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
   public historicalDateName: string;
   public itemsGraphic:Array<any> = [];
   public defaultChars: string = 'usd';
-  public ngxValue;
+  public ngxValue: any[] = [];
   public walletList;
   public userId: any;
-
-  private USD = { id: "usd",
-                  name: "US Dollar",
-                  symbol: "usd",
-                  rank: "",
-                  price_usd: "1",
-                  price_btc: "0",
-                  ['24h_volume_usd']: "0",
-                  market_cap_usd: "0",
-                  available_supply: "0",
-                  total_supply: "0",
-                  max_supply: "0",
-                  percent_change_1h: "0",
-                  percent_change_24h: "0",
-                  percent_change_7d: "0",
-                  last_updated: "0" }
  
 
   constructor(
@@ -145,11 +129,14 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
     public ListWalletService: ListWalletService,
     private isEmptyService: IsEmptyWalletService,
     private ngbDropDownConfig: NgbDropdownConfig,
-    private walletComponent: WalletComponent
+    private walletComponent: WalletComponent,
   ) {
+    if (window.matchMedia('screen and (max-width: 700px)').matches){
+      this.perPage = 10;
+    }
     this.ngbDropDownConfig.placement='bottom-left';
     this.loadingTable = true;  
-    this.spinnerService.changeMessage(false);
+    this.spinnerService.changeMessage(true);
     this.isEmptyService.isEmptyValue.subscribe((value)=>{
       this.isEmptyWallet = value;
     })
@@ -160,6 +147,7 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
           this.isLoggedIn = false;
           this.dislikeValue = [];
           this.likeValue = [];
+          this.connection = [];
           this.walletValue = [];
           this.buildForm();
           this.getData();
@@ -180,7 +168,10 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
           this.page = 1;
         }
       });
-      this.minfilter.formulaValue = Number(localStorage.getItem("minIndex"));
+  }
+
+  ngOnInit(){
+this.minfilter.formulaValue = Number(localStorage.getItem("minIndex"));
       if(this.minfilter.formulaValue == 0){
          this.minfilter.formulaValue = NaN;
       }
@@ -216,8 +207,9 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
      if(this.defaultChars == null){
         this.defaultChars = 'usd'
      }
-
   }
+
+
 
   ngAfterViewInit(){
     this.cdr.detectChanges();
@@ -259,7 +251,8 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
 
   public listWalletSub: any;
   public listWalleData: any;
-  public connection: any;
+  public connection: any = [];
+  public dataWalletLength: any = [];
   getWalletList(){
     let promise = new Promise((resolve, reject) =>{
     this.listWalletSub = this.walletList.subscribe((data)=>{
@@ -274,6 +267,11 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
       this.connection = _.map(this.listWalleData, (item) => {
         return _.assign(item, _.find(this.walletData, ['$key', item['id'] ]));
       });
+     for(var i=0; i<this.connection.length; i++){
+       if(this.connection[i].edit == true){
+      this.dataWalletLength.push(this.connection[i]);
+       }
+     }
     })
   })
   };
@@ -307,16 +305,23 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
     });
 
      promise.then(()=>{
-      this.apiSub = this.apiService.get()  
-      .subscribe((dataItem) => { 
-        this.dataTables = dataItem; 
+   this.apiSub = this.apiService.getApi().subscribe((dataItem)=>{
+       this.dataTables = dataItem; 
         this.itemsGraphic = this.dataTables
-        this.itemsGraphic.push(this.USD)
-        this.filterDislike = this.dataTables.filter((i) => {
+        this.newArray = this.dataTables.filter((i) => {
           return this.dislikeValue.indexOf(i.id) === -1;
-       });  
-       this.index(); 
-      });
+       }); 
+
+       this.data = this.newArray;
+       this.dataLenght = this.newArray.length;
+       this.loadingTable = false;
+   
+         this.loading = false; 
+         this.spinnerService.changeMessage(false);
+         setTimeout(()=>{
+        //   this.autofocus.nativeElement.focus()
+          },500) 
+     });
      })
 
     }
@@ -377,7 +382,7 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
 
 
     doSelectGraphic(value){
-       this.defaultChars = value
+       this.defaultChars = value;
        localStorage.setItem('symbolGraphic', value);
     }
   
@@ -389,7 +394,7 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
       symbol = (symbol === "ETHOS" ? "BQX" : symbol);
       symbol = (symbol === "NANO" ? "XRB" : symbol);
       
-      let dataImage = 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-'+ this.defaultChars +'/'+ this.historicalDate +'/svg?lineColor=white';
+      let dataImage = 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-usd/24h/svg?lineColor=teal';
 
       if(this.listComapreItem.Data[symbol] === undefined){
         return "assets/noData.png";
@@ -446,52 +451,6 @@ export class CurrencyComponent implements OnDestroy, AfterViewInit{
        }
     }
 
-
-  // Create index value
-  index(){
-    let old = JSON.stringify(this.filterDislike).replace(/null/g, '0'); 
-    this.newArray = JSON.parse(old);
-
-   this.newArray.forEach(dataItem => {
-  
-     function getFormulaValue(dataItem) {
-
-      dataItem['24h_volume_usd'] = Number(dataItem['24h_volume_usd']);
-
-      dataItem.percent_change_24h = Number(dataItem.percent_change_24h);
-
-      dataItem.price_usd = Number(dataItem.price_usd);
-
-      dataItem.market_cap_usd = Number(dataItem.market_cap_usd);
-  
-        let modul = Math.abs(dataItem.percent_change_24h);
-        let formula = ((dataItem['24h_volume_usd']/ ((modul / 100 ) + 1 ) / parseInt(dataItem.market_cap_usd)) * 100);
-  
-        let formulaInfin = (formula == Infinity) ? 0 : formula;
-        let formNonNaN = (isNaN(formulaInfin) == true) ? 0 : formulaInfin;
-        let formulaItem = formNonNaN.toFixed(2);
-  
-        return Number(formulaItem);
-  
-      };
-  
-    var tableBodyHtml = this.newArray.map(function(dataItem) {
-      return Object.assign(dataItem, {formulaValue: getFormulaValue(dataItem)});
-      })
-    });
-
-    this.data = this.newArray;
-    this.dataLenght = this.newArray.length;
-    this.loadingTable = false;
-
-      this.loading = false; 
-
-      setTimeout(()=>{
-        this.autofocus.nativeElement.focus()
-       },500)
-
-  };
-
         //sorting
         localKey: any = localStorage.getItem('sortKey');
         key: any = this.localKey == undefined ? 'market_cap_usd' : this.localKey;
@@ -546,6 +505,7 @@ deleteAnimation(row){
   return this.dislikeValue.indexOf(row.id) != -1;
 }
 
+
 getValueLike(row, i){
   if(this.isLoggedIn === false){
     this.modalService.open(LoginUserComponent);
@@ -578,13 +538,14 @@ getValueDislike(row, i){
 
 
 private path: any;
-getValueWallet(row, tabWallet, i, path){
+getValueWallet(row, tabWallet, i, ind, path){
   if(this.isLoggedIn === false){
     this.modalService.open(LoginUserComponent);
     $('.modal-content').animate({ opacity: 1 });
     $('.modal-backdrop').animate({ opacity: 0.9 });
   }else{
-    this.coins = '0';
+    this.buildForm();
+    this.coins ='';
     this.path = path;
    this.currensy = this.newArray.find(myObj => myObj.id === row.id);
    this.coinsName = row.id
@@ -618,37 +579,11 @@ buildForm(){
       Validators.pattern("^-?[0-9]+(.[0-9]{0,10})?$"),
     ]]
   })
-  this.formSub = this.numberForm.valueChanges.subscribe((data) => this.onValueChanged(data));
-  this.onValueChanged(); // reset validation messages
+ // this.formSub = this.numberForm.valueChanges.subscribe((data) => this.onValueChanged(data));
+//  this.onValueChanged(); // reset validation messages
 }
 
-  // Updates validation state on form changes.
-  onValueChanged(data?: any) {
-    if (!this.numberForm) { return; }
-    const form = this.numberForm;
-    for (const field in this.formErrors) {
-      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'number')) {
-        // clear previous error message (if any)
-        this.formErrors[field] = '';
-        const control = form.get(field);
-        if (control && control.dirty && !control.valid) {
-          const messages = this.validationMessages[field];
-          if (control.errors) {
-            for (const key in control.errors) {
-              if (Object.prototype.hasOwnProperty.call(control.errors, key) ) {
-                this.formErrors[field] += `${(messages as {[key: string]: string})[key]} `;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 
-
-//walletColor(row){
-//  return this.walletValue.indexOf(row.id) != -1;
-//}
 
 gotoDetail(id): void {
   id = (id === "MIOTA" ? "IOT" : id);
@@ -672,6 +607,27 @@ findDataWallet(row, i){
   }
 }
 
+findFullWallet(row){
+  let dataCoin =[]
+  if(this.isLoggedIn === false){
+    return false;
+  }else{
+
+  for(var i=0; i<this.dataWalletLength.length; i++){
+    let d = _.findKey(this.dataWalletLength[i].coin, function(o) { return o.id === row.id; });
+    if(d != undefined){
+      dataCoin.push(this.dataWalletLength[i])
+    }
+  }
+  if(this.dataWalletLength.length == dataCoin.length){
+    return true;
+  }else{
+    return false
+  }
+}
+}
+
+
 openRegistModule(){
   if(this.isLoggedIn === false){
     this.modalService.open(LoginUserComponent);
@@ -680,11 +636,28 @@ openRegistModule(){
   }
 }
 
+goToPage(data){
+  this.router.navigate([data]);
+}
+
+goToDescription(name, symbol){
+  let nameCoin = name.replace(/ /g,"-")
+  window.open("https://cryptosorter.com/cryptocurrency/"+nameCoin+"-"+symbol, "_blank" )
+}
+
+guaedOpenWallet(){
+  if(this.isLoggedIn === false){
+    return 'none'
+  }
+  else{
+    return 'dropdownWallet'
+  }
+}
+
 
 ngOnDestroy(){
   this.userSub.unsubscribe();
     if (this.userId == null) {
-      this.formSub.unsubscribe();
       this.listCompareSub.unsubscribe();
       this.apiSub.unsubscribe();
     } else {
@@ -692,9 +665,8 @@ ngOnDestroy(){
       this.likeSub.unsubscribe();
       this.walletSub.unsubscribe();
       this.listWalletSub.unsubscribe();
-      this.formSub.unsubscribe();
-    //  this.listCompareSub.unsubscribe();
-    //  this.apiSub.unsubscribe();
+      this.listCompareSub.unsubscribe();
+      this.apiSub.unsubscribe();
     }
 }
 

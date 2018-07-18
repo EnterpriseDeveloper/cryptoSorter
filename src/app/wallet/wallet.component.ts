@@ -7,7 +7,6 @@ import { Subject } from 'rxjs/Subject'
 import { ApiService} from '../aservices/api-service.service';
 import { AuthService } from '../aservices/auth.service';
 import { WalletService } from '../aservices/wallet.service';
-import { IPosts } from '../aservices/IPosts'; 
 import { Wallet } from '../aservices/Wallet';
 import * as _ from "lodash";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
@@ -132,6 +131,11 @@ export class WalletComponent implements OnInit, OnDestroy {
   public userIdCreate: string;
   public descriptionPortfolioBasic: any;
   public userDescriprionForLink = false;
+  public addCoinsValue = '';
+  public findIndex = false;
+  public dataForFindindex;
+  
+
 
  coinForm: FormGroup ;
  addForm: FormGroup
@@ -161,22 +165,6 @@ export class WalletComponent implements OnInit, OnDestroy {
     }
   };
 
-  private USD = { id: "usd",
-                 name: "US Dollar",
-                 symbol: "usd",
-                 rank: "",
-                 price_usd: "1",
-                 price_btc: "0",
-                 ['24h_volume_usd']: "0",
-                 market_cap_usd: "0",
-                 available_supply: "0",
-                 total_supply: "0",
-                 max_supply: "0",
-                 percent_change_1h: "0",
-                 percent_change_24h: "0",
-                 percent_change_7d: "0",
-                 last_updated: "0" }
-
   public addNewPortfolio= { 
                             id: 'new',
                             name: 'Add new...'
@@ -185,7 +173,6 @@ export class WalletComponent implements OnInit, OnDestroy {
 
   public loading: boolean = false;
 
-  
 
   constructor(
     private apiService: ApiService,
@@ -205,11 +192,7 @@ export class WalletComponent implements OnInit, OnDestroy {
     private emailShareService: EmailShareService,
     private ngbDropDownConfig: NgbDropdownConfig
   ) {
-    if(window.matchMedia('screen and (max-width: 700px)').matches){
-      this.ngbDropDownConfig.placement='bottom-left';
-    }else{
-      this.ngbDropDownConfig.placement='bottom-right';
-    }
+    this.ngbDropDownConfig.placement='bottom-right'
 
     this.isEmptyService.isEmptyValue.subscribe((value) => {
       this.isEmptyValue = value;
@@ -289,40 +272,42 @@ export class WalletComponent implements OnInit, OnDestroy {
    private path: any;
    getWalletList(){ 
     this.indexListPortfolio = Number(localStorage.getItem('indexListPortfolio'))
-    if(this.indexListPortfolio == null){
+    if(this.indexListPortfolio === null){
        this.indexListPortfolio = 0
     }
     let promise = new Promise((resolve, reject) => {
       this.walletListSub = this.listWalletService.getListWallet().subscribe((data)=> { 
-      this.amountPortfolio = data ;
-      this.sharedLink = data[this.indexListPortfolio].id
-  
-      if (!window.matchMedia('screen and (max-width: 700px)').matches){
-        let addNew = this.amountPortfolio.find(myObj => myObj.id === 'new')
-        if(addNew == undefined){
-          this.amountPortfolio.push(this.addNewPortfolio);
-        }
-      }
-
-      let nameOfPortfolio = data[this.indexListPortfolio].name;
-      if(nameOfPortfolio.length >= 20){
-         this.wichPortfolio = nameOfPortfolio.substring(0,20)
-      }else{
-         this.wichPortfolio = nameOfPortfolio
-      }
-
-      this.descriptionPortfolio = data[this.indexListPortfolio].description;
-      if(this.descriptionPortfolio === undefined){
-        this.descriptionPortfolio = ''
-      }
-      this.keyToPortfolio = data[this.indexListPortfolio].$key;
-      this.path = data[this.indexListPortfolio].id;
-      this.userId = data[this.indexListPortfolio].userID;
-      this.editingGuard = data[this.indexListPortfolio].edit;
-      this.percent = data[this.indexListPortfolio].percent;
-      this.pushDataShareLink();
-      resolve(this.path);
-      })
+        if(data.length !== 0){
+          this.amountPortfolio = data ;
+          this.findIndexData();
+          this.sharedLink = data[this.indexListPortfolio].id
+          if (!window.matchMedia('screen and (max-width: 700px)').matches){
+            let addNew = this.amountPortfolio.find(myObj => myObj.id === 'new')
+            if(addNew == undefined){
+              this.amountPortfolio.push(this.addNewPortfolio);
+            }
+          }
+    
+          let nameOfPortfolio = data[this.indexListPortfolio].name;
+          if(nameOfPortfolio.length >= 20){
+             this.wichPortfolio = nameOfPortfolio.substring(0,13)
+          }else{
+             this.wichPortfolio = nameOfPortfolio
+          }
+    
+          this.descriptionPortfolio = data[this.indexListPortfolio].description;
+          if(this.descriptionPortfolio === undefined){
+            this.descriptionPortfolio = ''
+          }
+          this.keyToPortfolio = data[this.indexListPortfolio].$key;
+          this.path = data[this.indexListPortfolio].id;
+          this.userId = data[this.indexListPortfolio].userID;
+          this.editingGuard = data[this.indexListPortfolio].edit;
+          this.percent = data[this.indexListPortfolio].percent;
+          this.pushDataShareLink();
+          resolve(this.path);
+        }     
+        })
     });
 
     promise.then(()=>{
@@ -331,6 +316,15 @@ export class WalletComponent implements OnInit, OnDestroy {
     })
 
   };
+
+  findIndexData(){
+    if(this.findIndex === true){
+      this.indexListPortfolio = this.amountPortfolio.findIndex(x=>{return x.id === this.dataForFindindex})
+      localStorage.setItem('indexListPortfolio', String(this.indexListPortfolio));
+      this.findIndex = false;
+    }
+  }
+
 
  
   getCoin(){
@@ -359,16 +353,15 @@ export class WalletComponent implements OnInit, OnDestroy {
   getData(){
     this.listCompareSub = this.listCompare.get().subscribe((listItem) => {
         this.listComapreItem = listItem;
-      this.apiSub = this.apiService.get().subscribe((dataItem) => {
+      this.apiSub = this.apiService.getApi().subscribe((dataItem) => {
         this.dataTables = dataItem; 
-        this.dataTables.push(this.USD);
         this.itemsGraphic = this.dataTables;
 
           this.filterWallet =  this.dataTables.filter((i) => {
             return this.walletValue.indexOf(i.id) != -1;
           });  
     
-          this.connection = _.map(this.filterWallet, (item) => {
+          this.newArray = _.map(this.filterWallet, (item) => {
             return _.assign(item, _.find(this.walletData, ['id', item['id'] ]));
           });
 
@@ -386,7 +379,6 @@ export class WalletComponent implements OnInit, OnDestroy {
 
   public defaultCoin(): void{
     let data = this.items.find(x => x.id === "bitcoin");
-    console.log(data)
     return data;
   }
 
@@ -408,8 +400,6 @@ isEmptyFind(){
 }
 
 formula(){
-  var old = JSON.stringify(this.connection).replace(/null/g, '0'); 
-    this.newArray = JSON.parse(old);
 
     this.newArray.forEach(connection=>{
       var total;
@@ -447,7 +437,8 @@ private modulTotal: number;
 
     let total = _.sum(this.summ);
       this.totalSum = total.toFixed(2);
-      this.totalService.changeTotal(total);
+        this.totalService.changeTotal(total);
+
 
     let modulSumm = [];
 
@@ -501,13 +492,8 @@ allocation(){
   this.loading = false; 
   this.spinnerService.changeMessage(false);
   this.loadingCoin = false;
-
-  if(this.isLoggedIn != false){
-    setTimeout(()=>{
-      this.autofocus.nativeElement.focus()
-    },1000)
-  } 
 }
+
 
 
 
@@ -576,13 +562,13 @@ getWebPage(symbol){
         return "assets/noData.png";
       }else{
           if(this.defaultChars === 'usd'){
-            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-'+ this.defaultChars +'/'+ this.historicalDate +'/svg?lineColor=white';
+            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-usd/24h/svg?lineColor=teal';
           }else if(this.listComapreItem.Data[this.defaultChars] === undefined){
             return "assets/noData.png";
           } else if(symbol === this.defaultChars) {
            return "assets/line_data.png";
           } else {
-            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-'+ this.defaultChars +'/'+ this.historicalDate +'/svg?lineColor=white';
+            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-usd/24h/svg?lineColor=teal';
           }
       }
     }
@@ -598,8 +584,9 @@ reverse: boolean = true;
   }
 
 openModuleAdd(addCoin){
+  this.buildForm();
   this.currencyAdd = this.items.find(x => x.id === "bitcoin");
-  this.addCoins = 0.1;
+  this.addCoins = null;
   this.addModal = this.modalService.open(addCoin, { windowClass: 'dark-modal' });
     $('.modal-content').animate({ opacity: 1 });
     $('.modal-backdrop').animate({ opacity: 0.9 });
@@ -614,7 +601,7 @@ public doSelect(value: any) {
 
 createWallet(addCoins){
   this.loadingCoin = true;
-  var oldCoin = this.connection.find(x => x.id === this.currencyAdd.id)
+  var oldCoin = this.newArray.find(x => x.id === this.currencyAdd.id)
   if (oldCoin === undefined){
     this.wallet.id = this.currencyAdd.id;
     this.wallet.coins = addCoins;
@@ -625,9 +612,10 @@ createWallet(addCoins){
     this.walletService.updateCoin(key.$key, {coins: coinvalue});
     
   }
-
+  this.buildForm();
   this.addModal.close();
   this.getWalletList();
+
 }
 
 getValueCoin(wallet, tabCoin){
@@ -637,6 +625,11 @@ getValueCoin(wallet, tabCoin){
   this.coin = this.walletsCoin.find(myObj => myObj.id === wallet.id);
   this.coinAmount = this.coin.coins;
 };
+
+goToDescription(name, symbol){
+  let nameCoin = name.replace(/ /g,"-")
+  window.open("https://cryptosorter.com/cryptocurrency/"+nameCoin+"-"+symbol, "_blank" )
+}
 
 
   updateAmount(coin, coinAmount: number,){
@@ -692,6 +685,7 @@ getValueCoin(wallet, tabCoin){
     })
     this.addForm = this.fb.group({
       'addValueCoin': ['', [
+  
         Validators.required,
         Validators.minLength(1),
         Validators.maxLength(30), 
@@ -802,13 +796,13 @@ copyToClickBoard(){
     deploySharedAccess(e){
        let isChecked = e.target.checked;
        if(isChecked == false){
-         this.shareLinkAvailable = false;
+       //  this.shareLinkAvailable = false;
          let data: SharedLinkData = new SharedLinkData
          data.path = this.sharedLink;
          data.uid = 'closed';
          this.sharedService.updateShareLink(this.sharedLink, data)
        } else {
-         this.shareLinkAvailable = true;
+       //  this.shareLinkAvailable = true;
          let data: SharedLinkData = new SharedLinkData
          data.path = this.sharedLink;
          data.uid = this.userIdCreate;
@@ -850,6 +844,7 @@ copyToClickBoard(){
 
 
     addNewPortfolioDb(data){
+      let dataAdd = data;
       let uniqueId = Math.random().toString(36).substr(2, 9) + Math.random().toString(36).substr(2, 9) ;
       var dataList: ListOfWallet = new ListOfWallet
        dataList.name = data.value.name,
@@ -859,11 +854,11 @@ copyToClickBoard(){
        dataList.percent = 100,
       this.listWalletService.addListWallet(dataList);
      this.moduleNewPortfolio.close()
-     this.indexListPortfolio = this.amountPortfolio.length - 2;
-     localStorage.setItem('indexListPortfolio', String(this.indexListPortfolio));
      this.loadingCoin = true;
+       this.findIndex = true;
+       this.dataForFindindex = uniqueId;
      this.createWalletDescription(uniqueId)
-     this.writeLink(uniqueId);
+     this.writeLink(uniqueId, dataAdd);
     }
 
     createWalletDescription(uniqueId){
@@ -871,11 +866,11 @@ copyToClickBoard(){
     }
 
 
-    writeLink(pathLink){
+    writeLink(pathLink, dataAdd){
       let data: SharedLinkData = new SharedLinkData
       data.path = pathLink;
       data.uid = 'closed';
-      this.sharedService.addShare(pathLink, data);
+      this.sharedService.addShare(pathLink, data);      
       this.getWalletList();
     }
 
@@ -933,7 +928,12 @@ copyToClickBoard(){
       
       promise.then(()=>{
         this.moduleDeletePortfolio.close();
-        this.indexListPortfolio = this.amountPortfolio.length - 2;
+        let index = this.amountPortfolio.findIndex(x=>{return x.id === this.path})
+        if(index === 0){
+          this.indexListPortfolio = index;
+        }else{
+          this.indexListPortfolio = index - 1;
+        }
         localStorage.setItem('indexListPortfolio', String(this.indexListPortfolio));
         this.loadingCoin = true;
         this.getWalletList();
@@ -964,20 +964,20 @@ copyToClickBoard(){
       let dublicate = this.listOfEmails.find(x => x == addEmail)
       if(data.value.userEmail === this.userEmail){
          this.showAlertDanger = true;
-         this.messageOfAlert = 'You can not share the portfolio with you'
+         this.messageOfAlert = 'You can not share the portfolio with yourself.'
       }else if(data.value.userEmail === dublicate ){
           this.showAlertDanger = true;
-          this.messageOfAlert = 'Already added'
+          this.messageOfAlert = 'Email is already in use.'
       }else if(data.value.percent < 0.00001 || data.value.percent > 100 ){
         this.showAlertDanger = true;
-        this.messageOfAlert = "Percent can`t contain less that 0.00001 and more that 100"
+        this.messageOfAlert = "Percent to share must be within 0.001-100."
         }else{
           let percent = data.value.percent;
           let userdata = this.authService.findEmailUsers(data.value.userEmail);
           userdata.once('value', data => {
             if(data.node_.children_.root_.key == undefined){
               this.showAlertDanger = true;
-              this.messageOfAlert = 'This email is not found, please try again!'
+              this.messageOfAlert = 'Email is not found, please try again.'
             }else{
               data.forEach(userSnapshot => {
                 let user = userSnapshot.val();
@@ -986,7 +986,7 @@ copyToClickBoard(){
                 var dataList: ListOfWallet = new ListOfWallet;
                 dataList.name = this.wichPortfolio;
                 dataList.userID = this.userIdCreate;
-                dataList.description = 'From ' + this.userEmail;
+                dataList.description = 'From ' + this.userEmail +":";
                 dataList.edit = false;
                 dataList.id = this.path;
                 dataList.percent = percent;
@@ -999,7 +999,7 @@ copyToClickBoard(){
                 emailShareData.userId = userKey;
                 this.emailShareService.setEmailShare(emailShareData);
                 this.showAlertSuccess = true;
-                this.messageOfAlert = 'Everything went well';
+                this.messageOfAlert = 'Shared successfully.';
                 setTimeout(()=>{
                   this.showAlertSuccess = false;
                 },3000);
@@ -1068,17 +1068,16 @@ copyToClickBoard(){
  
     }
 
-
     ngOnDestroy(){
-      if( this.isLoggedIn == true){
-       this.userSub.unsubscribe();
-        this.walletSub.unsubscribe();
+      if( this.isLoggedIn === true){
+     //  this.userSub.unsubscribe();
+      //  this.walletSub.unsubscribe();
       //  this.buildSub.unsubscribe();
-      }if(this.linkIsempty == false){
-        this.userSub.unsubscribe();
-        this.walletSub.unsubscribe();
+      }if(this.linkIsempty === false){
+     //   this.userSub.unsubscribe();
+      //  this.walletSub.unsubscribe();
       //  this.buildSub.unsubscribe();
-        this.listCompareSub.unsubscribe();
+       // this.listCompareSub.unsubscribe();
       }
     }
   

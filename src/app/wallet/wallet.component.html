@@ -1,3 +1,6 @@
+<header></header>
+<connectTable></connectTable>
+
 <div class="colorConnect">
 
         <div class="spynerBasic" *ngIf="loadingCoin">
@@ -13,8 +16,7 @@
            <div [class.display]='valueLinkClosed'>         
             <div [class.display]='isLoggedIn' 
                  class="textRegist particle text-center">
-               <div [class.emptyPadding]="!isEmptyValue" 
-                    [class.fullPadding]="isEmptyValue">  
+               <div class="emptyPadding">  
                 <a class="colorTextLink textDecor" 
                    href='#' 
                    (click)="link()" 
@@ -28,9 +30,8 @@
 
            <!-- Wrong links-->
             <div [class.display]='!valueLinkClosed'>  
-                <div [class.emptyPadding]="!isEmptyValue" 
-                     [class.fullPadding]="isEmptyValue">       
-                <div class="paddingTabs textRegist emptyPadding particle text-center">
+                <div class="emptyPadding">       
+                <div style="font-size: 20px;" class="paddingTabs particle text-center">
                   <p style="padding-bottom: 0px; margin-bottom: 0px" 
                      class="colorTextRegist">Portfolio you're looking for isn't here :-(</p>  
                   <p class="colorTextRegist">Please check the link or contact portfolio owner.</p>    
@@ -44,25 +45,7 @@
 <div [class.display]='!guardsUnloginUsers'> 
 <div *ngIf="walletsCoin.length === 0">
     <div *ngIf="!loading">
-    <!--    <div [class.emptyPadding]="!isEmptyValue" 
-             [class.fullPadding]="isEmptyValue">
-            <div class="text-center mobileDisplay">
-                <p class="colorText paddingTextWallet">
-                    This is your portfolio.
-                    <button class="btn btn-info buttonLike wallet" 
-                           (click)="openModuleAdd(addCoin)">
-                        Add Coin
-                    </button>
-                    now or use
-                    <button [routerLink]="['/']" 
-                            class="btn btn-sm btn-outline-info buttonLike">
-                        <i class="fa fa-plus-circle" 
-                           aria-hidden="true">
-                        </i>
-                    </button> 
-                    in Everything.
-                </p>
-            </div> -->
+
             <!-- For Mobile-->
             <div class="screenDisplay">
                     <div [class.emptyPadding]="!isEmptyWallet" 
@@ -80,9 +63,8 @@
 <div [class.display]='guardsUnloginUsers'>     
         <div *ngIf="walletsCoin.length === 0">
                 <div *ngIf="!loading">
-                        <div [class.emptyPadding]="!isEmptyValue" 
-                             [class.fullPadding]="isEmptyValue">
-                             <div class="paddingTabs textRegist emptyPadding particle text-center">
+                        <div class="emptyPadding">
+                             <div style="font-size: 20px;" class="paddingTabs particle text-center">
                              <p style="padding-bottom: 0px; margin-bottom: 0px" 
                                 class="colorTextRegist">Portfolio is empty :-(
                             </p>  
@@ -108,27 +90,28 @@
                     [class.display]='shareLinkAvailable' 
                     class="btn btn-sm btn-shareLink wallet mobileDisplay" 
                     (click)="getSharedLink(shareLinkModal)">
-                    Share&nbsp;
-            </button> 
+                    Private            
+                </button> 
             <button *ngIf='editingGuard'
                     style="width:74px; margin-right: 13px;" 
                     [class.display]='!shareLinkAvailable' 
                     class="btn btn-sm btn-sharedLink wallet mobileDisplay"
                     (click)="getSharedLink(shareLinkModal)">
-                    Shared
+                    Public
             </button> 
 
               <div class="btn-group mr-3 mobileStyleForListOfPortf">
-                <button (click)='changeNameOfPortfolio(changeName)' type="button" class="btn btn-default btn-sm">{{wichPortfolio}}<i style="padding-left: 10px;" class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                <button  (click)='changeNameOfPortfolio(changeName)' type="button" class="btn btn-default btn-sm widthButton">{{wichPortfolio}}<i style="padding-left: 10px;" class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                 <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
                   <button class="btn btn-infoWallet btn-sm dropdown-toggle-split paddingTop" ngbDropdownToggle></button>
                   <div class="dropdown-menu" ngbDropdownMenu>
-                    <button style="width: 200px; white-space: normal" class="dropdown-item dropdown-wallet btn btn-sm" *ngFor="let portfolio of amountPortfolio" (click)='selectPortfolio(portfolio, addNewPortfolio)'>{{portfolio.name}}</button>
+                    <button style="white-space: normal" class="dropdown-item dropdown-wallet btn btn-sm" *ngFor="let portfolio of amountPortfolio" (click)='selectPortfolio(portfolio, addNewPortfolio)'>{{portfolio.name}}</button>
                   </div>
                 </div>
               </div>
 
               <button title="Delete Portfolio" 
+              style="margin-right: 10px"
               class="btn btn-sm danger wallet mobileDisplay"
               (click)='openDeleteModulePortfolio(deletePortfolioModule, guardDeletePortfolio)'
               [disabled] = 'amountPortfolio.length == 2'
@@ -138,10 +121,10 @@
 
         <p #description
            *ngIf='toggle' 
-           class="colorText description"
+           class="colorTextDescription description mobileDisplay"
            [class.wallet]= 'editingGuard'
            [title]="changeTitle()" 
-           >{{descriptionPortfolio}} {{descriptionPortfolioBasic}}</p>
+           >{{descriptionPortfolioBasic}}</p>
         <input #description #focusDescription
                (keyup.enter)='saveDescription($event.target.value)'
                (keyup.escape)='changeInputFild2()'
@@ -158,12 +141,16 @@
          placeholder="Search Coin"
          [(ngModel)]="filter">
 
+         <p style="width:100%; float: left"
+         class="colorTextDescription screenDisplay"
+         >{{descriptionPortfolioBasic}}</p>
+
        <div  [class.display]='!guardsUnloginUsers' >
         <div [class.display]='!isEmptyValue'> 
             <div [class.emptyPadding]="!isEmptyValue" 
                 [class.fullPadding]="isEmptyValue">
              <div class="text-center mobileDisplay">
-                <p class="colorText paddingTextWallet">
+                <p class="colorText" style="position: relative; top: -40px">
                     Portfolio is empty!
                 </p>
             </div>
@@ -180,7 +167,7 @@
                 <p 
                 *ngIf='userDescriprionForLink' 
                 class="colorText description"
-                >{{descriptionPortfolio}} {{descriptionPortfolioBasic}}</p>
+                >{{descriptionPortfolioBasic}}</p>
 
         <div [class.emptyPaddingTab]="!isEmptyValue" 
              [class.fullPaddingTab]="isEmptyValue">
@@ -244,7 +231,7 @@
                             </span>
                         </th>
                         <th style="width:11%; bottom: -6px; position: relative;" class="colorText tableSize text-center paddingHeader tableMobileSpeace ">
-                            Price Chart $
+                            Price Chart $, 24h
                        </th>
                         <th [class.display]='!linkIsempty' 
                             style="width:10%; bottom: -6px; position: relative;" 
@@ -309,7 +296,7 @@
                             </span>
                         </th>
                         <th style="width:11%;" class="colorText text-center paddingHeader tableSize tableMobileSpeace ">
-                            Price Chart $
+                           Price Chart $, 24h
                         </th>
                     </tr>
                 </thead>
@@ -327,15 +314,13 @@
                                      type="image" 
                                      class='sizeImg2' 
                                      title="{{wallet.name}} website" />
-                             <p class="tableName centerWalName styleMobileWidth">
-                                {{ wallet.name }}
-                                <a target="_blank" 
-                                   title="View on CoinMarketCap"
-                                   [class.disableLinks]='disableLinks(wallet.id)'
-                                   href="https://coinmarketcap.com/currencies/{{wallet.id}}/" 
-                                   class="linksTable mobileDisplay tableMobileSpeace">
-                                   ({{wallet.symbol.toUpperCase()}})
-                                </a>
+                             <p (click)="goToDescription(wallet.name, wallet.symbol)"
+                                class="tableName centerWalName styleMobileWidth wallet">
+                                {{ wallet.name }} |
+                                <span
+                                   class="linksTable">
+                                   {{wallet.symbol.toUpperCase()}}
+                                </span>
                             </p>
                         </td>
                         <td style="width:0%;" 
@@ -384,8 +369,9 @@
                                         [disabled] = '!editingGuard'
                                         (click)='getValueCoin(wallet, tabCoin, i)'>
                                     <i class="fa fa-edit"></i>
-                                </button>
+                                </button> 
                                 <button title="Delete Holding" 
+                                        style="margin-left: 4px;"
                                         class="btn btn-sm btn-danger wallet"
                                         [disabled] = '!editingGuard' 
                                         (click)='getDeleteCoin(wallet, deleteCoin, i)'>
@@ -538,36 +524,33 @@
                 (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title colorText text-center">
-            Share Portfolio
-        </h4>
 
         <ng-template #tipContent>{{contetnToCopy}}</ng-template>
 
-        <p class="colorText">This public link is available only for not signed in users:</p>
+        <p class="colorTextDescription" style="margin-bottom:0px; padding-bottom:0px">
+                <input id="checkAccess" 
+                       type="checkbox" 
+                       (change)='deploySharedAccess($event)' 
+                       [checked]="shareLinkAvailable" />
+                          <label class="check" for="checkAccess">
+                              Publish portfolio to public
+                          </label>
+            </p>  
+
         <p (click)="copyToClickBoard()" 
            [ngbTooltip]="tipContent" 
            style='word-break: break-all' 
            class="colorText linkShare">
            https://cryptosorter.com/portfolio/{{sharedLink}}
         </p>
-
-        <p class="colorText" >
-            <input id="checkAccess" 
-                   type="checkbox" 
-                   (change)='deploySharedAccess($event)' 
-                   [checked]="shareLinkAvailable" />
-                      <label class="check" for="checkAccess">
-                          Yes, keep it public!
-                      </label>
-        </p>  
     
-        <h4 class="colorText text-center" style="padding-bottom: 10px">Share your portfolio by email:</h4>
+   
+        <h5 *ngIf='!isEmptyValue' class="colorTextDescription" style="padding-top: 10px;">Share portfolio with CryptoSorter users</h5>
 
         <form #shareByEmail='ngForm' (ngSubmit)="shareByEmails(shareByEmail)">
-           <div class="form-group row">
-               <label style="padding-right: 0px; margin-right: 0px" for="colFormLabel" class="col-sm-6 colorText col-form-label col-form-label-sm">Please write name email of recipient:</label>
-               <div class="col-sm-6">
+           <div *ngIf='!isEmptyValue' class="form-group row">
+               <label style="padding-right: 0px; margin-right: 0px" for="colFormLabel" class="col-sm-5 colorText col-form-label col-form-label-sm">Email of CryptoSorter user</label>
+               <div class="col-sm-7">
                   <input 
                     name="userEmail"
                     placeholder="Email adress"
@@ -578,12 +561,12 @@
                     required>
                 </div>
              </div> 
-             <div class="form-group row">
-                <label style="padding-right: 0px; margin-right: 0px" for="colFormLabel" class="col-sm-7 colorText col-form-label col-form-label-sm">Indicate the percentage you want to send:</label>
-                <div class="col-sm-5">
+             <div *ngIf='!isEmptyValue' class="form-group row">
+                <label style="padding-right: 0px; margin-right: 0px" for="colFormLabel" class="col-sm-5 colorText col-form-label col-form-label-sm">Persent % to share</label>
+                <div class="col-sm-4">
                    <input 
                      name="percent"
-                     placeholder="Percent of portfolio"
+                     placeholder="Percent to share"
                      class="form-control form-control-sm"
                      type="number"
                      max='100'
@@ -591,33 +574,38 @@
                      ngModel
                      required>
                  </div>
+                 <div class="col-sm-3">
+                        <button *ngIf='!isEmptyValue'
+                        type="submit" 
+                        class="btn btn-success-add wallet btn-sm" 
+                        [disabled]='!shareByEmail.valid'
+                > Share
+               </button>
+                 </div>
               </div> 
 
            <div [class.display]='listOfEmailsUsersIsEmpty' >  
             <table style="width: 100%; margin-bottom: 10px">
               <thead class="mobileDisplay">
                     <tr>
-                        <td class="colorText text-center">Recipient's mail</td>
-                        <td class="colorText text-center">Percent</td>
-                        <td class="colorText text-center">Delete</td>
+                        <td colspan='3' style="font-size: 20px" class="colorTextDescription">Shared with emails, portfolio %</td>
                     </tr>
               </thead>
               <tbody>
-                    <tr *ngFor='let emails of listOfEmailsUsers' >
-                        <td>
-                            <p class="colorText">{{emails.email}} :</p>
+                    <tr *ngFor='let emails of listOfEmailsUsers'>
+                        <td style="margin-bottom:10px">
+                            <p class="colorText" style="padding-bottom: 5px; margin-bottom:0px;">{{emails.email}}</p>
                         </td>
-                        <td class='text-center'>
-                            <input style="width: 90px; padding-left: 10px; margin-left: 30px"
+                        <td class="form-group row" style="height: 33px; padding-bottom: 0px; margin-bottom:10px"><input style="width: 80px;"
                                    (keyup.enter)='changePerceht($event, emails)'
                                    value="{{emails.percent}}"
                                    class='form-control form-control-sm'
                                    type="number"
                                    min='1'
-                                   max='100' />
+                                   max='100'/>
                         </td>
                         <td class="text-center">
-                            <button title="Delete" 
+                            <button title="Delete" style="margin-bottom:10px"
                             (click)='OpenEmailsShare(emails, deleteSharePortfolio)'
                             type="button"
                             class="btn btn-sm btn-danger wallet">
@@ -627,18 +615,13 @@
                     </tr>
               </tbody>       
             </table>
-          <p style='padding-top: 0px; margin-top: 3px; padding-bottom: 0px; margin-bottom: 3px;' class="colorText">*To change percent -> simply push 'Enter'</p> 
+          <p style='padding-top: 0px; margin-top: 3px; padding-bottom: 0px; margin-bottom: 3px;' class="colorTextDescription">To change %, edit and hit Enter to apply.</p> 
         </div> 
 
         <button type="button" 
-                class="btn btn-dangers buttonsTabs2 wallet" 
+                class="btn btn-dangers buttonTabs wallet" 
                 (click)="c('Close click')">
-                Cancel
-       </button>
-        <button type="submit" 
-                class="btn btn-success buttonTabs wallet" 
-                [disabled]='!shareByEmail.valid'
-        > Share
+                Close
        </button>
     </form>
     </div>
@@ -665,9 +648,9 @@
        <span aria-hidden="true">&times;</span>
        </button>
        <h4 class="modal-title colorText text-center">
-       Delete Share Link
+        Portfolio Unlink
        </h4>
-       <p class="colorText text-center">Are you sure that you want to finish sharing the portfolio with
+       <p class="colorText text-center">Are you sure to stop sharing the portfolio with
            <span class="deleteCoin">{{nameOfShareEmail}}?</span></p>   
 
        
@@ -742,7 +725,7 @@
                                       class="form-inline">
                                     <input #autofocusWallets  
                                            (input)="addCoins = $event.target.value"  
-                                           value='{{addCoins}}' 
+                                           value='{{addCoinsValue}}' 
                                            class="form-control"
                                            type="number" 
                                            id="example-search-input" 
@@ -760,10 +743,9 @@
 
                         </tr>
                     </table>
-                    <p class="colorText" style="padding-left:20px; margin-bottom:5px;">Type US Dollar for fiat $</p>
-                    <p class="colorText text-center">
-                        If amount is negative (e.g. loans), portfolio value is reduced. All negative 
-                        amounts added up to value show separately with "-".
+                    <p class="colorText" style="padding-left:0px; margin-bottom:5px;">Type US Dollar for fiat money.</p>
+                    <p class="colorText text-left">
+                        Negative amounts (e.g. loans) reduce portfolio value, and added up and shown separately with "-".
                     </p>
                 </div>
 
@@ -917,11 +899,9 @@
        <span aria-hidden="true">&times;</span>
        </button>
        <h4 class="modal-title colorText text-center">
-       Guard Portfolio
+        You shall not pass
        </h4>
-       <p class="colorText text-center" style="padding-bottom: 0px; margin-bottom: 3px;">Sorry but you can't delete this portfolio!</p> 
-       <p class="colorText text-center" style="padding-bottom: 0px; margin-bottom: 3px;">Because you shared your portfolio with a different account!</p> 
-       <p class="colorText text-center">If you want exactly delete your portfolio! First cancel your shared for other accounts. After that try again!</p>     
+       <p class="colorText text-center" style="padding-bottom: 0px; margin-bottom: 5px;">The portfolio you want to delete is shared with someone else. For security reasons, stop sharing first, then delete.</p>    
 
        
            <button type="button" 

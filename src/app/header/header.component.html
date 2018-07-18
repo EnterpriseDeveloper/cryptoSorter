@@ -1,22 +1,18 @@
 <div>
 
-    <div class="spynerBasic" *ngIf="loadSpiner">
-        <spinner></spinner>
-    </div>
 
-<div *ngIf='!isLoggedIn'>
+<!--<div *ngIf='!isLoggedIn'>
     <particles class="mobileDisplay" [params]="myParams" [style]="myStyle" [width]="width" [height]="height"></particles> 
-</div>
+</div> -->
    
 
-<div class='headerMobile' *ngIf='!isLoggedIn'>
+<div style='padding-top:20px' class='headerMobile' [class.display]='isLoggedIn'>
   
-        <p class="mobileDisplay text-center colorText textLogo cursorNone"><img class="mobileDisplay" style="height:110px; width:120px; padding-right:30px; padding-bottom:15px" src="../../assets/favicon-256.png">CryptoSorter</p>
+        <p class="mobileDisplay text-center colorText textLogo cursorNone"><img class="mobileDisplay" style="height:90px; width:90px; margin-right:30px; margin-bottom:15px" src="../../assets/favicon-256.png">CryptoSorter</p>
 
         <p class="text-center colorText textHeader fedorStyle paddingHeader cursorNone">
-            One-stop service to handle and track cryptocurrency funds! 1500+ crypto coins 
-            with filters and lists, portfolio with sharing, active and upcoming ICOs, and 
-            know-how engineered Crypto Volatility Index.
+          Invest smart and track your cryptocurrency funds with ease! Custom filters, multi-portfolio
+          management with share, active and upcoming ICOs, and know-how engineered Crypto Volatility Index.
         </p>
 
         <p class="text-center colorText textHeader fedorStyle posTextLog cursorNone screenDisplay" style="padding-bottom:25px;">
@@ -26,7 +22,7 @@
 
       </div>
 
-<div *ngIf='isLoggedIn'>
+<div [class.display]='!isLoggedIn'>
 
 
      <div *ngIf="loading"> 

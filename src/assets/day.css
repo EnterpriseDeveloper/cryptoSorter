@@ -1,15 +1,20 @@
 header{
-    background: linear-gradient(#afcbf7, white);
+    background: linear-gradient(#d8d8d8, #f2f2f2);
+}
+
+.page-wrap{
+    background-color: #f2f2f2;
+}
+
+.spynerBasic{
+    background-color: #f2f2f2;
 }
 
 .navbarStyle{
-    background-color: #afcbf7;
-    height: 80px;
+    background-color: #d8d8d8;
 }
 
 .navbarTextStyle{
-    font-size: 18px;
-    font-weight: 600;
     color: #000000;
 }
 
@@ -22,97 +27,176 @@ header{
 }
 
 .paddingCurrency{
-    background-color: white;
+    background-color: #f2f2f2;
 }
 
+.paddingNone{
+    background-color: #f2f2f2;
+  }
+
 .site-footer{
-    height: 150px;
-    background-color: #afcbf7;
-    padding-bottom: 50px;
-    width: 100%;
+    background-color: #f2f2f2;
+}
+
+.footerStyle{
+    background-color: #f2f2f2;
+}
+
+.footerStyle2{
+    background-color: #f2f2f2;
+}
+
+
+.footerColor{
+    color: black;
+}
+
+.footerColorBotton {
+    background-color: #f2f2f2;
+ }
+
+.bcColor{
+    background-color: #e5e5e5; 
+ }
+
+ .paddingTop {
+    color: #efd215;
+}
+
+.facheck {
+    color: #009130;
+    opacity: 1;
 }
 
 
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
-    background-color: #afcbf7;
+    background-color: #d8d8d8;
+ }
+
+ .nav-link:hover{
+    background-color: #d6d6d6 !important;
+    color: #393f45;
+  }
+
+  .nav-link.active{
+    background-color: #ffffff !important;
+    color: black !important;
+    border-radius: 0px !important;
+  }
+
+
+  .nav-link {
+    border-radius: 0px !important;
+    background-color: #e3e3e3 !important;
+      color: #17A2B8;
+  }
+
+ .colorBackNav{
+    background-color: #d8d8d8;
+ }
+
+ .colorBackNavIco{
+    position: relative;
+    top: 1px;
+    border-radius: 5px;
+    background-color: #d8d8d8;
+    height: 46px;
+ }
+
+
+  .colorIco {
+   background-color: #d8d8d8 !important;
  }
 
  .colorConnect{
-    background-color: white;
+    background-color: #f2f2f2;
 }
 
 .modalStyle{
-    background-color: #0d91b9;
-    border-color: #0d91b9;
+    background-color: #d8d8d8;
+    border-color: #d8d8d8;
   }
 
   .loginStyle {
-    background-color: #06556d;
-    border-color: #06556d;
+    background-color: #d8d8d8;
+    border-color: #d8d8d8;
 }
 
 login{
-    background-color: #06556d;
+    background-color: #d8d8d8;
 }
 
-#everything {
-    color:#868E96;
-    margin-right: 1px; 
-    position: relative;
-    z-index: 100;
+
+  .everything {
+    color:white;
+    background-color: #FFC107;
   }
 
   #everything:visited {
     background-color: #FFC107;
-    margin-right: 1px;
-    color: black;
-    position: relative;
-    z-index: 100;
-  }
-
-  #everything:active {
-    margin-right: 1px;
-    color: black;
-    position: relative;
-    z-index: 100;
-  }
-
-  #everything:hover {
-    margin-right: 1px;
-    color: black;
-    background-color: #FFC107;
-    position: relative;
-    z-index: 100;
+    color: white;
   }
 
 
 
   #toFavorite {
-        color:#868E96;
         margin-right: 1px;
         position: relative;
         z-index: 100;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 10px;
+        padding-bottom: 12px;
+        border-radius: 5px;
+        cursor: pointer;
+  }
+
+  .toFavorite {
+    color:white;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    background-color: #35b11e;
   }
 
   #toFavorite:visited {
-    background-color: #009130;
+    background-color: #35b11e;
     margin-right: 1px;
-    color: black;
+    color: white;
     position: relative;
     z-index: 100;
+  }
+
+  .btn-successs{
+    background-color: #35b11e;
+    color: white;
+  }
+
+  .btn-success-add{
+    background-color: #35b11e;
+    color: white;
   }
 
   #toFavorite:active {
     margin-right: 1px;
-    color: black;
+    color: white;
     position: relative;
     z-index: 100;
   }
 
+  #toFavorite:focus {
+    outline:0;
+   }
+
   #toFavorite:hover {
     margin-right: 1px;
-    color: black;
-    background-color: #009130;
+    color: white;
+    background-color: #35b11e;
     position: relative;
     z-index: 100;
   }
@@ -120,63 +204,471 @@ login{
 
 
    #toDeleted{
-    color:#868E96;
     margin-right: 1px;
     position: relative;
     z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
    }
 
+   .toDeleted {
+    color:white;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    background-color: #FF6666;
+  }
+
    #toDeleted:visited {
-    background-color: rgb(187, 46, 60);
+    background-color: #FF6666;
     margin-right: 1px;
-    color: black;
+    color: white;
     position: relative;
     z-index: 100;
   }
 
   #toDeleted:active {
     margin-right: 1px;
-    color: black;
+    color: white;
     position: relative;
     z-index: 100;
   }
 
+  #toDeleted:focus {
+    outline:0;
+   }
+
    #toDeleted:hover {
     margin-right: 1px;
-    color: black;
-    background-color: rgb(187, 46, 60);
+    color: white;
+    background-color: #FF6666;
     position: relative;
     z-index: 100;
+  }
+
+  #icoActive{
+    height: 46px;
+    color: black;
+    margin-right: 1px;
+    position: relative;
+    z-index: 100;
+   }
+
+   #icoActive:visited {
+    height: 46px;
+    background-color: #ca4fff;
+    margin-right: 1px;
+    color: white;
+    position: relative;
+    z-index: 100;
+  }
+
+  #icoActive:active {
+    height: 46px;
+    margin-right: 1px;
+    color: white;
+    position: relative;
+    z-index: 100;
+  }
+
+   #icoActive:hover {
+    height: 46px;
+    margin-right: 1px;
+    color: white;
+    background-color: #ca4fff;
+    position: relative;
+    z-index: 100;
+  }
+
+  #icoUpComing{
+    color:black;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+   }
+
+   #icoUpComing:visited {
+    background-color: #ca4fff;
+    color:black;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #icoUpComing:active {
+    background-color: #ca4fff;
+    margin-right: 1px;
+    color:black;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+   #icoUpComing:hover {
+    margin-right: 1px;
+    background-color: #ca4fff;
+    color:black;
+    margin-right: 1px; 
+    position: relative;
+    z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
   }
 
 
 #toWallet{
-    color:#868E96;
     margin-right: 1px;
     position: relative;
     z-index: 100;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    cursor: pointer;
     }
+
+    .toWallet{
+      color:white;
+      margin-right: 1px; 
+      position: relative;
+      z-index: 100;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-top: 10px;
+      padding-bottom: 12px;
+      border-radius: 5px;
+      background-color: #17A2B8;
+    }
+
+    #toWallet:focus {
+      outline:0;
+     }
 
 
 #toWallet:visited {
 background-color: #17A2B8;
 margin-right: 1px;
-color: black;
+color: white;
 position: relative;
 z-index: 100;
 }
 
+.colorTextRegist{
+    color: #17A2B8;
+}
+
+.colorTextDescription{
+    color: #17A2B8;
+}
+
+
 #toWallet:active {
 margin-right: 1px;
-color: black;
+color: white;
 position: relative;
 z-index: 100;
 }
 
 #toWallet:hover {
 margin-right: 1px;
-color: black;
+color: white;
 background-color: #17A2B8;
 position: relative;
 z-index: 100;
+}
+
+.icoActive{
+    height: 46px;
+  color: black;
+  background-color: inherit;
+  margin-right: 1px;
+  position: relative;
+  z-index: 100;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+ }
+
+
+ .toIco {
+  color: white;
+  margin-right: 1px;
+  position: relative;
+  z-index: 100;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: #ca4fff;
+}
+
+ .icoActive:focus {
+  outline:0;
+ }
+
+ .icoActive:visited {
+    height: 46px;
+  background-color: #ca4fff;
+  margin-right: 1px;
+  color: white;
+  position: relative;
+  z-index: 100;
+  border: none;
+}
+
+
+.dropdown-ico:hover{
+  cursor:  pointer !important;
+  background-color: #ca4fff !important;
+  color: black !important;
+}
+
+.dropdown-wallet:hover{
+  cursor:  pointer !important;
+  background-color: #17A2B8 !important;
+  color: black !important;
+}
+
+.dropdown-item{
+padding-left: 10px !important;
+padding-right: 0px !important;
+}
+
+.dropdown-menu.show {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.icoActive:active {
+    height: 46px;
+  margin-right: 1px;
+  color: white;
+  position: relative;
+  z-index: 100;
+  border: none;
+}
+
+ .icoActive:hover {
+    height: 46px;
+  margin-right: 1px;
+  color: white;
+  background-color: #ca4fff;
+  position: relative;
+  z-index: 100;
+  border: none;
+}
+
+.btn-info {
+    background-color: #a5a5a5 !important;
+    border-color: #a5a5a5 !important; 
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-info:hover {
+    background-color: #17A2B8 !important;
+    border-color: #17A2B8 !important;
+    outline:0 !important;
+}
+
+.btn-infos {
+    background-color: #17A2B8 !important;
+    border-color: #17A2B8 !important; 
+    color: white !important;
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-infos:hover {
+    background-color: #17A2B8 !important;
+    color: white !important;
+    border-color: #17A2B8 !important;
+    outline:0 !important;
+}
+
+.btn-success {
+    background-color: #a5a5a5 !important;
+    border-color: #a5a5a5 !important; 
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-success:hover {
+    background-color: #35b11e!important;
+    border-color: #35b11e!important;
+    outline:0 !important;
+}
+
+.btn-danger {
+    background-color: #a5a5a5 !important;
+    border-color: #a5a5a5 !important;
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-danger:hover {
+    background-color: #FF6666 !important;
+    border-color: #FF6666 !important;
+    outline:0 !important;
+}
+
+.btn-dangers {
+    background-color: #FF6666 !important;
+    border-color: #FF6666 !important;
+    color: white !important;
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-dangers:hover {
+    background-color: #FF6666 !important;
+    border-color: #FF6666 !important;
+    color: white !important;
+    outline:0 !important;
+}
+
+.btn-warning {
+    background-color: #a5a5a5 !important;
+    border-color: #a5a5a5 !important;
+    outline:0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.btn-warning:hover {
+    background-color: #FFC107 !important;
+    border-color: #FFC107 !important; 
+    outline:0 !important;
+}
+
+.btn-warnings {
+    background-color: #FFC107 !important;
+    border-color: #FFC107 !important;
+    color: white !important;
+    outline:0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.btn-warnings:hover {
+    color: white !important;
+    background-color: #FFC107 !important;
+    border-color: #FFC107 !important; 
+    outline:0 !important;
+}
+
+
+.btn-secondary {
+    background-color: #a5a5a5 !important;
+    border-color: #a5a5a5 !important; 
+    outline:0 !important;
+    box-shadow: none !important;
+}
+
+.btn-secondary:hover {
+    background-color: #FF6666 !important;
+    border-color: #FF6666!important; 
+    outline:0 !important;
+}
+
+.linksTable {
+    text-decoration: none;
+    color:#f5922f;
+    font-size: 20px;
+}
+
+
+.loaingSpinner{
+    padding-top: 20px;
+    font-size: 26px;
+    color: rgb(29, 29, 29)
+  }
+
+  .forLikes{
+    color: #f5922f;
+  }
+
+  .colorDay{
+    color: black;
+  }
+  .colorDay:hover{
+    color: #f5922f;
+  }
+
+  .forLikes:hover{
+    color: #f5922f;
+  }
+
+  .danger{
+    background-color: #FF6666;
+  }
+
+
+  .linkShare {
+    cursor: pointer;
+  }
+
+ .linkShare:hover {
+   color: #f5922f;
+   cursor: pointer;
+ }
+
+ .buttonShareOk {
+    background-color: #35b11e;
+    color: white;
+  }
+
+  .addedToFavorite{
+    background-color: #35b11e !important;
+    border-color: #35b11e !important;
+}
+
+.colorWalletAddButton{
+    background-color: #35b11e !important;
+    border-color: #35b11e !important;
+    color: white !important;
+  }
+
+.addedToDislike{
+    background-color: #FF6666!important;
+    border-color: #FF6666 !important;
 }

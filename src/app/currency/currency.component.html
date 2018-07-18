@@ -1,3 +1,6 @@
+<header></header>
+<connectTable></connectTable>
+
 <div class="colorConnect">
 <div class="spynerBasic"
     *ngIf="loading">
@@ -26,8 +29,7 @@
             <input class="form-control form-control-sm screenDisplay stylingForInputMobile" 
                    type="text"  
                    name="name"  
-                   [(ngModel)]="filter.name || filter.symbol" 
-                   [(ngModel)]="minfilter.name || filter.symbol" 
+                   [(ngModel)]="filters" 
                    placeholder="Search Coin">
         <table id="currency-table" 
                class="row-border hover table-striped modileTable" 
@@ -55,7 +57,7 @@
                                 </span>
                             </th>  
                             <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace">
-                                Price Chart $
+                                Price Chart $, 24h
                              </th>   
                             <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" 
                                (click)="sort('formulaValue')">
@@ -86,10 +88,10 @@
                     <thead class="mobileDisplay">
                         <tr>
                             <th style="width:28%; bottom: -15px; position: relative;"><div class="lenght">Showing {{perPage*page + 1 - perPage }}-{{perPage*page > 
-                                    (data | currencyfilter: filter | minfilter: minfilter).length ? (data | currencyfilter: filter | minfilter: minfilter).length : perPage*page}}
-                                     of {{(data | currencyfilter: filter | minfilter: minfilter).length}} coins.</div>
+                                    (data | filter: filters | currencyfilter: filter | minfilter: minfilter).length ? (data | filter: filters | currencyfilter: filter | minfilter: minfilter).length : perPage*page}}
+                                     of {{(data | filter: filters | currencyfilter: filter | minfilter: minfilter).length}} coins.</div>
                                 <div><input #autofocus class="form-control form-control-sm" type="text"  style="width:97%;"
-                                name="name" [(ngModel)]="filter.name || filter.symbol" [(ngModel)]="minfilter.name || filter.symbol" placeholder="Search Coin"></div></th>
+                                     [(ngModel)]="filters" placeholder="Search Coin"></div></th>
                                 <th style="padding-bottom: 0px; margin-bottom: 0px; bottom: -32px; position: relative;" 
                                     class="colorText tableSize text-center paddingHeader tableMobileSpeace" >
                                     <p (click)="sort('percent_change_24h')" class="wallet" style="padding-bottom: 0px; margin-bottom: 0px;">% 24h
@@ -105,7 +107,7 @@
                                 <th style="width:11%"
                                     class="colorText tableSize tableMobileSpeace">
                       
-                                    <div ngbDropdown class="d-inline-block colorPaging wallet" style="width: 100%" >
+                                    <!-- <div ngbDropdown class="d-inline-block colorPaging wallet" style="width: 100%" >
                                             <button class="btn btn-light btn-sm wallet" style="width: 100%" id="dropdownBasic1" ngbDropdownToggle><span style="float: left">{{historicalDateName}}</span></button>
                                             <div class="dropdownMenu" ngbDropdownMenu aria-labelledby="dropdownBasic1">
                                               <button class="dropdown-item wallet" (click)="switchDate('1y')">1 year</button>
@@ -126,8 +128,8 @@
                                 [(ngModel)]="ngxValue"
                                 placeholder="Change the currency"
                                 (select)="doSelectGraphic($event)"
-                                ></ngx-select> 
-                                <p class="text-center" style="padding-bottom: 4px; margin-bottom: 0px; padding-top: 5px;">Price Chart</p>
+                                ></ngx-select>  -->
+                                <p class="text-center" style="padding-bottom: 0px; margin-bottom: 0px; bottom: -32px; position: relative;">Price Chart $, 24h</p>
                             </th>
 
                             <th style="width:11%">
@@ -188,51 +190,41 @@
                         </tr>
                     </thead>
         <tbody>
-            <tr *ngFor="let row of data | currencyfilter: filter | minfilter: minfilter | orderBy: key : reverse | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index ;"
+            <tr *ngFor="let row of data | filter: filters | currencyfilter: filter | minfilter: minfilter | orderBy: key : reverse | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index ;"
             class="animated" 
             [class.bounceOut]="deleteAnimation(row)" 
             [class.fadeOutRightBig]="i == likedRow"  
             [class.fadeOutLeftBig]="i == addedCoin" >
-                <!--(click)='gotoDetail(row.symbol)' -->
+
                 <td class="colorText textHeader tableMobileSpeaceName">
                     <div style="float: left; padding-top: 4px; padding-right: 8px;">
                             <div style="display: inline;">
-                                 <!--   <button class="btn btn-sm mobileDisplay"
-                                    [class.btn-info]="!walletColor(row)"
-                                    [class.wallet]="!walletColor(row)"
-                                    [disabled]="walletColor(row)"
-                                    [class.chekt]="walletColor(row)"
-                                    (click)='getValueWallet(row, tabWallet, i)'
-                                    title="To Portfolio">
-                                    <i class="fa"
-                                    [class.fa-plus-circle]="!walletColor(row)"
-                                    [class.fa-check]="walletColor(row)"
-                                    [class.facheckW]="walletColor(row)" 
-                                    aria-hidden="true"></i>
-                                </button> -->
                                         <div ngbDropdown class="d-inline-block ">
-                                            <button (click)='openRegistModule()'
-                                            class="btn btn-sm btn-info wallet mobileDisplay" id="dropdownWallet" ngbDropdownToggle>
-                                                <i class="fa fa-plus-circle"
+                                            <button (click)='openRegistModule()' style='margin-right:4px'
+                                            [class.colorWalletAddButton]='findFullWallet(row)'
+                                            class="btn btn-sm btn-info wallet mobileDisplay" id="dropdownWallet" ngbDropdownToggle >
+                                                <i class="fa"
+                                                [class.fa-plus-circle]='!findFullWallet(row)'
+                                                [class.fa-plus]='findFullWallet(row)'
                                                 aria-hidden="true"></i>
                                             </button>
-                                            <div ngbDropdownMenu aria-labelledby="dropdownWallet">
+                                            <div ngbDropdownMenu aria-labelledby="dropdownWallet" >
                                               <button style="width: 200px; white-space: normal"
-                                                       (click)='getValueWallet(row, tabWallet, i, list.id)' 
+                                                       (click)='getValueWallet(row, tabWallet, i, ind, list.id)' 
                                                        [class.wallet]="!findDataWallet(row, ind)"
                                                        class="dropdown-item dropdown-wallet" 
                                                        *ngFor="let list of connection; let ind = index"
                                                        [disabled]="findDataWallet(row, ind)"
                                                        [class.display]='!list.edit' >{{list.name}}
                                                        <i class="fa posotionAdd"
-                                                       [class.fa-check]="findDataWallet(row, ind)"
+                                                       [class.fa-plus]="findDataWallet(row, ind)"
                                                        [class.facheckW]="findDataWallet(row, ind)" 
                                                        aria-hidden="true"></i>
                                                     </button>
                                             </div>
                                           </div> 
      
-                                <button
+                                <button style='margin-right:4px'
                                 class="btn btn-sm like mobileDisplay"
                                 [class.btn-success]="!likesColor(row)"
                                 [class.chekt]="likesColor(row)"
@@ -252,7 +244,7 @@
                             data-placement="left" (click)="getValueDislike(row, i)">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
-                            <img [class.titleIndex]="!symbolNoFit(row.symbol)"
+                            <img style ='margin-left:4px' [class.titleIndex]="!symbolNoFit(row.symbol)"
                             (click)="getWebPage(row.symbol)"
                             [class.cursor]="symbolNoFit(row.symbol)"
                             [src]="getCoinImage(row.symbol)"
@@ -260,13 +252,13 @@
                             </div>
                     </div>
                        
-                    <p class="centerWalName styleMobileWidth">
-                    {{row.name}}   
-                    <a target="_blank" href="https://coinmarketcap.com/currencies/{{row.id}}/" 
-                    [class.disableLinks]='disableLinks(row.id)'
-                class="linksTable mobileDisplay" title="View on CoinMarketCap">
-                ({{row.symbol.toUpperCase()}})
-                    </a>
+                    <p (click)='goToDescription(row.name, row.symbol)' 
+                    class="wallet centerWalName styleMobileWidth">
+                    {{row.name}} |
+                    <span target="_blank"  
+                class="linksTable">
+                {{row.symbol.toUpperCase()}}
+                    </span>
                 </p>                    
                 </td>
                 <td style="width:8%" class="colorText tableSizeNumber weight tableMobileSpeace">
@@ -287,7 +279,7 @@
                 <td style="width:11%;" class="colorText tableSizeNumber tableMobileSpeace">
                     <p class="centerWal text-center">{{row['24h_volume_usd'] | currencyValueChange }}</p></td>
     </tr>
-    <tr *ngIf="(data | currencyfilter: filter | minfilter: minfilter).length === 0">
+    <tr *ngIf="(data | filter: filters | currencyfilter: filter | minfilter: minfilter).length === 0">
             <td colspan="8" class="colorText text-center">We found no matching coins. Try to change filters?</td>
        </tr> 
 
@@ -354,6 +346,11 @@
         </button> 
         <h4 class="modal-title colorText text-center">Add coin to portfolio</h4> 
         
+    <div>
+        <input class="form form-control" value="{{currensy.name}}" disabled="true"/>
+    </div>    
+                    
+      <div style="padding-top: 10px">             
         <table class="cursorNone">
             <tr >
                 <td class="tabWalletStyle colorText padWalletTable">Coin name:</td>
@@ -388,9 +385,14 @@
             </tr>
             
         </table>
-        
-        <button type="button" class="btn btn-outline-secondary buttonTabs wallet" (click)="c('Close click')">Cancel</button>
-    
+        <p class="colorText" style="padding-left:0px; margin-bottom:5px;">Type US Dollar for fiat money.</p>
+        <p class="colorText text-left">
+            Negative amounts (e.g. loans) reduce portfolio value, and added up and shown separately with "-".
+        </p>
+      </div> 
+ 
+    <button type="button" class="btn btn-outline-secondary buttonTabs wallet" (click)="c('Close click')">Cancel</button>
+
     </div>
      <!--  <p colspan="3" *ngIf="formErrors.number" class="alert alert-danger padWalletTable text-center">
             {{ formErrors.number }}

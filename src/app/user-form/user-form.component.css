@@ -12,3 +12,11 @@
         opacity: 1;
     }
   }
+
+  .paddingLogin{
+    padding-bottom: 13px;
+  }
+
+  .marginLogin{
+    margin-bottom: 10px;
+  }

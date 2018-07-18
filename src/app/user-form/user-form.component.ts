@@ -4,6 +4,7 @@ import { AuthService } from '../aservices/auth.service';
 import {CurrencyComponent} from '../currency/currency.component';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {NotifyService} from '../aservices/notify.service';
+import {Router} from '@angular/router'
 
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
@@ -40,7 +41,8 @@ export class UserFormComponent implements OnInit {
   constructor(private fb: FormBuilder, 
     private auth: AuthService,
     public activeModal: NgbActiveModal,
-    public notifyService: NotifyService) { }
+    public notifyService: NotifyService,
+    public router: Router) { }
 
   ngOnInit() {
     this.buildForm();
@@ -53,9 +55,10 @@ export class UserFormComponent implements OnInit {
   signup() {
     this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password'])
     .then(() => {
-      if(this.notifyService.style == 'error'){
-        return false
+      if(this.notifyService.style === 'error'){
+        return 
       }else{
+        this.router.navigate(['']);
         this.activeModal.close()
       }
     }
@@ -65,9 +68,10 @@ export class UserFormComponent implements OnInit {
   login() {
     this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
     .then(() => {
-      if(this.notifyService.style == 'error'){
-        return false
+      if(this.notifyService.style === 'error'){
+        return
       }else{
+        this.router.navigate(['']);
         this.activeModal.close()
       }
     }

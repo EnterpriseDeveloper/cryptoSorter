@@ -1,3 +1,6 @@
+<header></header>
+<connectTable></connectTable>
+
 <div class="colorConnect">
         <div class="spynerBasic" *ngIf="loading">
             <spinner></spinner>
@@ -15,7 +18,6 @@
            </div>
     </div> -->
 
-    <ng-template #tipContent>{{contetnToCopy}}</ng-template>
 
 
     <div [class.display]='loadingTable'>
@@ -38,7 +40,7 @@
                        <th class="colorText text-center">Active ICO name</th>   
                        <th class="colorText text-center">Started ago</th>  
                        <th class="colorText text-center">Ending in</th>  
-                       <th class="colorText text-center">Description</th>  
+                       <th class="colorText text-center">Description (click to save/unsave)</th>  
                     </tr>
                   </thead>
                   
@@ -51,8 +53,8 @@
                                   {{ico.start_time | datePipes }}</p></td>
                               <td [class.forLikes]='getIcoLikeStyle(ico)' style="width:20%" class="colorText text-center tableMobileSpeace noWrapp">
                                   <p class="centerWal text-center">{{ico.end_time  | datePipes }}</p></td>
-                                <td [ngbTooltip]="tipContent" [class.forLikes]='getIcoLikeStyle(ico)' style="width:30%" 
-                                class="colorText tableMobileSpeaceDes cursor"
+                                <td [class.forLikes]='getIcoLikeStyle(ico)' style="width:30%" 
+                                class="colorText tableMobileSpeaceDes wallet"
                                 (click)='addToLikeIco(ico)' on-mouseover='text(ico)'> 
                                     <p class="centerWal widthMobile">{{ico.description}}.</p></td>
                     </tr>

@@ -1,10 +1,13 @@
+<header></header>
+<connectTable></connectTable>
+
 <div class="colorConnect">
         
         <div class="tableStyle">
                 <div class="paddingCurrency">
              
        <div *ngIf='!isLoggedIn' class="textRegist particle text-center">
-            <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">  
+            <div class="emptyPadding">  
             <a class="colorTextLink textDecor" href='#' (click)="link()" (click)="openRegistModal()"
                 >Register now</a><span class="colorTextRegist"> to unlock all the features (on desktop). It's free!</span>              
         </div>
@@ -37,8 +40,8 @@
 <div [class.display]='loading'>
 <div *ngIf="likeCurrency.length > 0">
 
-            <div>
-                <div style="padding-bottom: 0px; margin-bottom: 0px; left: 3px; bottom: -35px; position: relative;" class="lenght mobileDisplay">Showing {{perPage*page + 1 - perPage }}-{{perPage*page > 
+            <div style="position: relative; top:15px; left:3px">
+                <div class="lenght mobileDisplay">Showing {{perPage*page + 1 - perPage }}-{{perPage*page > 
                     (likeCurrency | filter:filter).length ? (likeCurrency | filter:filter).length : perPage*page}} 
                     of {{(likeCurrency | filter:filter).length}} favorites.</div>   
                 </div>
@@ -58,7 +61,7 @@
                                      <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                                 </th>
                                 <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace">
-                                    Price Chart $
+                                    Price Chart $, 24h
                                     </th>   
                                 <th placement="top" container="body" ngbTooltip="Crypto Volatility Index shows a higher short term potential for coins with higher CVI values. Tip: use with filters." 
                                  style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('formulaValue')">CVI
@@ -76,19 +79,20 @@
                         <thead class="mobileDisplay">
                             <tr>
                              <th> 
-                               <div style="padding-bottom: 0px; margin-bottom: 0px; bottom: -13px; position: relative;">
+                               <div>
                                  <input #autofocus class="form-control form-control-sm" placeholder="Search Coin" [(ngModel)]="filter">
                                </div>    
                                 </th>  
-                            <th style="width:14%; padding-bottom: 0px; margin-bottom: 0px; bottom: -13px; position: relative;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h
+                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h
                                 <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                             </th>
-                            <th style="width:14%; padding-bottom: 0px; margin-bottom: 0px; bottom: -13px; position: relative;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('price_usd')">Price $
+                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('price_usd')">Price $
                                 <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                             </th>
-                            <th class="colorText tableSize wallet tableMobileSpeace">
+                            <th class="colorText tableSize text-center paddingHeader tableMobileSpeace">
+                                Price Chart $, 24h
                               
-                                <div ngbDropdown class="d-inline-block colorPaging" style="width: 100%" >
+                                <!-- <div ngbDropdown class="d-inline-block colorPaging" style="width: 100%" >
                                     <button class="btn btn-light btn-sm wallet" style="width: 100%" id="dropdownBasic1" ngbDropdownToggle><span style="float: left;">{{historicalDateName}}</span></button>
                                         <div class="dropdownMenu" ngbDropdownMenu aria-labelledby="dropdownBasic1">
                                           <button class="dropdown-item wallet" (click)="switchDate('1y')">1 year</button>
@@ -107,20 +111,20 @@
                             [(ngModel)]="ngxValue"
                             placeholder="Change the currency"
                             (select)="doSelect($event)"
-                            ></ngx-select> 
+                            ></ngx-select>  -->
                         </th>
         
                         <th placement="top" container="body" ngbTooltip="Crypto Volatility Index shows a higher short term potential for coins with higher CVI values. Tip: use with filters." 
-                         style="width:14%; padding-bottom: 0px; margin-bottom: 0px; bottom: -13px; position: relative;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('formulaValue')">CVI
+                         class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('formulaValue')">CVI
                             <span class="fa" *ngIf="key =='formulaValue'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                         </th>
-                        <th style="width:14%; padding-bottom: 0px; margin-bottom: 0px; bottom: -13px; position: relative;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('market_cap_usd')">Market Cap $
+                        <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('market_cap_usd')">Market Cap $
                             <span class="fa" *ngIf="key =='market_cap_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                         </th>
-                        <th style="width:14%; padding-bottom: 0px; margin-bottom: 0px; bottom: -13px; position: relative;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('24h_volume_usd')">Volume $
+                        <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('24h_volume_usd')">Volume $
                             <span class="fa" *ngIf="key =='24h_volume_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                         </th> 
-                                <th style="width:10%; padding-bottom: 0px; margin-bottom: 0px; bottom: -13px; position: relative;" class="colorText tableSize text-center paddingHeader">Action</th>  
+                                <th class="colorText tableSize text-center paddingHeader">Action</th>  
                               </tr>
                         </thead> 
                 <tbody>
@@ -132,13 +136,10 @@
                             [class.cursor]="symbolNoFit(like.symbol)"
                             [src]="getCoinImage(like.symbol)" (click)="getWebPage(like.symbol)"
                              type="image" class='sizeImg2' title="{{like.name}} website" />
-                                <p class="tableName centerWalName styleMobileWidth">
-                            {{like.name}}   
-                            <a target="_blank" 
-                               href="https://coinmarketcap.com/currencies/{{like.id}}/" 
-                               [class.disableLinks]='disableLinks(like.id)'
-                               class="linksTable mobileDisplay" 
-                               title="View on CoinMarketCap">({{like.symbol.toUpperCase()}})</a> </p></td>
+                                <p (click)="goToDescription(like.name, like.symbol)" 
+                                class="wallet tableName centerWalName styleMobileWidth">
+                            {{like.name}} |
+                            <span class="linksTable">{{like.symbol.toUpperCase()}}</span> </p></td>
                             <td style="width:14%;" class="colorText tableSizeNumber weight tableMobileSpeace">
                                 <p class="centerWal text-center"><span 
                                 [style.color]="like.percent_change_24h < 0 ? '#ff5e5e' : '#6ac13e'">
@@ -151,7 +152,7 @@
                                  style="width:130px; height: 44px; color:white; display: block; margin-left: auto; margin-right: auto;">
                             </td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
-                            <p class="centerWal text-center">{{like.formulaValue}}</p></td>
+                            <p class="centerWal text-center">{{like.formulaValue | number :'1.2-2'}}</p></td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">
                             <p class="centerWal text-center">{{like.market_cap_usd | currencyValueChange }}</p></td>
                         <td style="width:14%;" class="colorText tableSizeNumber tableMobileSpeace">

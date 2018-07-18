@@ -1,4 +1,4 @@
 export class Dislikes {
     $key: string;
-    dislike: string;
+    $value: string;
   }

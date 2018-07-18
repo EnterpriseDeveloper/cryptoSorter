@@ -13,17 +13,24 @@
     z-index: 999;
     width: 50%;
     left: 50%;
-    animation: menu 1.5s;
 }
 
-@keyframes menu {
-    from {
-    left: 100%;
-    }
-
-    to{
-    left: 50%;    
-    }
-
+.position{
+  position: relative;
+  top: 5px;
+  left: -15px;
 }
+
+
+.position2{
+  position: absolute;
+  top:20px;
+  right: 70px;
+}
+
+.logo{
+  outline: 0px;
+}
+
+
 

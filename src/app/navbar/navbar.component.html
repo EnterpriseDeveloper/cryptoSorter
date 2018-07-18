@@ -1,12 +1,10 @@
+<div class="spynerBasic" *ngIf="loadSpiner">
+  <spinner></spinner>
+</div>
+
 <div class="navbarStyle">
     <ul class="navbarTextStyle navbarTextPos float-left hr">
-        <li class="links colorText particle logoSize" [routerLink]="['/']">CryptoSorter</li>
-       <!-- <li class="particle">
-                        <label class="switch">
-                                        <input type="checkbox" (click)="changeStyle()">
-                                        <span class="slider round"></span>
-                                      </label>
-        </li> -->
+        <li class="links colorText particle logoSize logo" [routerLink]="['/']">CryptoSorter <a style='padding-bottom:0px; margin-bottom:0px' target="_blank" href="https://t.me/cryptosorter" style="padding-left: 15px"><img style="width: 40px; height: 40px; padding-bottom:0px; margin-bottom:0px " src="./assets/telegram.png"></a></li>
     </ul>
     
     
@@ -16,15 +14,31 @@
 
 </div>
     
+<ng-template #tipContent>{{contetnTheme}}</ng-template>
     
       <ng-template #guest>
           <ul class="navbarTextPos2 hr mobileDisplay">
                 <li><button class="btn btn-primary float-right navbarBut particle" (click)="openRegistModal()">Login / Sign Up</button></li>
+                <li class="float-right">
+                  <div (click)="changeStyle()" placement="bottom" [ngbTooltip]="tipContent">
+                    <i class="fa fa-2x position wallet colorDay"
+                    [class.fa-moon-o]='toggleTheme'
+                    [class.fa-sun-o]="!toggleTheme"
+                     aria-hidden="true"></i>
+                  </div>   
+                </li>
           </ul>
 
-          <p #menu class='screenDisplay colorText text-right styleMenu' (click)='rotate()' (click)="toggle()" ><i class="fa fa-2x styleIcon" [@rotatedState]='state' [class.fa-bars]='!showMenu' [class.fa-times]='showMenu' aria-hidden="true"></i></p>
-
-        <ul *ngIf='showMenu' #menu [@Menu] class="textDecorationUl text-center paddingNone screenDisplay" style="font-weight:700">
+          <div class="screenDisplay text-right" >
+              <i class="fa fa-2x position2 colorDay" (click)="changeStyle()"
+              [class.fa-moon-o]='toggleTheme'
+              [class.fa-sun-o]="!toggleTheme"
+               aria-hidden="true"></i>
+               <p #menu class='colorText styleMenu' ><i (click)="toggle()" class="fa fa-2x styleIcon" [class.fa-bars]='!showMenu' [class.fa-times]='showMenu' aria-hidden="true"></i></p>
+            </div> 
+       
+          
+        <ul *ngIf='showMenu' #menu class="textDecorationUl bcColor text-center screenDisplay" style="font-weight:700">
           <li id="everything" (click)="showMenu = false" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="everything" >Everything</li>
           <li id="toFavorite" (click)="showMenu = false" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorites</li>
           <li id="toDeleted" (click)="showMenu = false" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
@@ -32,7 +46,7 @@
           <li id="icoUpComing" (click)="showMenu = false" [routerLink]="['/ico/active']" routerLinkActive="toIco">ICO Active</li>
           <li id='icoUpComing' (click)="showMenu = false" [routerLink]="['/ico/upcoming']" routerLinkActive="toIco">ICO Upcoming</li> 
           <li id='icoUpComing' (click)="showMenu = false" [routerLink]="['/ico/saved']" routerLinkActive="toIco">ICO Saved</li> 
-          <li class='colorText' (click)="showMenu = false" style="padding-bottom: 15px; padding-top: 10px" (click)="openRegistModal()">Sign Up</li>
+          <li class='colorText' (click)="showMenu = false" style="padding-bottom: 15px; padding-top: 10px" (click)="openRegistModal()">Sign In/Up</li>
         </ul>
       </ng-template>
     
@@ -40,11 +54,23 @@
         <ul class="navbarTextPos2 hr mobileDisplay" *ngIf="auth.user | async as user">
                 <li><button class="btn btn-primary float-right navbarBut" (click)="logout()">Sign Out </button></li>
                 <li class="colorText float-right navbarBut2">Hello,&ensp;{{ user.email }}.</li>
+                <li class="float-right">
+                    <div (click)="changeStyle()" placement="bottom" [ngbTooltip]="tipContent">
+                      <i class="fa fa-2x position wallet colorDay"
+                      [class.fa-moon-o]='toggleTheme'
+                      [class.fa-sun-o]="!toggleTheme"
+                       aria-hidden="true"></i>
+                    </div>   
+                  </li>
         </ul>
-
-       <p #menu class='screenDisplay colorText styleMenu text-right' (click)='rotate()' (click)="toggle()" ><i class="fa fa-2x styleIcon" [@rotatedState]='state' [class.fa-bars]='!showMenu' [class.fa-times]='showMenu' aria-hidden="true"></i></p>
-       
-       <ul  *ngIf='showMenu' #menu [@Menu] class="textDecorationUl text-center paddingNone screenDisplay" style="font-weight:700">
+        <div class="screenDisplay text-right" >
+            <i class="fa fa-2x position2 colorDay" (click)="changeStyle()"
+            [class.fa-moon-o]='toggleTheme'
+            [class.fa-sun-o]="!toggleTheme"
+             aria-hidden="true"></i>
+       <p #menu class='colorText styleMenu'><i (click)="toggle()" class="fa fa-2x styleIcon" [class.fa-bars]='!showMenu' [class.fa-times]='showMenu' aria-hidden="true"></i></p>
+       </div>
+       <ul  *ngIf='showMenu' #menu class="textDecorationUl text-center bcColor screenDisplay" style="font-weight:700">
          <li *ngIf='!walletEmpty' (click)="showMenu = false" id="toWallet" [routerLink]="['/portfolio']" routerLinkActive="toWallet" >Portfolios</li>
          <li id="everything" (click)="showMenu = false" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="everything" >Everything</li>
          <li id="toFavorite" (click)="showMenu = false" [routerLink]="['/favorite']" routerLinkActive="toFavorite">Favorites</li>

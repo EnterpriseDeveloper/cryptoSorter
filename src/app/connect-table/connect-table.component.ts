@@ -3,8 +3,10 @@ import { AuthService } from '../aservices/auth.service';
 import {Observable} from 'rxjs/Observable';
 import {Wallet} from '../aservices/Wallet';
 import {WalletService} from '../aservices/wallet.service';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router, RouterLink ,ActivatedRoute} from '@angular/router';
 import {ListWalletService} from '../wallet/service/list-wallet.service';
+import {WalletComponent} from '../wallet/wallet.component';
+
 
 @Component({
   selector: 'connectTable',
@@ -30,7 +32,9 @@ export class ConnectTableComponent implements OnDestroy {
     private walletService: WalletService,
     public route: Router,
     private activityRouter: ActivatedRoute,
-    private listWalletService: ListWalletService
+    private listWalletService: ListWalletService,
+    private walletComponent: WalletComponent,
+
   )  {
     this.userSub = this.authService.user.subscribe(
       (auth) => {
@@ -39,11 +43,13 @@ export class ConnectTableComponent implements OnDestroy {
         } else {
           this.isLoggedIn = true;
          this.listSub = this.listWalletService.getListWallet().subscribe((data)=> { 
-           this.listWallet = data
+           if(data.length != 0){
+            this.listWallet = data
             let path = data[0].id
             let userId = data[0].userID
             this.wallets = this.walletService.getListWallet(userId, path);
             this.getWalletList();
+           }
             })
         }
       });
@@ -70,8 +76,10 @@ export class ConnectTableComponent implements OnDestroy {
           return this.walletValue.push(walletData.id);
         });
         if(this.walletData.length > 0 ){
+          this.walletComponent.getWalletList();    
           return this.walletEmpty = false;
         }else if(this.listWallet.length >= 2){
+          this.walletComponent.getWalletList();    
           return this.walletEmpty = false;
         }else{
           return this.walletEmpty = true;
@@ -83,10 +91,9 @@ export class ConnectTableComponent implements OnDestroy {
 
 
   ngOnDestroy(){
-    this.userSub.unsubscribe();
-    if(this.isLoggedIn == true){
+    if(this.isLoggedIn === true){
       this.listSub.unsubscribe();
-      this.walletSub.unsubscribe();
+    //  this.walletSub.unsubscribe();
     }
   }
 

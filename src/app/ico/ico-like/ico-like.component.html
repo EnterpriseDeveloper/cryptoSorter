@@ -1,0 +1,153 @@
+<header></header>
+<connectTable></connectTable>
+
+<div class="colorConnect">
+  <div class="spynerBasic" *ngIf="loading">
+      <spinner></spinner>
+  </div>
+
+  
+  <div class="tableStyle">
+          <div class="paddingCurrency">
+
+                <div *ngIf='!registUser' class="textRegist particle text-center">
+                        <div class="emptyPadding">
+                        <a class="colorTextLink textDecor" href='#' (click)="link()" (click)="openRegistModal()"
+                        >Register now</a><span class="colorTextRegist"> to unlock all the features (on desktop). It's free! </span>              
+                      </div>
+                    </div>
+
+
+<div *ngIf='registUser'>
+
+        <div *ngIf="icoData.length === 0">
+                <div *ngIf="!loading" >
+                     <div [class.emptyPadding]="!isEmptyWallet" [class.fullPadding]="isEmptyWallet">
+                            <div class="colorText text-center">
+                            Here you will see your favorite ICOs. Click on ICO description to save it here.</div> 
+        
+                            </div>
+                     </div>    
+            </div>
+
+<div [class.display]='loadingTable'>
+        <div *ngIf="icoData.length > 0">
+<div class="tabStyle3 tableStyle2 particle">
+<div [class.emptyPaddingTab]="!isEmptyWallet" [class.fullPaddingTab]="isEmptyWallet">
+<table id="icoActive-table" class="row-border hover table-striped modileTableIco" cellspacing="0" width="100%">
+
+      <thead class="tableHeaderDisplayNone">
+        <tr>
+            <th class="colorText text-center">ICO name</th>   
+           <th class="colorText text-center">Start date</th>  
+           <th class="colorText text-center">End date</th>  
+           <th class="colorText text-center">Description (tap to remove)</th>  
+        </tr>
+      </thead>
+
+      <thead class="mobileDisplay">
+        <tr>
+            <th class="colorText text-center">ICO name</th>   
+            <th class="colorText text-center">Start date</th>  
+            <th class="colorText text-center">End date</th> 
+           <th class="colorText text-center">Description (click to remove)</th>  
+        </tr>
+      </thead>
+     
+
+<tbody>
+  <tr *ngFor="let ico of icoData | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index ;"
+  class="animated" [class.bounceOut]="i == deletedRow">
+          <td  class="colorIco colorText tableSize text-center tableMobileSpeace noWrapp">
+              <a href="{{ico.website}}" target="_blank"><img style="width:200px;" title="{{ico.name}} website" src="{{ico.image}}"/></a></td>
+            <td style="width:20%"  class="colorText text-center tableMobileSpeace noWrapp"><p class="centerWal text-center">
+                {{ico.start_time | date }}</p></td>
+            <td style="width:20%" class="colorText text-center tableMobileSpeace noWrapp">
+                <p class="centerWal text-center">{{ico.end_time | date }}</p></td>
+              <td style="width:30%" (click)='openModuleDelete(ico, deleteIco, i)'
+              class="colorText tableMobileSpeaceDes wallet"> 
+                  <p class="centerWal widthMobile">{{ico.description}}.</p></td>
+  </tr>
+
+</tbody>
+</table>
+
+<pagination-template class="buttonTabs padding-right" #p="paginationApi" (pageChange)="onPageChange($event, 150)">
+
+<ul class="pagination">
+<li class="page-item" [class.disabled]="p.isFirstPage()">
+    <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(1)">
+            <span class="screenDisplay">&#171;</span>
+            <span class="mobileDisplay">First</span>
+    </a>
+</li>
+<li class="page-item" [class.disabled]="p.isFirstPage()">
+    <a class="page-link" href='#' (click)="link()" (click)="p.previous()">
+            <span class="screenDisplay">&#8249;</span>
+            <span class="mobileDisplay">Previous</span>
+    </a>
+ </li>
+
+
+ <li class="page-item" *ngFor="let page of p.pages" [class.active]="p.getCurrent() === page.value">
+     <a class="page-link" href='#' (click)="link()" (click)="p.setCurrent(page.value)">{{page.value}}</a>
+  </li>
+  <li class="page-item" [class.disabled]="p.isLastPage()">
+      <a class="page-link" href='#' (click)="link()" (click)="p.next()">
+            <span class="screenDisplay">&#8250;</span>
+            <span class="mobileDisplay">Next</span>
+        </a>
+  </li>
+  <li class="page-item" [class.disabled]="p.isLastPage()">
+       <a class="page-link" href='#' (click)="link()" (click)="p.getLastPage()">
+            <span class="screenDisplay">&#187;</span>
+            <span class="mobileDisplay">Last</span>
+        </a>
+   </li>
+</ul>
+</pagination-template> 
+
+<div class="row paddingTableWallet paddingmobile mobileDisplay">
+<div class="col">
+  <div ngbDropdown class="d-inline-block colorPaging"> Show
+    <button class="btn btn-light btn-sm wallet" id="dropdownBasic1" ngbDropdownToggle>{{perPage}}</button>
+    <div class="dropdownMenu" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <button class="dropdown-item wallet" (click)="switchCase('25')">25</button>
+      <button class="dropdown-item wallet" (click)="switchCase('50')">50</button>
+      <button class="dropdown-item wallet" (click)="switchCase('all')">All</button>
+    </div> items.
+  </div>
+</div>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<ng-template #deleteIco let-c="close" let-d="dismiss">
+  <div class="modal-body modalStyle">
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title colorText text-center">Remove ICO from Saved</h4>
+
+      <p style="padding-bottom:0px; margin-bottom: 0px" class="colorText text-center">Are you sure to remove
+          <span class="deleteCoin">{{icoLikeModule}}</span> ICO?</p>
+
+     <p class="colorText text-center">If ICO is finished, you can't recover this record.</p>
+
+      <button type="button" class="btn btn-dangers buttonsTabs2 wallet" (click)='deleteIcoDb()'>Delete</button>
+      <button type="button" class="btn btn-outline-secondary buttonTabs wallet" (click)="c('Close click')">Cancel</button>
+
+  </div>
+
+</ng-template>
+
+</div>
+</div>
+</div>
+
+<div class="push"></div>

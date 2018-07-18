@@ -34,22 +34,6 @@ export class LoginTableComponent implements  AfterViewInit, OnDestroy{
 @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 @ViewChild('autofocus') autofocus;
 
-private USD = { id: "usd",
-name: "US Dollar",
-symbol: "usd",
-rank: "",
-price_usd: "1",
-price_btc: "0",
-['24h_volume_usd']: "0",
-market_cap_usd: "0",
-available_supply: "0",
-total_supply: "0",
-max_supply: "0",
-percent_change_1h: "0",
-percent_change_24h: "0",
-percent_change_7d: "0",
-last_updated: "0" 
-}
 
   private likes: Observable<Likes[]>;
   public isLoggedIn: boolean;
@@ -58,7 +42,6 @@ last_updated: "0"
   private likesData;
   private likeValue = [];
   public filterLikes;
-  public newArray: any;
   public likesSub:any;
   public apiSub:any;
   public userSub:any;
@@ -145,11 +128,10 @@ last_updated: "0"
       this.listCompareSub = this.listCompare.get()
       .subscribe((listItem) => {
         this.listComapreItem = listItem;
-      this.apiSub = this.apiService.get()  
+      this.apiSub = this.apiService.getApi()  
       .subscribe((dataItem) => {
          this.dataTables = dataItem;
          this.items = dataItem;
-         this.items.push(this.USD);
          this.filterLikes = this.dataTables.filter((i) => {
       return this.likeValue.indexOf(i.id) != -1;
     });
@@ -161,45 +143,14 @@ last_updated: "0"
 
   // Create index value
   createTable(){
-    let old = JSON.stringify(this.filterLikes).replace(/null/g, '0'); 
-    this.newArray = JSON.parse(old);
-
-    this.newArray.forEach(dataItem => {
-   
-       function getFormulaValue(dataItem) {
-
-        dataItem['24h_volume_usd'] = Number.parseInt(dataItem['24h_volume_usd']);
-
-        dataItem.percent_change_24h = Number(dataItem.percent_change_24h);
-  
-        dataItem.price_usd = Number(dataItem.price_usd);
-  
-        dataItem.market_cap_usd = Number.parseInt(dataItem.market_cap_usd);
-   
-        let modul = Math.abs(dataItem.percent_change_24h);
-        let formula = ((dataItem['24h_volume_usd']/ ((modul / 100 ) + 1 ) / parseInt(dataItem.market_cap_usd)) * 100);
-   
-         let formulaInfin = (formula == Infinity) ? 0 : formula;
-         let formNonNaN = (isNaN(formulaInfin) == true) ? 0 : formulaInfin;
-         let formulaItem = formNonNaN.toFixed(2);
-   
-         return Number(formulaItem);
-   
-       };
-
-       var tableBodyHtml = this.newArray.map((dataItem) => {
-        return Object.assign(dataItem, {formulaValue: getFormulaValue(dataItem)});
-        })
-      });
-
-      this.likeCurrency = this.newArray;
+      this.likeCurrency = this.filterLikes;
       this.likeLenght = this.likeCurrency.length;
       this.loading = false; 
       this.spinnerService.changeMessage(false);
       if(this.isLoggedIn == true){
         if(this.likeLenght != 0){
           setTimeout(()=>{
-            this.autofocus.nativeElement.focus()
+        //    this.autofocus.nativeElement.focus()
           },500)
         }
       }
@@ -249,13 +200,13 @@ last_updated: "0"
         return "assets/noData.png";
       }else{
           if(this.defaultChars === 'usd' ){
-            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-'+ this.defaultChars +'/'+ this.historicalDate +'/svg?lineColor=white';
+            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-usd/24h/svg?lineColor=teal';
           }else if(this.listComapreItem.Data[this.defaultChars] === undefined){
             return "assets/noData.png";
           }  else if(symbol === this.defaultChars) {
             return "assets/line_data.png";
            } else {
-             return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-'+ this.defaultChars +'/'+ this.historicalDate +'/svg?lineColor=white';
+             return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-usd/24h/svg?lineColor=teal';
             }
       }
     }
@@ -370,7 +321,7 @@ last_updated: "0"
         return likes.indexOf(i.$value) != -1;
      });
       this.likeService.deleteLikes(findLike.$key);
-      let index = this.newArray.indexOf(like);
+      let index = this.filterLikes.indexOf(like);
       this.selectedRow = i;
       this.likeLenght = this.likeLenght - 1;
       setTimeout(()=>{
@@ -383,6 +334,11 @@ last_updated: "0"
     const modalRef = this.modalService.open(LoginUserComponent);
     $('.modal-content').animate({ opacity: 1 });
     $('.modal-backdrop').animate({ opacity: 0.9 });
+  }
+
+  goToDescription(name, symbol){
+    let nameCoin = name.replace(/ /g,"-")
+    window.open("https://cryptosorter.com/cryptocurrency/"+nameCoin+"-"+symbol, "_blank" )
   }
 
   ngOnDestroy(){

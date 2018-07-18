@@ -31,22 +31,6 @@ export class DeleteTableComponent implements OnDestroy, AfterViewInit {
 @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 @ViewChild('autofocus') autofocus;
 
-private USD = { id: "usd",
-                name: "US Dollar",
-                symbol: "usd",
-                rank: "",
-                price_usd: "1",
-                price_btc: "0",
-                ['24h_volume_usd']: "0",
-                market_cap_usd: "0",
-                available_supply: "0",
-                total_supply: "0",
-                max_supply: "0",
-                percent_change_1h: "0",
-                percent_change_24h: "0",
-                percent_change_7d: "0",
-                last_updated: "0" 
-                                         }
 
   private dislikes: any;
   public isLoggedIn: boolean;
@@ -55,7 +39,6 @@ private USD = { id: "usd",
   private dislikesData;
   private dislikeValue = [];
   private filterDislike;
-  private newArray:any;
   private userSub: any;
   private apiSub: any;
   private dislikeSub: any;
@@ -150,11 +133,10 @@ private USD = { id: "usd",
       })
 
      promise.then(()=>{
-      this.apiSub = this.apiService.get()  
+      this.apiSub = this.apiService.getApi()  
       .subscribe((dataItem) => {
         this.dataTables = dataItem; 
         this.items = dataItem;
-        this.items.push(this.USD); 
         this.filterDislike = this.dataTables.filter((i) => {
           return this.dislikeValue.indexOf(i.id) != -1;
        });  
@@ -166,42 +148,10 @@ private USD = { id: "usd",
 
   // Create index value
   createTable(){
-
-    let old = JSON.stringify(this.filterDislike).replace(/null/g, '0'); 
-    this.newArray = JSON.parse(old);
-
-    this.newArray.forEach(dataItem => {
-   
-       function getFormulaValue(dataItem) {
-
-        dataItem['24h_volume_usd'] = Number.parseInt(dataItem['24h_volume_usd']);
-
-        dataItem.percent_change_24h = Number(dataItem.percent_change_24h);
-  
-        dataItem.price_usd = Number(dataItem.price_usd);
-  
-        dataItem.market_cap_usd = Number.parseInt(dataItem.market_cap_usd);
-      
-        let modul = Math.abs(dataItem.percent_change_24h);
-        let formula = ((dataItem['24h_volume_usd']/ ((modul / 100 ) + 1 ) / parseInt(dataItem.market_cap_usd)) * 100);
-   
-         let formulaInfin = (formula == Infinity) ? 0 : formula;
-         let formNonNaN = (isNaN(formulaInfin) == true) ? 0 : formulaInfin;
-         let formulaItem = formNonNaN.toFixed(2);
-   
-         return Number(formulaItem);
-   
-       };
-
-       var tableBodyHtml = this.newArray.map(function(dataItem) {
-        return Object.assign(dataItem, {formulaValue: getFormulaValue(dataItem)});
-        })
-      });
-
-      this.dislikeCurrency = this.newArray;
+      this.dislikeCurrency = this.filterDislike;
       this.dislikeLenght = this.dislikeCurrency.length;
+
       this.loading = false; 
-      this.spinnerService.changeMessage(false);
       if(this.isLoggedIn == true){
         if(this.dislikeLenght != 0){
           setTimeout(()=>{
@@ -209,6 +159,10 @@ private USD = { id: "usd",
           },500)
         }
      }
+     setTimeout(()=>{
+      this.spinnerService.changeMessage(false);
+     },10000)
+
     };
 
     symbolNoFit(symbol){
@@ -255,14 +209,14 @@ private USD = { id: "usd",
         return "assets/noData.png";
       }else{
           if(this.defaultChars === 'usd' ){
-            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-'+ this.defaultChars +'/'+ this.historicalDate +'/svg?lineColor=white';
+            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-usd/24h/svg?lineColor=teal';
           }else if(this.listComapreItem.Data[this.defaultChars] === undefined){
             return "assets/noData.png";
           } else if(symbol === this.defaultChars) {
            return "assets/line_data.png";
           } else {
 
-            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-'+ this.defaultChars +'/'+ this.historicalDate +'/svg?lineColor=white';
+            return 'https://cryptohistory.org/charts/sparkline/'+ symbol +'-usd/24h/svg?lineColor=teal';
            }
       }
     }
@@ -378,7 +332,7 @@ private USD = { id: "usd",
     let findDislike = this.dislikesData.find((i) => {
       return dislikes.indexOf(i.$value) != -1;
     });
-    let index = this.newArray.indexOf(dislike);
+    let index = this.filterDislike.indexOf(dislike);
     this.selectedRow = i;
     this.dislikeService.deleteDislike(findDislike.$key);
     this.dislikeLenght = this.dislikeLenght - 1;
@@ -392,6 +346,11 @@ private USD = { id: "usd",
     const modalRef = this.modalService.open(LoginUserComponent);
     $('.modal-content').animate({ opacity: 1 });
     $('.modal-backdrop').animate({ opacity: 0.9 });
+  }
+
+  goToDescription(name, symbol){
+    let nameCoin = name.replace(/ /g,"-")
+    window.open("https://cryptosorter.com/cryptocurrency/"+nameCoin+"-"+symbol, "_blank" )
   }
 
 
