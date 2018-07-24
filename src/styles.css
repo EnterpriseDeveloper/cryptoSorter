@@ -327,6 +327,34 @@ loadingChartSpyner{
     font-size: 16px;
 }
 
+.rowActive{
+    color: #17A2B8;
+}
+
+.rowHoverColor:hover{
+    color: #17A2B8;
+}
+
+.colorHoverIcon:hover{
+    z-index: 100;
+    box-shadow: 0px 0px 10px 3px #17A2B8;
+}
+
+.colorHoverIconIco:hover{
+    opacity: 0.4;
+}
+
+.colorHoverLink:hover {
+  color: #17A2B8;
+  text-decoration: underline;
+}
+
+.fontWeightStyle{
+    font-weight: 400;
+    font-size: 16px;
+}
+
+
 .tableSizeNumber {
     font-size: 18px;
     font-weight: 100;
@@ -1402,7 +1430,7 @@ loadingChartSpyner{
 
     .widthButton{
         width: 173px;
-        background-color: #d8d8d8 !important;
+        background-color: white !important;
     }
 
     .footerStyle{
@@ -1593,7 +1621,7 @@ loadingChartSpyner{
    .mobileStyleForListOfPortf{
     position: absolute;
     right: -5px;
-    top: 250px;
+    top: 252px;
   }
 
   
@@ -1634,7 +1662,7 @@ loadingChartSpyner{
 
     .widthButton{
         width: 173px;
-        background-color: #d8d8d8 !important;
+        background-color: white !important;
     }
 
 
@@ -1670,7 +1698,7 @@ loadingChartSpyner{
     .mobileStyleForListOfPortf{
        position: absolute;
        right: -5px;
-       top: 250px;
+       top: 252px;
       }
 
  .headerWallet{
@@ -1710,7 +1738,7 @@ loadingChartSpyner{
     .stylingForInputMobileWallet{
         width:200px; 
         float:right;
-        margin-top: 20px;
+        margin-top: 22px;
         margin-right: 10px !important;
         margin-bottom: 10px !important;
     }

@@ -1,8 +1,9 @@
-import { Component, ElementRef, ViewEncapsulation, OnDestroy, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, ElementRef, ViewEncapsulation, OnDestroy, OnInit, ViewChild, HostListener, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators,} from '@angular/forms';
 import { Subject } from 'rxjs/Subject'
+import {ConnectTableComponent} from '../connect-table/connect-table.component'
 
 import { ApiService} from '../aservices/api-service.service';
 import { AuthService } from '../aservices/auth.service';
@@ -134,6 +135,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   public addCoinsValue = '';
   public findIndex = false;
   public dataForFindindex;
+  public mobileDetected: boolean = false;
   
 
 
@@ -192,13 +194,20 @@ export class WalletComponent implements OnInit, OnDestroy {
     private emailShareService: EmailShareService,
     private ngbDropDownConfig: NgbDropdownConfig
   ) {
-    this.ngbDropDownConfig.placement='bottom-right'
+    this.ngbDropDownConfig.placement='bottom-right';
+    if (window.matchMedia('screen and (max-width: 770px)').matches){
+      this.mobileDetected = true;
+    }else{
+      this.mobileDetected = false;
+    }
 
     this.isEmptyService.isEmptyValue.subscribe((value) => {
       this.isEmptyValue = value;
     });
     this.userSub = this.authService.user.subscribe((auth) => {
         if (auth == null){
+          this.dataFromStorage = '';
+          this.dataSnapshot = '';
           this.isLoggedIn = false;
           this.guardsUnloginUsers = false;
           this.walletValue = [];
@@ -206,6 +215,8 @@ export class WalletComponent implements OnInit, OnDestroy {
           this.spinnerService.changeMessage(false); 
           this.getIdLink();
         } else {
+          this.dataFromStorage = '';
+          this.dataSnapshot = '';
           this.loading = true;
           this.spinnerService.changeMessage(true);   
           this.userEmail = auth.email;
@@ -231,39 +242,51 @@ export class WalletComponent implements OnInit, OnDestroy {
    }
 
 
-   private idLink: string;
    private linkIsempty: boolean = true;
 
    private userIdLink: any;
    public valueLinkClosed: boolean = false;
+   public dataSnapshot;
+   public dataFromStorage ;
 
    getIdLink(){
-     this.idLink = this.activityRouter.snapshot.paramMap.get('id');
-     if(this.idLink == ':id'){
-       return
-     }else{
-      sessionStorage.setItem("linkShare", this.idLink);
-       this.linkIsempty = false;
-       this.loading = true;
-       this.spinnerService.changeMessage(true); 
-       this.isLoggedIn = true;
-         this.sharedService.getShareLink(this.idLink).subscribe((shared)=>{
-            this.userId = shared.uid;
-            this.path = shared.path;
-           if(this.userId == 'closed' || this.userId == null){
-              this.loading = false;
-              this.spinnerService.changeMessage(false); 
-              this.isLoggedIn = false;
-              this.linkIsempty = true;
-            return this.valueLinkClosed = true;
-           }else{
-              this.userDescriprionForLink = true;
-              this.percent = 100;
-              this.getCoin();
-            return this.valueLinkClosed = false;
-           }
-         })
-     }
+   this.dataFromStorage = sessionStorage.getItem('linkShare')
+    if(String(this.dataFromStorage) === ':id' || String(this.dataFromStorage) === 'null' || this.dataFromStorage === null || this.dataFromStorage === undefined || String(this.dataFromStorage) === 'undefined'){
+      this.dataSnapshot = this.activityRouter.snapshot.params.id;
+      if(this.dataSnapshot != ":id"){
+        sessionStorage.setItem('linkShare', this.dataSnapshot)
+        this.redWalletData(this.dataSnapshot)
+      }else if(String(this.dataSnapshot) === "null" || this.dataSnapshot === null){
+        return
+      }
+    }else if(this.dataFromStorage ==="login"){
+      sessionStorage.setItem('linkShare', null)
+    }else{
+      this.redWalletData(this.dataFromStorage)
+    }
+   }
+
+   redWalletData(data){
+    this.linkIsempty = false;
+    this.loading = true;
+    this.spinnerService.changeMessage(true); 
+    this.isLoggedIn = true;
+      this.sharedService.getShareLink(data).subscribe((shared)=>{
+         this.userId = shared.uid;
+         this.path = shared.path;
+        if(this.userId == 'closed' || this.userId == null){
+           this.loading = false;
+           this.spinnerService.changeMessage(false); 
+           this.isLoggedIn = false;
+           this.linkIsempty = true;
+         return this.valueLinkClosed = true;
+        }else{
+           this.userDescriprionForLink = true;
+           this.percent = 100;
+           this.getCoin();
+         return this.valueLinkClosed = false;
+        }
+      })
    }
 
 
@@ -289,7 +312,7 @@ export class WalletComponent implements OnInit, OnDestroy {
           }
     
           let nameOfPortfolio = data[this.indexListPortfolio].name;
-          if(nameOfPortfolio.length >= 20){
+          if(nameOfPortfolio.length >= 13){
              this.wichPortfolio = nameOfPortfolio.substring(0,13)
           }else{
              this.wichPortfolio = nameOfPortfolio

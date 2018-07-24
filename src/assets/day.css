@@ -624,7 +624,11 @@ padding-right: 0px !important;
   }
 
   .forLikes{
-    color: #f5922f;
+    color: #17A2B8;
+  }
+
+  .forLikes:hover{
+    color: #17A2B8;
   }
 
   .colorDay{
@@ -634,9 +638,7 @@ padding-right: 0px !important;
     color: #f5922f;
   }
 
-  .forLikes:hover{
-    color: #f5922f;
-  }
+
 
   .danger{
     background-color: #FF6666;
@@ -672,3 +674,21 @@ padding-right: 0px !important;
     background-color: #FF6666!important;
     border-color: #FF6666 !important;
 }
+
+.linkBasicPage{
+    color: #17A2B8;
+  }
+  
+  .linkBasicPage:hover{
+    color: black;
+    text-decoration: none;
+  }
+  
+  .linkBasicPageCVI{
+    color: #17A2B8;
+  }
+  
+  .linkBasicPageCVI:hover{
+    color: black;
+    text-decoration: none;
+  }

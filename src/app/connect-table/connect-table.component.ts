@@ -1,4 +1,4 @@
-import { Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { AuthService } from '../aservices/auth.service';
 import {Observable} from 'rxjs/Observable';
 import {Wallet} from '../aservices/Wallet';
@@ -58,14 +58,7 @@ export class ConnectTableComponent implements OnDestroy {
 
 
 
-  shareLink(){
-      let linkSession =  sessionStorage.getItem("linkShare");  
-      if(linkSession == 'null' || linkSession == null){
-        this.route.navigate(['/portfolio/:id']);
-      }else{
-        this.route.navigate(['/portfolio/', linkSession]);
-      }
-  }
+
 
 
   getWalletList(){

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, AfterViewInit, OnDestroy,  Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, AfterViewInit, OnDestroy,  Input, Output, EventEmitter, ViewChild, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject'
@@ -252,14 +252,7 @@ export class LoginTableComponent implements  AfterViewInit, OnDestroy{
     this.reverse = !this.reverse;
   }
 
-  onPageChange(e, scrollDuration){
-    var scrollStep = -window.scrollY / (scrollDuration / 15),
-    scrollInterval = setInterval(function(){
-    if ( window.scrollY != 0 ) {
-        window.scrollBy( 0, scrollStep );
-    }
-    else clearInterval(scrollInterval); 
-          },15);
+  onPageChange(e){
     if (e)
       this.page = e;
   }

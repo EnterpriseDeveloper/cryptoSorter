@@ -1,4 +1,4 @@
-import { Component,ViewEncapsulation, ChangeDetectorRef, AfterViewInit, ViewChild, OnInit, OnDestroy, Input, Output } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectorRef, AfterViewInit, ViewChild, OnInit, OnDestroy, Input, Output, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators,} from '@angular/forms';
 import { Http, Response } from '@angular/http';
@@ -13,6 +13,7 @@ import { SpinnerLoadService } from '../spinner/spinner-load.service';
 import { IsEmptyWalletService } from '../wallet/service/is-empty-wallet.service';
 import { ListWalletService } from '../wallet/service/list-wallet.service'; 
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
+import {HeaderComponent} from '../header/header.component';
 
 import { ApiService } from '../aservices/api-service.service';
 import { AuthService } from '../aservices/auth.service';
@@ -45,6 +46,7 @@ type FormErrors = { [u in UserFields]: string };
 export class CurrencyComponent implements OnInit, OnDestroy, AfterViewInit{
 
   @ViewChild('autofocus') autofocus;
+  @ViewChild(HeaderComponent) filtersData;
 
   name = 'Angular v4 - Applying filters to *ngFor using pipes';
 
@@ -131,6 +133,7 @@ export class CurrencyComponent implements OnInit, OnDestroy, AfterViewInit{
     private ngbDropDownConfig: NgbDropdownConfig,
     private walletComponent: WalletComponent,
   ) {
+
     if (window.matchMedia('screen and (max-width: 700px)').matches){
       this.perPage = 10;
     }
@@ -213,6 +216,12 @@ this.minfilter.formulaValue = Number(localStorage.getItem("minIndex"));
 
   ngAfterViewInit(){
     this.cdr.detectChanges();
+  }
+
+  dataFilterFromHeader($event){
+    this.minfilter.formulaValue = $event.minCVI;
+    this.minfilter.market_cap_usd = $event.minMarketCap;
+    this.minfilter["24h_volume_usd"]= $event.minVolume;
   }
 
   minIndexChange(value){
@@ -464,16 +473,9 @@ this.minfilter.formulaValue = Number(localStorage.getItem("minIndex"));
           this.reverse = !this.reverse;
         }
       
-        onPageChange(e, scrollDuration){
-          var scrollStep = -window.scrollY / (scrollDuration / 15),
-          scrollInterval = setInterval(function(){
-          if ( window.scrollY != 0 ) {
-              window.scrollBy( 0, scrollStep );
-          }
-          else clearInterval(scrollInterval); 
-      },15);
-          if (e)
-            this.page = e;
+        onPageChange(e){
+           if (e)
+             this.page = e;      
         }
       
         link(){

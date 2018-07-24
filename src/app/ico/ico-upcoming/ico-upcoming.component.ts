@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {IcoUpcomingService} from '../service/ico-upcoming.service';
 import {SpinnerLoadService } from '../../spinner/spinner-load.service';
 import {IsEmptyWalletService} from '../../wallet/service/is-empty-wallet.service';
@@ -8,6 +8,8 @@ import {AuthService} from '../../aservices/auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {LoginUserComponent} from '../../login-user/login-user.component';
 import {NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
+declare var jquery:any;
+declare var $ :any;
 
 
 @Component({
@@ -134,14 +136,7 @@ export class IcoUpcomingComponent implements OnInit, OnDestroy {
     }
   };
 
-  onPageChange(e, scrollDuration){
-    var scrollStep = -window.scrollY / (scrollDuration / 15),
-    scrollInterval = setInterval(function(){
-    if ( window.scrollY != 0 ) {
-        window.scrollBy( 0, scrollStep );
-    }
-    else clearInterval(scrollInterval); 
-},15);
+  onPageChange(e){
     if (e)
       this.page = e;
   }

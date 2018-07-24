@@ -1,5 +1,5 @@
 <header></header>
-<connectTable></connectTable>
+<connectTable id='forScrolling'></connectTable>
 
 <div class="colorConnect">
   <div class="spynerBasic" *ngIf="loading">
@@ -12,8 +12,8 @@
 
                 <div *ngIf='!registUser' class="textRegist particle text-center">
                         <div class="emptyPadding">
-                        <a class="colorTextLink textDecor" href='#' (click)="link()" (click)="openRegistModal()"
-                        >Register now</a><span class="colorTextRegist"> to unlock all the features (on desktop). It's free! </span>              
+                            <div class="colorText text-center fontWeightStyle">
+                                Here you will see your favorite ICOs. Click on ICO description to save it here.</div>             
                       </div>
                     </div>
 
@@ -59,20 +59,20 @@
   <tr *ngFor="let ico of icoData | paginate: { itemsPerPage: perPage, currentPage: page } ; let i = index ;"
   class="animated" [class.bounceOut]="i == deletedRow">
           <td  class="colorIco colorText tableSize text-center tableMobileSpeace noWrapp">
-              <a href="{{ico.website}}" target="_blank"><img style="width:200px;" title="{{ico.name}} website" src="{{ico.image}}"/></a></td>
+              <a href="{{ico.website}}" target="_blank"><img class="colorHoverIconIco" style="width:200px;" title="{{ico.name}} website" src="{{ico.image}}"/></a></td>
             <td style="width:20%"  class="colorText text-center tableMobileSpeace noWrapp"><p class="centerWal text-center">
                 {{ico.start_time | date }}</p></td>
             <td style="width:20%" class="colorText text-center tableMobileSpeace noWrapp">
                 <p class="centerWal text-center">{{ico.end_time | date }}</p></td>
               <td style="width:30%" (click)='openModuleDelete(ico, deleteIco, i)'
-              class="colorText tableMobileSpeaceDes wallet"> 
+              class="colorText tableMobileSpeaceDes wallet rowHoverColor"> 
                   <p class="centerWal widthMobile">{{ico.description}}.</p></td>
   </tr>
 
 </tbody>
 </table>
 
-<pagination-template class="buttonTabs padding-right" #p="paginationApi" (pageChange)="onPageChange($event, 150)">
+<pagination-template [ngx-scroll-to]="'#forScrolling'" class="buttonTabs padding-right" #p="paginationApi" (pageChange)="onPageChange($event)">
 
 <ul class="pagination">
 <li class="page-item" [class.disabled]="p.isFirstPage()">

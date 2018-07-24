@@ -1,5 +1,5 @@
-<header></header>
-<connectTable></connectTable>
+<header (dataFilter)='dataFilterFromHeader($event)'></header>
+<connectTable id="forScrolling"></connectTable>
 
 <div class="colorConnect">
 <div class="spynerBasic"
@@ -94,13 +94,20 @@
                                      [(ngModel)]="filters" placeholder="Search Coin"></div></th>
                                 <th style="padding-bottom: 0px; margin-bottom: 0px; bottom: -32px; position: relative;" 
                                     class="colorText tableSize text-center paddingHeader tableMobileSpeace" >
-                                    <p (click)="sort('percent_change_24h')" class="wallet" style="padding-bottom: 0px; margin-bottom: 0px;">% 24h
+                                    <p [class.rowActive]="key =='percent_change_24h'"
+                                       (click)="sort('percent_change_24h')" 
+                                       class="wallet rowHoverColor" 
+                                       style="padding-bottom: 0px; margin-bottom: 0px;">% 24h
                                         <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                                     </p>
                                     </th> 
                                     <th style="padding-bottom: 0px; margin-bottom: 0px; bottom: -32px; position: relative;" 
                                         class="colorText tableSize text-center tableMobileSpeace">
-                                        <p (click)="sort('price_usd')" class="wallet" style="padding-bottom: 0px; margin-bottom: 0px;">Price $
+                                        <p [class.rowActive]="key =='price_usd'"
+                                           (click)="sort('price_usd')" 
+                                           class="wallet rowHoverColor" 
+                                           style="padding-bottom: 0px; margin-bottom: 0px; white-space:nowrap">
+                                           Price $ 
                                            <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                                         </p> 
                                     </th>    
@@ -133,7 +140,7 @@
                             </th>
 
                             <th style="width:11%">
-                                    <div placement="top" container="body" ngbTooltip="Crypto Volatility Index shows a higher short term potential for coins with higher CVI values. Tip: use with filters."
+                                    <div title="Crypto Volatility Index (CVI) shows a higher potential for coins with higher CVI values"
                                      class="centerInput">   
                                     <input class="form-control form-control-sm paddingInput" type="number"
                                     [class.inputSortingStyle]="!reverse && key == 'formulaValue'"
@@ -144,8 +151,9 @@
                                         name="formulaValue" [(ngModel)]="filter.formulaValue" min='0' placeholder="Max CVI" 
                                         (ngModelChange)="maxIndexChange($event)"> 
                                     </div>
-                                   <p style="padding-bottom: 3px; margin-bottom: 0px; padding-top: 5px;" 
-                                      class="colorText tableSize text-center wallet tableMobileSpeace" 
+                                   <p [class.rowActive]="key =='formulaValue'"
+                                      style="padding-bottom: 3px; margin-bottom: 0px; padding-top: 5px;" 
+                                      class="colorText tableSize text-center wallet tableMobileSpeace rowHoverColor" 
                                       (click)="sort('formulaValue')">
                                       CVI
                                     <span class="fa" *ngIf="key =='formulaValue'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
@@ -162,8 +170,9 @@
                                 name="market_cap_usd" [(ngModel)]="filter.market_cap_usd"  placeholder="Max Market Cap" 
                                 (ngModelChange)="maxMarketChange($event)" step="1000000">
                                 </div>
-                                <p style="padding-bottom: 3px; margin-bottom: 0px; padding-top: 5px;" 
-                                   class="colorText tableSize text-center wallet tableMobileSpeace" 
+                                <p [class.rowActive]="key =='market_cap_usd'"
+                                   style="padding-bottom: 3px; margin-bottom: 0px; padding-top: 5px;" 
+                                   class="colorText tableSize text-center wallet tableMobileSpeace rowHoverColor" 
                                    (click)="sort('market_cap_usd')">
                                    Market Cap
                                     <span class="fa" *ngIf="key =='market_cap_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
@@ -180,8 +189,9 @@
                                 name="24h_volume_usd" [(ngModel)]="filter['24h_volume_usd']" placeholder="Max Volume"
                                 (ngModelChange)="maxVolumeChange($event)" step="100000">
                             </div>
-                            <p style="padding-bottom: 3px; margin-bottom: 0px; padding-top: 5px;" 
-                               class="colorText tableSize text-center wallet tableMobileSpeace" 
+                            <p [class.rowActive]="key =='24h_volume_usd'"
+                               style="padding-bottom: 3px; margin-bottom: 0px; padding-top: 5px;" 
+                               class="colorText tableSize text-center wallet tableMobileSpeace rowHoverColor" 
                                (click)="sort('24h_volume_usd')">
                                Volume
                                 <span class="fa" *ngIf="key =='24h_volume_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
@@ -248,13 +258,14 @@
                             (click)="getWebPage(row.symbol)"
                             [class.cursor]="symbolNoFit(row.symbol)"
                             [src]="getCoinImage(row.symbol)"
-                             type="image" class='sizeImg3 mobileDisplayLogo' title="{{row.name}} website"/>
+                             type="image" class='sizeImg3 mobileDisplayLogo colorHoverIcon' title="{{row.name}} website"/>
                             </div>
                     </div>
                        
                     <p (click)='goToDescription(row.name, row.symbol)' 
                     class="wallet centerWalName styleMobileWidth">
-                    {{row.name}} |
+                    <span class="colorHoverLink">
+                    {{row.name}}</span> |
                     <span target="_blank"  
                 class="linksTable">
                 {{row.symbol.toUpperCase()}}
@@ -286,7 +297,7 @@
 </tbody>
 </table>
 
-<pagination-template class="mobilePagination floatPagination pagination-right" #p="paginationApi" (pageChange)="onPageChange($event, 150)">
+<pagination-template [ngx-scroll-to]="'#forScrolling'" class="mobilePagination floatPagination pagination-right" (pageChange)="onPageChange($event)" #p="paginationApi" >
 
    <div class="center-pagin">
     <ul class="pagination">

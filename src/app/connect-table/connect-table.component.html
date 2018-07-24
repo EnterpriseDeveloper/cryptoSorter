@@ -40,7 +40,7 @@
         <li class="colorBackNav" id="everything" [routerLink]="['/']" routerLinkActive="everything" [routerLinkActiveOptions]="{ exact: true }">Everything</li>
         <li class="colorBackNav" id="toFavorite" [routerLink]="['/favorite']" routerLinkActive="toFavorite" >Favorites</li>
         <li class="colorBackNav" id="toDeleted" [routerLink]="['/disliked']" routerLinkActive="toDeleted">Disliked</li>
-        <li class="colorBackNav" id="toWallet" (click)='shareLink()' [class.toWallet]="route.isActive('/portfolio')">Portfolios</li>
+        <li class="colorBackNav" id="toWallet" [routerLink]="['/portfolio/:id']" [class.toWallet]="route.isActive('/portfolio')">Portfolios</li>
         <li>
             <div ngbDropdown class="d-inline-block colorBackNavIco">
                 <button [class.toIco]="route.isActive('/ico')" class="icoActive textHeader2" id="dropdownBasic1" ngbDropdownToggle><span class="colorText">ICO</span></button>

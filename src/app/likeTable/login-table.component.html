@@ -1,5 +1,5 @@
 <header></header>
-<connectTable></connectTable>
+<connectTable id='forScrolling'></connectTable>
 
 <div class="colorConnect">
         
@@ -8,8 +8,11 @@
              
        <div *ngIf='!isLoggedIn' class="textRegist particle text-center">
             <div class="emptyPadding">  
-            <a class="colorTextLink textDecor" href='#' (click)="link()" (click)="openRegistModal()"
-                >Register now</a><span class="colorTextRegist"> to unlock all the features (on desktop). It's free!</span>              
+            <div class="colorText text-center fontWeightStyle">
+                Here you'll track your most beloved coins. To add a coin, use
+                   <button (click)="openRegistModal()" class="btn btn-sm btn-outline-success buttonLike">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+            </button> button in Everything.</div>           
         </div>
       </div> 
                 
@@ -57,7 +60,7 @@
                                 <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h
                                     <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                                 </th>
-                                <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('price_usd')">Price $
+                                <th style="width:14%;" class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('price_usd')">Price $ 
                                      <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                                 </th>
                                 <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace">
@@ -83,10 +86,10 @@
                                  <input #autofocus class="form-control form-control-sm" placeholder="Search Coin" [(ngModel)]="filter">
                                </div>    
                                 </th>  
-                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h
+                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" [class.rowActive]="key =='percent_change_24h'" (click)="sort('percent_change_24h')">% 24h
                                 <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                             </th>
-                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('price_usd')">Price $
+                            <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" [class.rowActive]="key =='price_usd'" (click)="sort('price_usd')">Price $ 
                                 <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                             </th>
                             <th class="colorText tableSize text-center paddingHeader tableMobileSpeace">
@@ -115,13 +118,13 @@
                         </th>
         
                         <th placement="top" container="body" ngbTooltip="Crypto Volatility Index shows a higher short term potential for coins with higher CVI values. Tip: use with filters." 
-                         class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('formulaValue')">CVI
+                         class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" [class.rowActive]="key =='formulaValue'" (click)="sort('formulaValue')">CVI
                             <span class="fa" *ngIf="key =='formulaValue'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                         </th>
-                        <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('market_cap_usd')">Market Cap $
+                        <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" [class.rowActive]="key =='market_cap_usd'" (click)="sort('market_cap_usd')">Market Cap $
                             <span class="fa" *ngIf="key =='market_cap_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                         </th>
-                        <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('24h_volume_usd')">Volume $
+                        <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" [class.rowActive]="key =='24h_volume_usd'" (click)="sort('24h_volume_usd')">Volume $
                             <span class="fa" *ngIf="key =='24h_volume_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                         </th> 
                                 <th class="colorText tableSize text-center paddingHeader">Action</th>  
@@ -135,10 +138,11 @@
                             <img [class.titleIndex]="!symbolNoFit(like.symbol)"
                             [class.cursor]="symbolNoFit(like.symbol)"
                             [src]="getCoinImage(like.symbol)" (click)="getWebPage(like.symbol)"
-                             type="image" class='sizeImg2' title="{{like.name}} website" />
+                             type="image" class='sizeImg2 colorHoverIcon' title="{{like.name}} website" />
                                 <p (click)="goToDescription(like.name, like.symbol)" 
                                 class="wallet tableName centerWalName styleMobileWidth">
-                            {{like.name}} |
+                                <span class="colorHoverLink">
+                                {{like.name}} </span>|
                             <span class="linksTable">{{like.symbol.toUpperCase()}}</span> </p></td>
                             <td style="width:14%;" class="colorText tableSizeNumber weight tableMobileSpeace">
                                 <p class="centerWal text-center"><span 
@@ -170,7 +174,7 @@
                 </tbody>
             </table>
 
-            <pagination-template class="paginationTab" #p="paginationApi" (pageChange)="onPageChange($event, 150)">
+            <pagination-template [ngx-scroll-to]="'#forScrolling'" class="paginationTab" #p="paginationApi" (pageChange)="onPageChange($event)">
 
                 <ul class="pagination">
                         <li class="page-item" [class.disabled]="p.isFirstPage()">

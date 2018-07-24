@@ -20,7 +20,7 @@
                 <td colspan="2" style="padding-bottom: 20px"><a [href]="data.Data?.General.WebsiteUrl" target="_blank" >{{data.Data?.General.WebsiteUrl}}</a></td>
               </tr>
               <tr>
-                <td >Price:</td>
+                <td >Price (now):</td>
                 <td style="width:102px">$ {{dataApi.price_usd ? (dataApi.price_usd | currencyValueChange) : 0}}</td>
               </tr>
               <tr>
@@ -41,7 +41,7 @@
               </tr> 
               <tr>
                 <td>Volume 24:</td>
-                <td> % {{dataApi['24h_volume_usd'] ? (dataApi['24h_volume_usd'] | currencyValueChange) : 0 }}
+                <td> $ {{dataApi['24h_volume_usd'] ? (dataApi['24h_volume_usd'] | currencyValueChange) : 0 }}
                 </td>
                </tr>  
                <tr>

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn  } from '@angular/forms';
@@ -20,6 +20,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { environment } from './../environments/environment';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 //import { ParticlesModule } from 'angular-particle';
 
 import { CurrencyFilterPipe } from './shared/filter.pipe';
@@ -95,10 +97,23 @@ export function highchartsModules() {
     IcoActiveComponent,
     IcoUpcomingComponent,
     DescriptionComponent,
-    IcoLikeComponent
+    IcoLikeComponent,
+  ],
+  schemas: [
+    NO_ERRORS_SCHEMA],
+  exports:[
+    NavbarComponent,
+    SpinnerComponent,
+    NgxSelectModule, 
+    ConnectTableComponent,
+    CurrencyFilterPipe,
+    MinFilterPipe,
+    CurrencyValueChange,
+    DatePipes
   ],
   imports: [
     NgbModule.forRoot(),
+    ScrollToModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -148,6 +163,7 @@ export function highchartsModules() {
     CurrencyComponent,
     NavbarComponent,
     AngularFireDatabase,
+    AngularFireAuth,
     IsEmptyWalletService,
     IcoDbService,
     IcoUpcomingService,

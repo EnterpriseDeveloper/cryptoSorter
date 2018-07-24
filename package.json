@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "6.0.7",
     "@angular/router": "6.0.7",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0",
+    "@nicky-lenaers/ngx-scroll-to": "^1.0.0",
     "@qontu/ngx-inline-editor": "^0.2.0-alpha.12",
     "@types/d3-shape": "^1.2.3",
     "@types/lodash": "^4.14.102",

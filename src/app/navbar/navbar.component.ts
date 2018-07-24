@@ -1,17 +1,19 @@
-import { Component, OnDestroy, Inject, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnDestroy, Inject, HostListener, ViewChild, ElementRef, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DOCUMENT } from "@angular/platform-browser";
 import {SpinnerLoadService } from '../spinner/spinner-load.service';
 import { AuthService } from '../aservices/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LoginUserComponent} from '../login-user/login-user.component';
 import {Router, ActivatedRoute} from '@angular/router';
-
+declare var jquery:any;
+declare var $ :any;
 
 
 @Component({
   selector: 'navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
+  
 //   animations: [
 //     // Each unique animation requires its own trigger. The first argument of the trigger function is the name
 //     trigger('rotatedState', [
@@ -96,6 +98,7 @@ onDocumentClick(event) {
             }
 
   logout() {
+    sessionStorage.setItem('linkShare', 'login');
     this.auth.signOut();
   }
 

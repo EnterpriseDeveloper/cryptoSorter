@@ -613,12 +613,13 @@ padding-right: 0px !important;
 }
 
 .forLikes{
-  color: #FFC107;
+  color: #17A2B8;
 }
 
 .forLikes:hover{
-  color: #FFC107;
+  color: #17A2B8;
 }
+
 
 .danger{
   background-color: rgb(187, 46, 60);
@@ -660,5 +661,23 @@ padding-right: 0px !important;
 .addedToDislike{
   background-color: rgb(187, 46, 60) !important;
   border-color: rgb(187, 46, 60) !important;
+}
+
+.linkBasicPage{
+  color: #17A2B8;
+}
+
+.linkBasicPage:hover{
+  color: white;
+  text-decoration: none;
+}
+
+.linkBasicPageCVI{
+  color: #17A2B8;
+}
+
+.linkBasicPageCVI:hover{
+  color: white;
+  text-decoration: none;
 }
 

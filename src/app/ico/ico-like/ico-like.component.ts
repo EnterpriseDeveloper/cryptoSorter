@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AuthService } from '../../aservices/auth.service';
 import { IcoDbService } from '../service/ico-db.service';
 import {SpinnerLoadService } from '../../spinner/spinner-load.service';
@@ -97,14 +97,7 @@ export class IcoLikeComponent implements OnDestroy {
     },750)
   }
 
-  onPageChange(e, scrollDuration){
-    var scrollStep = -window.scrollY / (scrollDuration / 15),
-    scrollInterval = setInterval(function(){
-    if ( window.scrollY != 0 ) {
-        window.scrollBy( 0, scrollStep );
-    }
-    else clearInterval(scrollInterval); 
-},15);
+  onPageChange(e){
     if (e)
       this.page = e;
   }

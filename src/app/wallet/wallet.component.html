@@ -16,14 +16,11 @@
            <div [class.display]='valueLinkClosed'>         
             <div [class.display]='isLoggedIn' 
                  class="textRegist particle text-center">
-               <div class="emptyPadding">  
-                <a class="colorTextLink textDecor" 
-                   href='#' 
-                   (click)="link()" 
-                   (click)="openRegistModal()">Register now</a>
-                <span class="colorTextRegist">
-                     to unlock all the features (on desktop). It's free! 
-                </span>              
+               <div class="emptyPadding" >      
+               <p class="colorText fontWeightStyle" style="width:75%; margin-left:auto; margin-right: auto">Welcome to your Portfolio Manager! Here you create multiple portfolios, 
+                 share them to public and with other CryptoSorter users. Have a look to the 
+                 <a class="linkBasicPage" href="/portfolio/izyy1tplfvbhtgqewk">portfolio sample</a>. 
+                 To create your first portfolio, please sign up or login.</p>            
                </div>
             </div> 
            </div> 
@@ -101,7 +98,7 @@
             </button> 
 
               <div class="btn-group mr-3 mobileStyleForListOfPortf">
-                <button  (click)='changeNameOfPortfolio(changeName)' type="button" class="btn btn-default btn-sm widthButton">{{wichPortfolio}}<i style="padding-left: 10px;" class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                <button  (click)='changeNameOfPortfolio(changeName)' type="button" class="btn btn-default btn-sm widthButton">{{wichPortfolio}}<i *ngIf='editingGuard' [class.display]="mobileDetected" style="padding-left: 10px;" class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                 <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
                   <button class="btn btn-infoWallet btn-sm dropdown-toggle-split paddingTop" ngbDropdownToggle></button>
                   <div class="dropdown-menu" ngbDropdownMenu>
@@ -185,8 +182,9 @@
                             placeholder="Search Coin"
                             [(ngModel)]="filter">
                         </th>
-                        <th style="width:10%; bottom: -6px; position: relative;" 
-                            class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" 
+                        <th style="width:10%; bottom: -6px; position: relative;"
+                            [class.rowActive]="key =='coins'" 
+                            class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" 
                             (click)="sort('coins')">
                             Coins
                             <span class="fa" 
@@ -195,16 +193,18 @@
                             </span>
                         </th>
                         <th style="width:10%; bottom: -6px; position: relative;" 
-                            class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" 
+                            [class.rowActive]="key =='price_usd'" 
+                            class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" 
                             (click)="sort('price_usd')">
-                            Price $
+                            Price $ 
                             <span class="fa" 
                                   *ngIf="key =='price_usd'" 
                                   [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}">
                             </span>
                         </th>
-                        <th style="width:10%; bottom: -6px; position: relative;" 
-                            class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" 
+                        <th style="width:10%; bottom: -6px; position: relative;"
+                            [class.rowActive]="key =='total'"  
+                            class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" 
                             (click)="sort('total')">
                             Total $
                             <span class="fa" 
@@ -213,7 +213,8 @@
                             </span>
                         </th>
                         <th style="width:10%; bottom: -6px; position: relative;" 
-                            class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" 
+                            [class.rowActive]="key =='percent_change_24h'" 
+                            class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" 
                             (click)="sort('percent_change_24h')">
                             % 24h 
                             <span class="fa" 
@@ -222,7 +223,8 @@
                             </span>
                         </th>
                         <th style="width:10%; bottom: -6px; position: relative;" 
-                            class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" 
+                           [class.rowActive]="key =='allocation'" 
+                            class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" 
                             (click)="sort('allocation')">
                             Allocation %
                             <span class="fa" 
@@ -262,7 +264,7 @@
                         <th style="width:10%;" 
                             class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" 
                             (click)="sort('price_usd')">
-                            Price $
+                            Price $ 
                             <span class="fa" 
                                   *ngIf="key =='price_usd'" 
                                   [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}">
@@ -312,11 +314,12 @@
                                      [src]="getCoinImage(wallet.symbol)" 
                                      (click)="getWebPage(wallet.symbol)"
                                      type="image" 
-                                     class='sizeImg2' 
+                                     class='sizeImg2 colorHoverIcon' 
                                      title="{{wallet.name}} website" />
                              <p (click)="goToDescription(wallet.name, wallet.symbol)"
                                 class="tableName centerWalName styleMobileWidth wallet">
-                                {{ wallet.name }} |
+                                <span class="colorHoverLink">
+                                {{ wallet.name }}</span> |
                                 <span
                                    class="linksTable">
                                    {{wallet.symbol.toUpperCase()}}
@@ -682,7 +685,7 @@
             <div class="example-block__item">
                 <ngx-select 
                         [items]="items"
-                        [allowClear]="true"
+                        allowClear="true"
                         placeholder="Click to select"
                          optionValueField="id" 
                          optionTextField="name"

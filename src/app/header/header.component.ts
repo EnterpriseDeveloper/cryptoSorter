@@ -1,8 +1,16 @@
-import { Component, OnDestroy} from '@angular/core';
+import { Component, Output, EventEmitter, OnDestroy, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../aservices/auth.service';
 import {TotalService} from './services/total.service';
 import {Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {LoginUserComponent} from '../login-user/login-user.component';
+
+class DataFilter {
+  minCVI: number;
+  minMarketCap: number;
+  minVolume: number;
+}
 
 
 @Component({
@@ -12,6 +20,8 @@ import {Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 })
 export class HeaderComponent implements OnDestroy{
+
+  @Output() dataFilter : EventEmitter<DataFilter> = new EventEmitter<DataFilter>();
  
   public totalSum: any = 0 ;
    public persentTotal: any = 0;
@@ -36,17 +46,20 @@ export class HeaderComponent implements OnDestroy{
     public totalService: TotalService,
     public route: ActivatedRoute,
     public router: Router,
+    public modalService: NgbModal,
+    public activityRouter: ActivatedRoute,
 ) {
   this.loading = true;
    this.userSub = this.auth.user.subscribe(
       (auth) => {
         if (auth != null) {
           this.isLoggedIn = true;
+          this.dataLoad();
         } else {
-            this.isLoggedIn = false;         
+            this.isLoggedIn = false;  
+            this.getIdLink();       
         }
       });
-      this.dataLoad();
   } 
 
  public totalModule: number; 
@@ -54,6 +67,16 @@ export class HeaderComponent implements OnDestroy{
  public totalSub: any;
  public totalSubModal: any;
  public totalSubPersent: any;
+
+ getIdLink(){
+  var dataFromStorage = sessionStorage.getItem('linkShare')
+   if(String(dataFromStorage) === ':id' || dataFromStorage === 'null' || dataFromStorage === null || dataFromStorage === undefined || String(dataFromStorage) === 'undefined' || String(dataFromStorage) === 'login'){
+       this.isLoggedIn = false;
+   }else{
+     this.isLoggedIn = true;
+     this.dataLoad();
+   }
+  }
 
   dataLoad() {
    this.totalSub = this.totalService.totalSum.subscribe((total)=>{
@@ -216,15 +239,29 @@ export class HeaderComponent implements OnDestroy{
 //    },
 //    retina_detect: true
 //    }
-
   }
 
+  setFilterData(){
+    this.dataFilter.emit({
+      minCVI: Math.floor(Math.random() * 20), 
+      minMarketCap: Math.floor(Math.random() * 100000000) + 2000000,
+      minVolume: Math.floor(Math.random() * 50000000) + 1000000,
+    });
+  }
+
+  openRegistModal(){
+    const modalRef = this.modalService.open(LoginUserComponent);
+    $('.modal-content').animate({ opacity: 1 });
+    $('.modal-backdrop').animate({ opacity: 0.9 });
+  }
 
   ngOnDestroy(){
+    if(this.isLoggedIn === true){
+      this.totalSub.unsubscribe();
+      this.totalSubModal.unsubscribe();
+      this.totalSubPersent.unsubscribe();
+    }
     this.userSub.unsubscribe();
-    this.totalSub.unsubscribe();
-    this.totalSubModal.unsubscribe();
-    this.totalSubPersent.unsubscribe();
      }
 
 

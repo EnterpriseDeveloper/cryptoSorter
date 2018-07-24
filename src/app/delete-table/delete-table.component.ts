@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, AfterViewInit, OnDestroy, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, ChangeDetectorRef, AfterViewInit, OnDestroy, Input, Output, EventEmitter, ViewChild, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Subject } from 'rxjs/Subject'
 
@@ -109,7 +109,8 @@ export class DeleteTableComponent implements OnDestroy, AfterViewInit {
     getDislikeList(){
       let promise = new Promise((resolve, reject) =>{
         this.dislikeSub = this.dislikes.subscribe((dislikeData)=>{
-          this.dislikesData = dislikeData
+          this.dislikesData = dislikeData;
+          this.dislikeValue = [];
           this.dislikesData.forEach(dislikeData =>{
           return this.dislikeValue.push(dislikeData.$value);
            })
@@ -124,17 +125,11 @@ export class DeleteTableComponent implements OnDestroy, AfterViewInit {
     };
 
     getData(){
-      let promise = new Promise((resolve, reject) =>{
         this.listCompareSub = this.listCompare.get()
         .subscribe((listItem) => {
           this.listComapreItem = listItem;
-          resolve(this.listComapreItem);
-       })
-      })
-
-     promise.then(()=>{
-      this.apiSub = this.apiService.getApi()  
-      .subscribe((dataItem) => {
+        this.apiSub = this.apiService.getApi()  
+       .subscribe((dataItem) => {
         this.dataTables = dataItem; 
         this.items = dataItem;
         this.filterDislike = this.dataTables.filter((i) => {
@@ -142,7 +137,7 @@ export class DeleteTableComponent implements OnDestroy, AfterViewInit {
        });  
        this.createTable(); 
       });
-     })
+    })
     }
 
 
@@ -161,7 +156,7 @@ export class DeleteTableComponent implements OnDestroy, AfterViewInit {
      }
      setTimeout(()=>{
       this.spinnerService.changeMessage(false);
-     },10000)
+     },500)
 
     };
 
@@ -264,14 +259,7 @@ export class DeleteTableComponent implements OnDestroy, AfterViewInit {
     this.reverse = !this.reverse;
   }
 
-  onPageChange(e, scrollDuration){
-    var scrollStep = -window.scrollY / (scrollDuration / 15),
-    scrollInterval = setInterval(function(){
-    if ( window.scrollY != 0 ) {
-        window.scrollBy( 0, scrollStep );
-    }
-    else clearInterval(scrollInterval); 
-     },15);
+  onPageChange(e){
     if (e)
       this.page = e;
   }
@@ -355,11 +343,8 @@ export class DeleteTableComponent implements OnDestroy, AfterViewInit {
 
 
   ngOnDestroy(){
-    this.userSub.unsubscribe();
-    this.isEmptySub.unsubscribe();
     if(this.isLoggedIn == true){
-    //  this.listCompareSub.unsubscribe();
-     // this.apiSub.unsubscribe();
+      this.userSub.unsubscribe();
       this.dislikeSub.unsubscribe();
     }
   }

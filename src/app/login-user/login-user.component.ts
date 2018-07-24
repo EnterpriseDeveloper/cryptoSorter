@@ -1,4 +1,4 @@
-import {Component } from '@angular/core';
+import {Component, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router} from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../aservices/auth.service';

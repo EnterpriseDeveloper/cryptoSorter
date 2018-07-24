@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute  } from '@angular/router';
 import { ListcryptocompareService} from '../../aservices/listcryptocompare.service';
 import { Http ,Response } from '@angular/http';
@@ -14,7 +14,8 @@ import {ChartDayService} from './service/chart-day.service';
 import { StockChart, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import { SpinnerLoadService } from '../../spinner/spinner-load.service';
 import _ from 'lodash/core';
-
+declare var jquery:any;
+declare var $ :any;
 
 @Component({
   selector: 'description',
@@ -64,6 +65,9 @@ export class DescriptionComponent implements OnInit {
   ) {
     this.spinnerService.changeMessage(true);
     let id = this.route.snapshot.paramMap.get('id');
+    document.title = id + " cryptocurrency: news, trading signals, price chart, market overview";
+    var $meta = $('meta[name=Description]').attr('content', 
+    "Check out " + id + " cryptocurrency today's price chart and trends, social media pages and official website. Read latest news and earn " + id + " with know-how engineered " + id + " trading signals, or research the market with CryptoSorter' Crypto Volatility Index indicator.");
     this.symbol = id.substr(id.lastIndexOf("-") + 1);
     this.loading = true;
     this.userSub = this.authService.user.subscribe(
@@ -137,27 +141,52 @@ export class DescriptionComponent implements OnInit {
   }
 
   getDataChars(){ 
+let promise = new Promise((res, rej)=>{
+  this.chartService.getChartData(this.symbol).subscribe((data)=>{
+    let i = data.Data.length - 1
+    this.max = data.Data[i].time
+    this.min = data.Data[0].time;
+    var dataForPrice;
+    var priceData =[];
+  data.Data.forEach(element => {
+   dataForPrice = [
+     element.time * 1000, 
+     element.close
+   ]
+  priceData.push(dataForPrice);
+  this.loadingChart = false;
+    })   
+    this.price = priceData;
+    res(this.price);
+  })
+})
+promise.then((data)=>{
 
-    this.chartService.getChartData(this.symbol).subscribe((data)=>{
-      let i = data.Data.length - 1
-      this.max = data.Data[i].time
-      this.min = data.Data[0].time;
-      var dataForPrice;
-      var priceData =[];
-    data.Data.forEach(element => {
-     dataForPrice = [
-       element.time * 1000, 
-       element.close
-     ]
-    priceData.push(dataForPrice);
-    this.loadingChart = false;
-      })   
-      this.price = priceData;
+let dataChart = data;
+this.day = 'histohour'
+let d = new Date();
+let timeMax = (d.getTime() / 1000).toFixed(0);
+this.chartDayService.getChartData(this.day ,this.symbol, timeMax).subscribe((data)=>{
+  var dataForPrice;
+  var price = []
+data.Data.forEach(element => {
+ dataForPrice = [
+   element.time * 1000, 
+   element.close
+ ]
+price.push(dataForPrice);
+
+  })
+
+  this.resultArray = []
+  this.resultArray = Array.prototype.concat.apply([], [dataChart, price]).sort(this.sortFunction)
+   this.price = this.resultArray
+
 
     this.stock = new StockChart({
       colors:['#0d6e6d'],
     rangeSelector: {
-      selected: 5,
+      selected: 1,
       buttons: [{
           type: 'day',
           count: 1,
@@ -194,7 +223,7 @@ export class DescriptionComponent implements OnInit {
         }],
         tooltip: {
           split: false,
-          xDateFormat: '%m/%d/%y',
+          xDateFormat: '%m/%d/%y %H:%M',
           pointFormat: "<b>Price (USD):</b> {point.y:,.6f}",
 
         },
@@ -287,6 +316,7 @@ export class DescriptionComponent implements OnInit {
         },
       });
     });
+  })
     this.spinnerService.changeMessage(false);
   }
 

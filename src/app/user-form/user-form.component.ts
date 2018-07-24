@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../aservices/auth.service';
 import {CurrencyComponent} from '../currency/currency.component';
@@ -53,6 +53,7 @@ export class UserFormComponent implements OnInit {
   } 
 
   signup() {
+    sessionStorage.setItem('linkShare', 'login');
     this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password'])
     .then(() => {
       if(this.notifyService.style === 'error'){
@@ -66,6 +67,7 @@ export class UserFormComponent implements OnInit {
   }
 
   login() {
+    sessionStorage.setItem('linkShare', 'login');
     this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
     .then(() => {
       if(this.notifyService.style === 'error'){

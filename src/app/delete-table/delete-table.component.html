@@ -1,5 +1,5 @@
 <header></header>
-<connectTable></connectTable>
+<connectTable id='forScrolling'></connectTable>
 
 <div class="colorConnect">
                 
@@ -7,9 +7,13 @@
     <div class="paddingCurrency">
 
         <div *ngIf='!isLoggedIn' class="textRegist particle text-center">
-                <div class="emptyPadding">
-                <a class="colorTextLink textDecor" href='#' (click)="link()" (click)="openRegistModal()"
-                >Register now</a><span class="colorTextRegist"> to unlock all the features (on desktop). It's free! </span>              
+                <div class="emptyPadding"> 
+                    <div class="colorText text-center fontWeightStyle">
+                        Here you'll see coins which you don't care about much,
+                         and so you removed them from Everything using 
+                        <button (click)="openRegistModal()" class="btn btn-sm btn-outline-danger buttonLike">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>  button.</div>             
               </div>
             </div>
 
@@ -88,10 +92,10 @@
                          <input #autofocus class="form-control form-control-sm" placeholder="Search Coin" [(ngModel)]="filter">
                        </div>    
                         </th>  
-                    <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('percent_change_24h')">% 24h
+                    <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" [class.rowActive]="key =='percent_change_24h'" (click)="sort('percent_change_24h')">% 24h
                         <span class="fa" *ngIf="key =='percent_change_24h'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                     </th>
-                    <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('price_usd')">Price $
+                    <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" [class.rowActive]="key =='price_usd'" (click)="sort('price_usd')">Price $
                         <span class="fa" *ngIf="key =='price_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                     </th>
                     <th class="colorText tableSize text-center paddingHeader tableMobileSpeace">
@@ -119,13 +123,13 @@
                 </th>
 
                 <th placement="top" container="body" ngbTooltip="Crypto Volatility Index shows a higher short term potential for coins with higher CVI values. Tip: use with filters." 
-                 class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('formulaValue')">CVI
+                 class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" [class.rowActive]="key =='formulaValue'" (click)="sort('formulaValue')">CVI
                     <span class="fa" *ngIf="key =='formulaValue'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>
-                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('market_cap_usd')">Market Cap $
+                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" [class.rowActive]="key =='market_cap_usd'" (click)="sort('market_cap_usd')">Market Cap $
                     <span class="fa" *ngIf="key =='market_cap_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th>
-                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace" (click)="sort('24h_volume_usd')">Volume $
+                <th class="colorText tableSize text-center wallet paddingHeader tableMobileSpeace rowHoverColor" [class.rowActive]="key =='24h_volume_usd'" (click)="sort('24h_volume_usd')">Volume $
                     <span class="fa" *ngIf="key =='24h_volume_usd'" [ngClass]="{'fa-chevron-up':!reverse,'fa-chevron-down':reverse}"></span>
                 </th> 
                         <th class="colorText tableSize text-center paddingHeader">Action</th>  
@@ -139,10 +143,11 @@
                 <img [class.titleIndex]="!symbolNoFit(dislike.symbol)"
                 [class.cursor]="symbolNoFit(dislike.symbol)"
                 [src]="getCoinImage(dislike.symbol)" (click)="getWebPage(dislike.symbol)"
-                 type="image" class='sizeImg2' title="{{dislike.name}} website" />
+                 type="image" class='sizeImg2 colorHoverIcon' title="{{dislike.name}} website" />
                     <p (click)='goToDescription(dislike.name, dislike.symbol)'
                      class="wallet tableName centerWalName styleMobileWidth">
-                  {{dislike.name}} |
+                     <span class="colorHoverLink">
+                     {{dislike.name}}</span> |
                   <span
                      class="linksTable" 
                      >{{dislike.symbol.toUpperCase()}}</span> </p></td>
@@ -177,7 +182,7 @@
 
 
 
-<pagination-template class="paginationTab" #p="paginationApi" (pageChange)="onPageChange($event, 150)">
+<pagination-template [ngx-scroll-to]="'#forScrolling'" class="paginationTab" #p="paginationApi" (pageChange)="onPageChange($event)">
 
 <ul class="pagination">
         <li class="page-item" [class.disabled]="p.isFirstPage()">
