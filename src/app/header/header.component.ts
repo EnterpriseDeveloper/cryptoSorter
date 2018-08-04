@@ -7,9 +7,12 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LoginUserComponent} from '../login-user/login-user.component';
 
 class DataFilter {
-  minCVI: number;
-  minMarketCap: number;
-  minVolume: number;
+  minCVI: any;
+  maxCVI: any;
+  minMarketCap: any;
+  maxMarketCap: any;
+  minVolume: any;
+  maxVolume: any;
 }
 
 
@@ -244,9 +247,23 @@ export class HeaderComponent implements OnDestroy{
   setFilterData(){
     this.dataFilter.emit({
       minCVI: Math.floor(Math.random() * 20), 
+      maxCVI: NaN,
       minMarketCap: Math.floor(Math.random() * 100000000) + 2000000,
+      maxMarketCap: NaN,
       minVolume: Math.floor(Math.random() * 50000000) + 1000000,
+      maxVolume: NaN
     });
+  }
+
+  setCVIdata(){
+    this.dataFilter.emit({
+      minCVI: Math.floor(Math.random() * 20), 
+      maxCVI: Math.floor(Math.random() * 80) + 20,
+      minMarketCap: NaN,
+      maxMarketCap: NaN,
+      minVolume: NaN,
+      maxVolume: NaN
+    })
   }
 
   openRegistModal(){

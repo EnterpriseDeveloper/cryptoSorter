@@ -220,8 +220,11 @@ this.minfilter.formulaValue = Number(localStorage.getItem("minIndex"));
 
   dataFilterFromHeader($event){
     this.minfilter.formulaValue = $event.minCVI;
+    this.filter.formulaValue = $event.maxCVI;
     this.minfilter.market_cap_usd = $event.minMarketCap;
+    this.filter.market_cap_usd = $event.maxMarketCap;
     this.minfilter["24h_volume_usd"]= $event.minVolume;
+    this.filter["24h_volume_usd"]= $event.maxVolume;
   }
 
   minIndexChange(value){

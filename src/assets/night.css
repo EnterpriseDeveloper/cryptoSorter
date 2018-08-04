@@ -672,6 +672,15 @@ padding-right: 0px !important;
   text-decoration: none;
 }
 
+.linkBasicPageFilter{
+  color: #17A2B8;
+}
+
+.linkBasicPageFilter:hover{
+  color: white;
+  text-decoration: none;
+}
+
 .linkBasicPageCVI{
   color: #17A2B8;
 }
@@ -679,5 +688,49 @@ padding-right: 0px !important;
 .linkBasicPageCVI:hover{
   color: white;
   text-decoration: none;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+
+  .linkBasicPageFilter{
+    color: white;
+  }
+  
+  .linkBasicPageFilter:hover{
+    color: white;
+    text-decoration: none;
+  }
+
+  .linkBasicPageCVI{
+    color: white;
+  }
+  
+  .linkBasicPageCVI:hover{
+    color: white;
+    text-decoration: none;
+  }
+
+}
+
+@media (min-width: 481px) and (max-width: 812px) {
+
+  .linkBasicPageFilter{
+    color: white;
+  }
+  
+  .linkBasicPageFilter:hover{
+    color: white;
+    text-decoration: none;
+  }
+
+  .linkBasicPageCVI{
+    color: white;
+  }
+  
+  .linkBasicPageCVI:hover{
+    color: white;
+    text-decoration: none;
+  }
+
 }
 

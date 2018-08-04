@@ -1660,6 +1660,11 @@ loadingChartSpyner{
   
   @media (min-width: 320px) and (max-width: 480px) {
 
+    .modal-open .modal {
+        display: flex !important;
+        align-items: flex-start !important;
+        }
+
     .widthButton{
         width: 173px;
         background-color: white !important;
